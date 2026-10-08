@@ -42,7 +42,8 @@ button{font:inherit;font-weight:700;background:var(--line);color:#1d1a0c;border:
 button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:default}
 #pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:44;pointer-events:none}
 .pcard{pointer-events:auto;background:var(--panel);border:3px solid var(--line);padding:16px 22px;min-width:240px;max-width:90vw;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;box-shadow:0 4px 18px #000b}
-.tilecard{max-width:96vw}.tilerow{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 8px;width:100%}
+.tilecard{max-width:96%;max-height:100%;overflow-y:auto}.tilerow{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 8px;width:100%}
+.lkt{margin-left:auto;padding:3px 10px;font-size:12.5px}.lkt.on{background:#ffd34d;color:#222;border-color:#ffd34d}.lkb{flex:none;white-space:nowrap;margin:0 0 0 6px;padding:2px 8px;font-size:11.5px}
 #chfx{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#0a2a4a99,#0008 70%);animation:chIn .15s ease-out}
 #chfx.out,#chest.out{opacity:0;transition:opacity .2s}
 #chfx .chb{text-align:center;color:#e6f6ff;text-shadow:0 0 14px #5fb8ff,0 2px 0 #000;animation:chShake .5s linear}
@@ -1575,7 +1576,7 @@ const SEED="{\"lv\":33,\"exp\":2306.2,\"hp\":740,\"mp\":241.8,\"atk\":70,\"def\"
 let NOLOC=true;try{NOLOC=!localStorage.getItem("rpg4")}catch(e){}
 try{const s=localStorage.getItem("rpg4")||(localStorage.getItem("rpg4n")?null:SEED);if(s){P=Object.assign(P,JSON.parse(s));fresh=false}}catch(e){}
 try{if(P.lv>LV_CAP){const ex=P.lv-LV_CAP;P.lv=LV_CAP;P.atk=Math.max(0,P.atk-2*ex);P.def=Math.max(0,P.def-ex);for(const k in P.st)P.st[k]=Math.max(1,P.st[k]-ex);P.exp=0;P.lvNote=ex}}catch(e){}
-P.box=P.box&&typeof P.box==="object"?P.box:{};P.box.inv=P.box.inv||{};P.box.gear=P.box.gear||[];P.box.sort=P.box.sort||"rar";
+P.lk=P.lk&&typeof P.lk==="object"?P.lk:{};P.box=P.box&&typeof P.box==="object"?P.box:{};P.box.inv=P.box.inv||{};P.box.gear=P.box.gear||[];P.box.sort=P.box.sort||"rar";
 try{(P.gear||[]).concat(Object.values(P.eq||{})).forEach(g=>{if(g&&g.ed){if(!g.ele&&!(g.se&&g.se.length)&&(g.atk||g.ca||g.sa))g.ele=g.ed.e;delete g.ed}})}catch(e){}
 let REFUND=0;delete P.mp;
 if(P.inv){if(P.inv.ether>0)REFUND=Math.round(P.inv.ether*8*10)/10;for(const id of Object.keys(P.inv))if(!ITEMS[id])delete P.inv[id]}
@@ -1696,7 +1697,7 @@ const eqCur=g=>{const sn=Object.fromEntries(SLOTS),ks=g.t==="finger"||g.t==="tri
  return ks.map(k=>`<div style="opacity:.7;font-size:12px">현재 착용 중 — ${sn[k]}</div><div>${P.eq[k]?gtxt(P.eq[k],1):"<span style='opacity:.6'>착용 중인 장비 없음</span>"}</div><div style="margin-top:3px;padding-top:3px;border-top:1px dashed #556;font-size:12px"><span style="opacity:.7">${P.eq[k]?"교체 시 변화":"착용 시 변화"}</span><br>${cmpHtml(g,P.eq[k])}</div>`).join("<hr style='border:0;border-top:1px solid #556;margin:4px 0'>")};
 const eqTip=g=>()=>{const sn=Object.fromEntries(SLOTS),ks=g.t==="finger"||g.t==="trinket"?[g.t+"1",g.t+"2"]:g.t==="weapon"?["weapon1","weapon2"]:g.t==="offhand"?["weapon2"]:[g.t];
  return ks.map(k=>`<div style="opacity:.7;font-size:12px">현재 착용 중 — ${sn[k]}</div><div>${P.eq[k]?gtxt(P.eq[k],1):"<span style='opacity:.6'>착용 중인 장비 없음</span>"}</div><div style="margin-top:3px;padding-top:3px;border-top:1px dashed #556;font-size:12px"><span style="opacity:.7">${P.eq[k]?"교체 시 변화":"착용 시 변화"}</span><br>${cmpHtml(g,P.eq[k])}</div>`).join("<hr style='border:0;border-top:1px solid #556;margin:4px 0'>")};
-const hidePop=()=>{const p=$("pop");if(p)p.style.display="none"};
+const hidePop=()=>{const p=$("pop");if(p){p.removeAttribute("style");p.style.display="none"}};
 var PWAS=false,DK=null,DKNOW=false;
 const DKB=["b-move","b-inv","b-eq","b-st","b-dex"];
 function syncBtn(){const on=!!$("panel").classList.contains("drop");DKB.forEach(i=>{const e=$(i);e&&e.classList.toggle("on",on&&DK===i)});const h=$("b-ham");if(h){const a=on&&DK&&$(DK);h.classList.toggle("on",!!a);h.textContent=a?"☰ "+a.textContent:"☰"}}
@@ -2208,7 +2209,9 @@ c4:`<path d="M24 5v29M17 27h14M24 34v9"/><path d="M10 12l7 7M38 12l-7 7M5 25h8M3
 c5:`<ellipse cx="24" cy="8" rx="8" ry="2.8"/><path d="M24 15l10 4v9c0 6-5 10-10 12-5-2-10-6-10-12v-9z" fill="currentColor" fill-opacity=".3"/><path d="M12 21c-6 0-8 7-5 11M36 21c6 0 8 7 5 11" opacity=".85"/>`};
 const icV=th=>{const c=IC_TH[th]||IC_TH.atk;return `--c1:${c[0]};--c2:${c[1]};--c3:${c[2]};--c4:${c[3]}`},icoH=(key,th)=>{return `<span class="ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${IC_G[key]||IC_G.atk}</svg></span>`};
 function tilePop(title,items){DK=null;panel("",[]);const c=$("pop").querySelector(".pcard");c.innerHTML="";c.classList.add("tilecard");const t=document.createElement("b");t.textContent=title;c.append(t);const row=document.createElement("div");row.className="tilerow";
- items.forEach(([ik,nm,sub,fn,d,tip,cls,th])=>{const b=document.createElement("button");b.className="tile"+(cls?" "+cls:"");b.disabled=!!d;b.innerHTML=`<span class="iw" style="${icV(th)}">${icoH(ik,th)}${sub?`<span class="cpb">${sub}</span>`:""}</span><span class="tn">${nm}</span>`;b.onclick=()=>{hidePop();hideTip();fn()};if(tip){b.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};b.onmousemove=e=>{if(Date.now()-LT>1000)moveTip(e)};b.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(b,tip)}row.append(b)});c.append(row);$("pop").style.display="flex"}
+ items.forEach(([ik,nm,sub,fn,d,tip,cls,th])=>{const b=document.createElement("button");b.className="tile"+(cls?" "+cls:"");b.disabled=!!d;b.innerHTML=`<span class="iw" style="${icV(th)}">${icoH(ik,th)}${sub?`<span class="cpb">${sub}</span>`:""}</span><span class="tn">${nm}</span>`;b.onclick=()=>{hidePop();hideTip();fn()};if(tip){b.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};b.onmousemove=e=>{if(Date.now()-LT>1000)moveTip(e)};b.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(b,tip)}row.append(b)});c.append(row);$("pop").style.display="flex";posPop()}
+function posPop(){const o=$("pop"),l=$("logs");if(!o||!l||o.style.display==="none")return;const r=l.getBoundingClientRect();Object.assign(o.style,{inset:"auto",left:r.left+"px",top:r.top+"px",width:r.width+"px",height:r.height+"px",alignItems:"flex-end",justifyContent:"center",paddingBottom:"8px",boxSizing:"border-box"})}
+addEventListener("resize",()=>posPop());
 function cmdMenu(){back=cmdMenu;foebar();const sp=P.job==="mage"||P.job==="cleric",sil=curseIs("silence"),noP=![...POT_IDS,...CURE_IDS].some(id=>P.inv[id]>0),jt=P.job||"atk";
  tilePop("행동을 선택하세요.",[[sp?"spell":"atk","공격","",()=>hit(1),0,()=>`<div><b>공격</b></div><div style="font-size:12.5px">연계점수 없이 기본 공격을 한다. 적중하면 연계점수 +1.</div>`,"",sp?"spell":"atk"],
   ...(P.job?[]:[["heavy","강타",`${CP_NEED}`,()=>hit(2),BS.cp<CP_NEED||sil,()=>`<div><b>강타</b> <small>(연계점수 ${CP_NEED})</small></div><div style="font-size:12.5px">연계점수를 소모해 더 강하게 공격한다.${sil?" (침묵 중에는 사용할 수 없다)":""}</div>`,"","heavy"]]),
@@ -2482,29 +2485,31 @@ function nmFx(k,mode,cb){const m=MON[k];SUMFX=true;hideTip();
  const o=document.createElement("div");o.id="sumfx";o.className=T[1]==="sum"?"":T[1];o.innerHTML=`<div class="fl"></div><div class="rn"></div><div class="sb"><div class="t1">${T[0]}</div><div class="em">${m.e}</div><div class="nm">${m.n}</div><div class="t3">Lv ${lvv} · ${sub}</div></div>`;document.body.append(o);
  let done=false;const go=()=>{if(done)return;done=true;o.classList.add("out");setTimeout(()=>{o.remove();SUMFX=false;cb()},380)};
  o.onclick=go;setTimeout(go,2300)}
-let ISEL=null;
+let ISEL=null,LKM=false;const gLk=g=>!!(g&&g.lk),iLk=id=>!!(P.lk&&P.lk[id]);
 let IH=null;
 function invMenu(shop){const lk=!!foe&&!ALLOW,pv0=$("panel"),sc=pv0?pv0.scrollTop:0;panel(shop?`🛒 상인 — 판매 (보유 ${f(P.gold)}G)`:`🎒 인벤토리 (보유 ${f(P.gold)}G)${lk?" — 전투 중에는 보기만 가능":""}`,[]);const root=$("panel");
- if(shop)root.append(secEl("💰 일괄 판매",cardGrid([{html:"<b>재료 아이템 전부 판매</b><br><small>보유한 재료를 모두 판다</small>",btns:[["일괄 판매",()=>{let g=0;for(const id in P.inv)if(ITEMS[id].t==="mat"&&!ITEMS[id].em){g+=ITEMS[id].p*P.inv[id];P.inv[id]=0}P.gold=r1(P.gold+g);save();hud();say(`재료를 모두 팔아 ${f(g)}G를 얻었다.`);invMenu(true)}]]},
-  {html:"<b>흰색(노멀) 장비 전부 판매</b><br><small>강화한 장비는 제외</small>",btns:[["일괄 판매",()=>{let g=0;P.gear=P.gear.filter(x=>x.r>0||x.up>0||!(g+=x.p));P.gold=r1(P.gold+g);save();hud();say(`흰색 장비를 모두 팔아 ${f(g)}G를 얻었다.`);invMenu(true)}]]}])));
+ if(shop)root.append(secEl("💰 일괄 판매",cardGrid([{html:"<b>재료 아이템 전부 판매</b><br><small>보유한 재료를 모두 판다 (🔒잠금 제외)</small>",btns:[["일괄 판매",()=>{let g=0;for(const id in P.inv)if(ITEMS[id].t==="mat"&&!ITEMS[id].em&&!iLk(id)){g+=ITEMS[id].p*P.inv[id];P.inv[id]=0}P.gold=r1(P.gold+g);save();hud();say(`재료를 모두 팔아 ${f(g)}G를 얻었다.`);invMenu(true)}]]},
+  {html:"<b>흰색(노멀) 장비 전부 판매</b><br><small>강화한 장비 · 🔒잠금 장비는 제외</small>",btns:[["일괄 판매",()=>{let g=0;P.gear=P.gear.filter(x=>x.r>0||x.up>0||x.lk||!(g+=x.p));P.gold=r1(P.gold+g);save();hud();say(`흰색 장비를 모두 팔아 ${f(g)}G를 얻었다.`);invMenu(true)}]]}])));
  const ids=Object.keys(P.inv).filter(id=>P.inv[id]>0&&ITEMS[id]).sort((x,y)=>ITEMS[y].r-ITEMS[x].r||ITEMS[x].n.localeCompare(ITEMS[y].n,"ko"));
  const sm=ids.filter(id=>ITEMS[id].t==="sum"),use=ids.filter(id=>ITEMS[id].t==="use"||ITEMS[id].t==="cure"),mat=ids.filter(id=>ITEMS[id].t==="mat"&&!ITEMS[id].em),emt=ids.filter(id=>ITEMS[id].em),qs=ids.filter(id=>ITEMS[id].t==="qst");
  const gl=P.gear.map((g,i)=>({g,i})).sort((a,b)=>gOrd(a.g,b.g)||a.i-b.i);
  if(ISEL&&!((ISEL.k==="i"&&P.inv[ISEL.x]>0&&ITEMS[ISEL.x])||(ISEL.k==="g"&&P.gear[ISEL.x]&&ISEL.g===P.gear[ISEL.x])))ISEL=null;
  const re=()=>invMenu(shop),tipI=id=>itemTip(id);
  let selEl=null;
- const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;return d};
- const mkG=({g,i})=>{const on=ISEL&&ISEL.k==="g"&&ISEL.g===g,d=boxSlot(`<span style="color:${RC[g.r]}"><small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],eqTip(g),on,()=>{ISEL={k:"g",x:i,g};re()});if(on)selEl=d;
-  d.onmouseenter=e=>{if(Date.now()-LT>1000)showTip2(gearBody(g),eqCur(g),e)};d.onmousemove=e=>{if(Date.now()-LT>1000)moveTip2(e)};return d};
+ const lkBtn=(d,get,tog)=>{if(!LKM)return d;const b=document.createElement("button");b.className="lkb";b.textContent=get()?"🔓 해제":"🔒 잠금";b.onclick=e=>{e.stopPropagation();tog();save();re()};d.append(b);return d};
+ const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${iLk(id)?"🔒":""}${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;return lkBtn(d,()=>iLk(id),()=>{P.lk[id]=iLk(id)?0:1;if(!P.lk[id])delete P.lk[id]})};
+ const mkG=({g,i})=>{const on=ISEL&&ISEL.k==="g"&&ISEL.g===g,d=boxSlot(`<span style="color:${RC[g.r]}">${g.lk?"🔒":""}<small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],eqTip(g),on,()=>{ISEL={k:"g",x:i,g};re()});if(on)selEl=d;
+  d.onmouseenter=e=>{if(Date.now()-LT>1000)showTip2(gearBody(g),eqCur(g),e)};d.onmousemove=e=>{if(Date.now()-LT>1000)moveTip2(e)};return lkBtn(d,()=>g.lk,()=>{if(g.lk)delete g.lk;else g.lk=1})};
+ {const th=root.firstChild;if(th&&!shop){th.style.cssText+=";display:flex;justify-content:space-between;align-items:center;gap:8px";const b=document.createElement("button");b.className="lkt"+(LKM?" on":"");b.textContent=LKM?"🔒 잠금 완료":"🔒 잠금";b.onclick=()=>{LKM=!LKM;ISEL=null;re()};th.append(b)}}
  const ab=document.createElement("div");ab.className="ipop";const bt=(t,fn,dis)=>{const b=document.createElement("button");b.textContent=t;b.disabled=!!dis;b.onclick=fn;return b};
  if(ISEL){const sp=document.createElement("span");
   if(ISEL.k==="i"){const id=ISEL.x,it=ITEMS[id],n=P.inv[id];
-   if(shop){if(it.t!=="sum"&&it.t!=="qst"){ab.append(bt(`1개 판매 ${f(it.p)}G`,()=>{P.inv[id]--;P.gold=r1(P.gold+it.p);save();hud();re()}));ab.append(bt(`전부 판매 ${f(it.p*n)}G`,()=>{P.inv[id]=0;P.gold=r1(P.gold+it.p*n);save();hud();re()},n<2))}else{const q=document.createElement("small");q.style.opacity=".75";q.textContent="판매 불가";ab.append(q)}}
+   if(shop){if(iLk(id)){const q=document.createElement("small");q.style.opacity=".75";q.textContent="🔒 잠금 — 판매 불가";ab.append(q)}else if(it.t!=="sum"&&it.t!=="qst"){ab.append(bt(`1개 판매 ${f(it.p)}G`,()=>{P.inv[id]--;P.gold=r1(P.gold+it.p);save();hud();re()}));ab.append(bt(`전부 판매 ${f(it.p*n)}G`,()=>{P.inv[id]=0;P.gold=r1(P.gold+it.p*n);save();hud();re()},n<2))}else{const q=document.createElement("small");q.style.opacity=".75";q.textContent="판매 불가";ab.append(q)}}
    else if(it.t==="sum")ab.append(bt(`소환 (${SUM_NEED}개 소모)`,()=>summon(id),lk||P.loc==="town"||!!P.dg||n<SUM_NEED));
    else if(id==="q_leg0")ab.append(bt("사용 (퀘스트 수락)",()=>{lqStart();re()},lk||!!lqQ()));
    else if(it.t==="use")ab.append(bt("사용",()=>{P.inv[id]--;heal(it);save();hud();re()},lk))}
   else{const g=ISEL.g;
-   if(shop)ab.append(bt(`판매 ${f(g.p)}G`,()=>{const i=P.gear.indexOf(g);if(i<0)return;P.gold=r1(P.gold+g.p);P.gear.splice(i,1);ISEL=null;save();hud();re()}));
+   if(shop&&g.lk){const q=document.createElement("small");q.style.opacity=".75";q.textContent="🔒 잠금 — 판매 불가";ab.append(q)}else if(shop)ab.append(bt(`판매 ${f(g.p)}G`,()=>{const i=P.gear.indexOf(g);if(i<0)return;P.gold=r1(P.gold+g.p);P.gear.splice(i,1);ISEL=null;save();hud();re()}));
    else ab.append(bt(canEq(g)?"장착":"장착 불가 (직업)",()=>{const i=P.gear.indexOf(g);if(i<0)return;ISEL=null;equip(i)},lk||!canEq(g)))}}
 
  if(sm.length)root.append(boxPlate(`🌟 네임드 소환 재료 <small style="opacity:.75">(${SUM_NEED}개로 소환 · 최대 ${SUM_CAP}개)</small>`,sm.map(mkI),sm.length,""));
@@ -2538,7 +2543,7 @@ function doEquip(i,k){const g=P.gear[i],out=[],take=kk=>{if(P.eq[kk]){out.push(P
  if(g.t==="weapon"&&wH(g)===2){take("weapon1");take("weapon2");k="weapon1"}
  else if(k==="weapon2"&&P.eq.weapon1&&P.eq.weapon1.t==="weapon"&&wH(P.eq.weapon1)===2)take("weapon1");
  else take(k);
- P.gear.splice(i,1);out.forEach(o=>P.gear.push(o));P.eq[k]=g;mhUp(MH0);clamp();save();hud();say(`${gtxt(g)}을(를) 장착했다.${out.length>1?" (기존 무기 두 칸을 모두 비웠다)":""}`);invMenu()}
+ P.gear.splice(i,1);out.forEach(o=>P.gear.push(o));delete g.lk;P.eq[k]=g;mhUp(MH0);clamp();save();hud();say(`${gtxt(g)}을(를) 장착했다.${out.length>1?" (기존 무기 두 칸을 모두 비웠다)":""}`);invMenu()}
 function eqMenu(){const lk=!!foe&&!ALLOW;panel(`🛡 장비${lk?" — 전투 중에는 보기만 가능":""}`,[]);const root=$("panel"),nm=Object.fromEntries(SLOTS);
  const slot=k=>{const g=P.eq[k];if(k==="weapon2"&&P.eq.weapon1&&P.eq.weapon1.t==="weapon"&&wH(P.eq.weapon1)===2)return {html:`<div style="font-size:12px;opacity:.8">${nm[k]}</div><div style="opacity:.6;padding:6px 0">🗡 양손 무기 착용 중<br><small>(무기 1이 두 칸을 모두 사용)</small></div>`,col:"#555",tip:null,btns:[]};return {html:`<div style="font-size:12px;opacity:.8">${nm[k]}</div>${g?gearBody(g):"<div style='opacity:.45;padding:6px 0'>비어 있음</div>"}`,col:g?RC[g.r]:"#555",tip:g?eqTip(g):null,btns:g?[["해제",()=>{P.gear.push(P.eq[k]);delete P.eq[k];clamp();save();hud();eqMenu()},lk]]:[]}};
  root.append(secEl("📊 장비 요약",`<div class="sg"><div class="sx"><small style="opacity:.8">${ATKN()}</small><div class="sv">${f(A())}</div></div><div class="sx"><small style="opacity:.8">전투력</small><div class="sv">${f(CPT())}</div></div><div class="sx"><small style="opacity:.8">방어력</small><div class="sv">${f(D())}</div></div><div class="sx"><small style="opacity:.8">착용 중</small><div class="sv">${Object.keys(P.eq).length} / ${SLOTS.length}</div></div></div>`));
@@ -2669,19 +2674,19 @@ function enDo(g,o,e,src){if(foe)return;const L=P.lv,t=enTier(L),R=enRec(o,t,e),c
  resPop("🪄 마법부여 완료","#c9a0ff",`<b>${g.n}</b><br>✨ ${enName(g)} — ${enTxt(g)}${old?`<br><small style="opacity:.7">이전: ${old}</small>`:""}<br><small style="opacity:.7">-${f(c)}G</small>`)}
 let DIS_SEL=new Set(),DIS_CF=false;
 function disMenu(keep){if(foe)return;const sc0=keep&&$("panel")?$("panel").scrollTop:0;panel("🔨 아이템 분해",[]);const root=$("panel");
- root.append(secEl("ℹ 안내",NPCH("",`인벤토리 장비를 분해해 재료를 얻습니다 (착용 중인 장비는 불가). 장비를 눌러 <b>여러 개를 선택</b>한 뒤 한꺼번에 분해할 수 있습니다. <b>녹색</b> → ${inm("dis_g1")} 50% / ${inm("dis_g2")} 50% (개수는 장비 레벨 ÷ 10 기준 ±4 랜덤, 최소 1개) · <b>파랑</b> → ${inm("dis_b1")} 80% / ${inm("dis_b2")} 20% · <b>보라</b> → ${inm("dis_p")} 100%. 노멀·전설 장비는 분해할 수 없습니다. 분해한 장비는 되돌릴 수 없고, 마법부여가 있어도 함께 사라집니다.`)));
- const L=P.gear.filter(g=>g.r>=1&&g.r<=3).sort(gOrd);[...DIS_SEL].forEach(g=>{if(!L.includes(g))DIS_SEL.delete(g)});if(!DIS_SEL.size)DIS_CF=false;
+ root.append(secEl("ℹ 안내",NPCH("",`인벤토리 장비를 분해해 재료를 얻습니다 (착용 중인 장비 · 🔒잠금 장비는 불가). 장비를 눌러 <b>여러 개를 선택</b>한 뒤 한꺼번에 분해할 수 있습니다. <b>녹색</b> → ${inm("dis_g1")} 50% / ${inm("dis_g2")} 50% (개수는 장비 레벨 ÷ 10 기준 ±4 랜덤, 최소 1개) · <b>파랑</b> → ${inm("dis_b1")} 80% / ${inm("dis_b2")} 20% · <b>보라</b> → ${inm("dis_p")} 100%. 노멀·전설 장비는 분해할 수 없습니다. 분해한 장비는 되돌릴 수 없고, 마법부여가 있어도 함께 사라집니다.`)));
+ const LA=P.gear.filter(g=>g.r>=1&&g.r<=3).sort(gOrd),L=LA.filter(g=>!g.lk);[...DIS_SEL].forEach(g=>{if(!L.includes(g))DIS_SEL.delete(g)});if(!DIS_SEL.size)DIS_CF=false;
  const sel=L.filter(g=>DIS_SEL.has(g)),by=r=>sel.filter(g=>g.r===r).length,en=sel.filter(g=>g.en).length;
  const pick=r=>()=>{L.filter(g=>r==null||g.r===r).forEach(g=>DIS_SEL.add(g));DIS_CF=false;disMenu(1)};
  root.append(btnRow([["전체 선택",pick(null)],["녹색 전체",pick(1)],["파랑 전체",pick(2)],["보라 전체",pick(3)],["선택 해제",()=>{DIS_SEL.clear();DIS_CF=false;disMenu(1)},!sel.length]]));
- const cards=L.map(g=>{const on=DIS_SEL.has(g);return {col:on?"#ffd34d":RC[g.r],html:(on?`<div style="color:#ffd34d;font-size:12px">✔ 선택됨</div>`:"")+gearBody(g),btns:[[on?"선택 해제":"선택",()=>{on?DIS_SEL.delete(g):DIS_SEL.add(g);DIS_CF=false;disMenu(1)}]]}});
+ const cards=LA.map(g=>{if(g.lk)return {col:"#667",html:`<div style="color:#9aa;font-size:12px">🔒 잠금됨 — 분해에서 제외</div>`+gearBody(g),btns:[["잠금 장비",()=>{},true]]};const on=DIS_SEL.has(g);return {col:on?"#ffd34d":RC[g.r],html:(on?`<div style="color:#ffd34d;font-size:12px">✔ 선택됨</div>`:"")+gearBody(g),btns:[[on?"선택 해제":"선택",()=>{on?DIS_SEL.delete(g):DIS_SEL.add(g);DIS_CF=false;disMenu(1)}]]}});
  const bar=document.createElement("div");bar.className="sc";bar.innerHTML=`<div class="sh">🧾 선택한 장비 <small style="opacity:.75">(${sel.length}개)</small></div><div class="sb" style="font-size:12.5px;line-height:1.6">${sel.length?`<span style="color:${RC[1]}">녹색 ${by(1)}</span> · <span style="color:${RC[2]}">파랑 ${by(2)}</span> · <span style="color:${RC[3]}">보라 ${by(3)}</span>${en?`<br><span style="color:#ff9a5b">⚠ 마법부여가 붙은 장비 ${en}개 포함 — 마법부여도 사라집니다.</span>`:""}${by(3)?`<br><span style="color:#ff9a5b">⚠ 보라 장비 ${by(3)}개 포함</span>`:""}`:"<span style='opacity:.65'>선택한 장비가 없습니다.</span>"}</div>`;root.append(bar);
  root.append(btnRow(DIS_CF?[[`분해 확인 (${sel.length}개)`,()=>doDisMulti(sel)],["취소",()=>{DIS_CF=false;disMenu(1)}]]:[[`선택 분해 (${sel.length}개)`,()=>{DIS_CF=true;disMenu(1)},!sel.length]]));
- root.append(secEl(`🎒 분해 가능 장비 <small style="opacity:.75">(${cards.length}개)</small>`,cards.length?cardGrid(cards):"<span style='opacity:.6'>분해할 수 있는 장비(녹색·파랑·보라)가 인벤토리에 없습니다.</span>"));
+ root.append(secEl(`🎒 분해 가능 장비 <small style="opacity:.75">(${L.length}개)</small>`,cards.length?cardGrid(cards):"<span style='opacity:.6'>분해할 수 있는 장비(녹색·파랑·보라)가 인벤토리에 없습니다.</span>"));
  root.append(btnRow([["← 뒤로",()=>{DIS_SEL.clear();DIS_CF=false;enchMenu()}]]));root.scrollTop=sc0}
 function rollDis(g){let x=Math.random(),id=null;for(const[k,p]of DIS_R[g.r]){if(x<p){id=k;break}x-=p}id=id||DIS_R[g.r][0][0];return[id,disN(g)]}
 function doDisMulti(list){if(foe)return;const tot={};let c=0;const names=[];
- for(const g of list){const i=P.gear.indexOf(g);if(i<0||g.r<1||g.r>3)continue;const[id,n]=rollDis(g);P.gear.splice(i,1);P.inv[id]=(P.inv[id]||0)+n;tot[id]=(tot[id]||0)+n;c++;if(names.length<8)names.push(gtxt(g,1))}
+ for(const g of list){const i=P.gear.indexOf(g);if(i<0||g.r<1||g.r>3||g.lk)continue;const[id,n]=rollDis(g);P.gear.splice(i,1);P.inv[id]=(P.inv[id]||0)+n;tot[id]=(tot[id]||0)+n;c++;if(names.length<8)names.push(gtxt(g,1))}
  DIS_SEL.clear();DIS_CF=false;if(!c)return disMenu();save();hud();
  const rt=Object.keys(tot).sort((a,b)=>ITEMS[b].r-ITEMS[a].r).map(id=>`${inm(id)} ×${tot[id]} <small style="opacity:.7">(보유 ${P.inv[id]})</small>`).join("<br>");
  say(`🔨 분해 완료: 장비 ${c}개 → ${Object.keys(tot).map(id=>`${inm(id)} ×${tot[id]}`).join(" · ")}`);disMenu();
