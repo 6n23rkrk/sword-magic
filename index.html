@@ -39,7 +39,7 @@ body{background:var(--bg);color:var(--ink);font:15px/1.55 "Malgun Gothic","Apple
 .row{display:flex;gap:8px;align-items:center;padding:3px 0;border-bottom:1px solid #0004}#panel .row{flex-wrap:wrap}.ipop{position:absolute;z-index:30;background:#1d2a20;border:2px solid #ffd34d;padding:6px 8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;max-width:min(92%,360px);box-shadow:0 4px 14px #000a}#panel .row>span:has(>i.dl){display:none}#panel .row button{white-space:nowrap}@media(max-width:520px){#panel .row{gap:5px}#panel .row button{padding:6px 8px}}.row span{flex:1}
 button{font:inherit;font-weight:700;background:var(--line);color:#1d1a0c;border:0;padding:6px 12px;cursor:pointer}
 button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:default}
-#pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:8;pointer-events:none}
+#pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:44;pointer-events:none}
 .pcard{pointer-events:auto;background:var(--panel);border:3px solid var(--line);padding:16px 22px;min-width:240px;max-width:90vw;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;box-shadow:0 4px 18px #000b}
 .pcard b{font-size:17px}.pcard button{width:100%;padding:10px 14px;font-size:16px;text-align:center}
 #fxt{position:fixed;left:50%;top:28%;width:0;height:0;z-index:9997;pointer-events:none}
@@ -47,10 +47,10 @@ button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:de
 #fxr{position:fixed;left:min(calc(50% + 280px),calc(100vw - 200px));top:50%;transform:translate(0,-50%);z-index:9997;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px;max-width:190px}
 .fxq{text-align:center;background:#0d0d14d9;border:1px solid #889;border-radius:8px;padding:6px 14px;font-size:13px;line-height:1.5;color:#fff;text-shadow:0 1px 0 #000;opacity:0;transform:scale(.6);transition:transform .18s ease-out,opacity .18s ease-out}
 .fxq .qt{font-size:20px;font-weight:900;line-height:1.2}
-#res{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:9;padding:16px}
+#res{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:45;padding:16px}
 .rcard{background:var(--panel);border:3px solid var(--line);padding:20px 28px;min-width:260px;max-width:min(520px,94vw);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 4px 22px #000c}
 .rcard .rt{font-size:26px}.rcard .rb{font-size:15px;line-height:1.6;max-height:60vh;overflow:auto;width:100%}.rcard button{padding:10px 36px;font-size:16px}
-#dice{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:9}
+#dice{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:46}
 .dd{display:flex;gap:24px;align-items:center;background:var(--panel);border:3px solid var(--line);padding:22px 34px;font-size:18px}
 .dd div{text-align:center}.dd b{display:block;font-size:64px;line-height:1.1}
 #sumfx{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;flex-direction:column;background:radial-gradient(circle at 50% 50%,#2a0a2ccc 0%,#05030bf2 70%);cursor:pointer;animation:sfIn .35s ease-out both;overflow:hidden}
@@ -1697,7 +1697,7 @@ const trDesc=t=>{const v=t.v,P1=pf(v);switch(t.k){
  case"awaken":return `HP가 ${pc(+t.x)}% 이하가 되면(한 번에 쓰러질 피해를 받아도 HP 1로 버틴다) 1회 한정으로 최대 HP의 ${P1}% 회복 (상처 등 회복 감소 무시)`;
  case"cpdrain":return `공격 후 ${P1}% 확률로 내 연계점수 1 감소`;
  case"immune":return `${t.x.split(",").map(k=>k==="poison"?"독":"화상").join("·")} 상태이상(내가 거는 효과) 면역`}return""};
-const trPop=(html,col)=>{const t=foe&&foe.trait;if(t)quick(`✦ ${t.n}`,col||"#ffb347",`<b>${foe.n}</b>의 고유특성<br>${html}`,null,"r")};
+const trPop=(html,col)=>{const t=foe&&foe.trait;if(t)quick(`✦ ${t.n}`,col||"#ffb347",html,null,"r")};
 const trHealMon=(h,why,pop,pure)=>{if(!pure&&BS&&BS.ms&&BS.ms.wound>0)h*=.4;h=r1(Math.min(foe.mhp-foe.hp,h));if(h<=0){if(pop)trPop(pop);return 0}foe.hp=r1(foe.hp+h);say(`${why} <span style="color:#ffb347">HP ${f(h)} 회복</span>`);trPop(`${pop?pop+"<br>":""}<span style="color:#7fe3a8">HP +${f(h)} 회복</span>`);return h};
 const MSI={sleep:{i:"😴",n:"수면"},charm:{i:"🌀",n:"현혹"},fear:{i:"😨",n:"공포"},corrode:{i:"🧪",n:"침식"},wound:{i:"🩹",n:"상처"},chill:{i:"❄️",n:"한기"}},MS_IMM={chill:"물",corrode:"땅"},MS_T={charm:3,fear:2,corrode:3,wound:3,chill:3},MS_ATK=(()=>BS&&BS.ms?(BS.ms.fear>0?.75:1)*(BS.ms.chill>0?.85:1):1);
 function foeStatus(k){const n=MSI[k].n,i=MSI[k].i;
@@ -1720,16 +1720,16 @@ function trTurn(){const t=foe.trait;if(!t)return;
 const LEECH_P=.2; // 몬스터에게 건 흡혈의 저주: 지속시간 동안 내가 입힌 피해의 20.0%만큼 HP 회복
 const EL_FX={"불":"15% 확률로 몬스터에게 화상 (최대 3중첩 · 화상 중인 몬스터에게 불 공격 시 약점)","물":"15% 확률로 최대 HP 8.0% 회복","땅":"15% 확률로 몬스터 기절","바람":"15% 확률로 연계점수 +1","빛":"15% 확률로 보호막 (최대 HP 8.0%) · 보호막이 있을 때 빛 공격은 폭발해 피해 +20%","어둠":"15% 확률로 몬스터에게 랜덤 저주 1개 (저주 중인 몬스터에게 어둠 공격 시 약점)","번개":"15% 확률로 몬스터 감전 (3턴 · 행동권을 얻어도 25% 확률로 마비 · 감전 중 번개 공격 시 약점)","독":"15% 확률로 몬스터에게 중독 (5턴)"},MCURSE={weak:"공격력 -20%",rot:"방어력 -25%",drain:"버프 스킬 사용 불가",silence:"스킬 사용 불가 (일반 공격만)",brand:"받는 피해 +15% (내 치명타 시 지속 +1턴)",leech:"지속 동안 내가 입힌 피해의 20.0% 회복",doom:"매우 큰 저주 피해"},LIGHT_BURST=.2,SHOCK_WEAK=.3,MC_T=4,PROC_P=.15;
 function elemProc(e,pops,d,imm){if(!e||imm||d<=0||Math.random()>=PROC_P*(1-MON_RES))return;
- const im=ek=>`${ek==="stun"?"💫":"⚡"} <b>${ek==="stun"?"기절":"감전"}</b><br><small>🛡 ${eTag(foe.elm)} 속성 <b>${foe.n}</b>은(는) 해당 속성에 면역입니다!<br>${ek==="stun"?"기절":"감전"}이 걸리지 않는다.</small>`;
+ const im=ek=>`${ek==="stun"?"💫":"⚡"} <b>${ek==="stun"?"기절":"감전"}</b> 🛡 면역`;
  switch(e){
   case"불":pops.push(addDot("burn",3,fd("burn"),"화상"));break;
   case"독":pops.push(addDot("poison",5,fd("poison"),"독"));break;
   case"물":{const h=healP(.08);hud();fxSay(`💧 물 속성 발동! HP ${f(h)} 회복`);pops.s&&pops.s.push(`💧 <b>물 속성</b><br><small>HP +${f(h)} 회복</small>`);break}
-  case"땅":if(hardBlock())pops.push(`💫 <b>기절</b><br><small>${hardBlock()}<br>기절이 걸리지 않는다.</small>`);else{BS.stun=true;fxSay("⛰ 땅 속성 발동! 몬스터의 다음 행동권 1회 상실");pops.push(`💫 <b>기절</b><br><small>몬스터가 다음 행동권 1회를 잃는다</small>`)}break;
+  case"땅":if(hardBlock())pops.push(`💫 <b>기절</b> 🛡 면역`);else{BS.stun=true;fxSay("⛰ 땅 속성 발동! 몬스터의 다음 행동권 1회 상실");pops.push(`💫 <b>기절</b> 행동권 1회 상실`)}break;
   case"바람":gainCP(1,"🌪 바람 속성 발동!");pops.s&&pops.s.push(`🌪 <b>바람 속성</b><br><small>연계점수 +1</small>`);break;
-  case"빛":{const v=shieldP(.08);hud();fxSay(`✨ 빛 속성 발동! 보호막 ${f(v)} 생성`);pops.s&&pops.s.push(`✨ <b>빛 속성</b><br><small>보호막 ${f(v)} 생성</small>`);if(IMM[foe.elm]&&IMM[foe.elm].includes("빛"))pops.push(`🔆 <b>눈부심</b><br><small>🛡 ${eTag(foe.elm)} 속성 <b>${foe.n}</b>은(는) 해당 속성에 면역입니다!<br>눈부심이 걸리지 않는다.</small>`);else{BS.mdz=2;fxSay("✨ 빛 속성 발동! 몬스터가 눈부심 — 다음 2번의 행동이 50% 확률로 빗나간다");pops.push(`🔆 <b>눈부심</b><br><small>몬스터의 다음 행동 2번이 50% 확률로 빗나간다<br>눈부심 중인 몬스터는 빛 공격에 약점</small>`)}break}
-  case"어둠":if(IMM[foe.elm]&&IMM[foe.elm].includes("어둠"))pops.push(`🕯 <b>저주</b><br><small>🛡 ${eTag(foe.elm)} 속성 <b>${foe.n}</b>은(는) 해당 속성에 면역입니다!<br>저주가 걸리지 않는다.</small>`);else{const ks=Object.keys(CURSE),k=ks[R(0,ks.length-1)];BS.mc={k,t:MC_T};fxSay(`🌑 어둠 속성 발동! 몬스터에게 ${CURSE[k].n} (${MCURSE[k]}) ${MC_T}턴`);pops.push(`🕯 <b>${CURSE[k].n}</b><br><small>${MCURSE[k]} · ${MC_T}턴${BS.mc?"<br>저주 중인 몬스터는 어둠 공격에 약점":""}</small>`)}break;
-  case"번개":if(IMM[foe.elm]&&IMM[foe.elm].includes("번개"))pops.push(im("shock"));else{BS.shk=3;fxSay("⚡ 번개 속성 발동! 몬스터가 감전 — 3턴 동안 행동권을 얻어도 25% 확률로 마비");pops.push(`⚡ <b>감전</b><br><small>3턴 동안 몬스터가 행동권을 얻어도 25% 확률로 마비되어 행동권이 나에게 넘어온다<br>감전 중인 몬스터는 번개 공격에 약점</small>`)}break}}
+  case"빛":{const v=shieldP(.08);hud();fxSay(`✨ 빛 속성 발동! 보호막 ${f(v)} 생성`);pops.s&&pops.s.push(`✨ <b>빛 속성</b><br><small>보호막 ${f(v)} 생성</small>`);if(IMM[foe.elm]&&IMM[foe.elm].includes("빛"))pops.push(`🔆 <b>눈부심</b> 🛡 면역`);else{BS.mdz=2;fxSay("✨ 빛 속성 발동! 몬스터가 눈부심 — 다음 2번의 행동이 50% 확률로 빗나간다");pops.push(`🔆 <b>눈부심</b> 2회 · 50% 빗나감`)}break}
+  case"어둠":if(IMM[foe.elm]&&IMM[foe.elm].includes("어둠"))pops.push(`🕯 <b>저주</b> 🛡 면역`);else{const ks=Object.keys(CURSE),k=ks[R(0,ks.length-1)];BS.mc={k,t:MC_T};fxSay(`🌑 어둠 속성 발동! 몬스터에게 ${CURSE[k].n} (${MCURSE[k]}) ${MC_T}턴`);pops.push(`🕯 <b>${CURSE[k].n}</b> ${MCURSE[k]} · ${MC_T}턴`)}break;
+  case"번개":if(IMM[foe.elm]&&IMM[foe.elm].includes("번개"))pops.push(im("shock"));else{BS.shk=3;fxSay("⚡ 번개 속성 발동! 몬스터가 감전 — 3턴 동안 행동권을 얻어도 25% 확률로 마비");pops.push(`⚡ <b>감전</b> 3턴 · 25% 마비`)}break}}
 // 네임드(Lv45+ 던전 간부·보스 / 필드 희귀) 상향 계수: [공격,체력,방어,스킬(배율·상태이상 확률),패시브(강화스킬·고유특성 수치)] — 직업별 최고장비 시뮬레이션으로 맞춘 값
 const NT={"d5_m0":[1.81,2.34,1.67,3.69,3.25],"d5_m1":[1.61,1.98,1.51,2.76,2.46],"d5_n":[1.59,1.94,1.49,2.66,2.38],"d6_m0":[1.87,2.44,1.71,3.98,3.48],"d6_m1":[1.54,1.86,1.45,2.48,2.23],"d6_n":[1.58,1.92,1.48,2.62,2.35],"d45_m0":[1.87,2.44,1.71,3.98,3.48],"d45_m1":[1.73,2.19,1.6,3.27,2.9],"d45_n":[1.49,1.77,1.41,2.29,2.08],"d55_m0":[1.85,2.41,1.69,3.88,3.4],"d55_m1":[1.69,2.12,1.57,3.09,2.74],"d55_n":[1.77,2.26,1.63,3.46,3.05],"r10_0":[1.64,2.02,1.53,2.85,2.54],"r10_1":[1.68,2.1,1.56,3.04,2.7],"r10_2":[1.67,2.08,1.55,2.99,2.66],"r10_3":[1.53,1.84,1.44,2.43,2.19],"r10_4":[1.54,1.86,1.45,2.48,2.23],"r11_0":[1.71,2.15,1.58,3.18,2.81],"r11_1":[1.44,1.69,1.37,2.1,1.92],"r11_2":[1.61,1.98,1.51,2.76,2.46],"r11_3":[1.79,2.29,1.65,3.56,3.13],"r11_4":[1.74,2.21,1.61,3.32,2.94],"r12_0":[1.7,2.13,1.58,3.13,2.77],"r12_1":[1.54,1.86,1.45,2.48,2.23],"r12_2":[1.81,2.33,1.66,3.65,3.21],"r12_3":[1.44,1.69,1.37,2.1,1.92],"r12_4":[1.63,2.0,1.52,2.81,2.5],"r13_0":[1.73,2.19,1.6,3.27,2.9],"r13_1":[1.74,2.21,1.61,3.32,2.94],"r13_2":[1.7,2.13,1.58,3.13,2.77],"r13_3":[1.29,1.43,1.24,1.63,1.52],"r13_4":[1.69,2.12,1.57,3.09,2.74],"r14_0":[1.54,1.86,1.45,2.48,2.23],"r14_1":[1.54,1.86,1.45,2.48,2.23],"r14_2":[1.7,2.13,1.58,3.13,2.77],"r14_3":[1.64,2.02,1.53,2.85,2.54],"r14_4":[1.32,1.49,1.27,1.73,1.6]};
 // 2막 보정: 던전(정예·간부·보스)은 마왕성(d6) 기준, 필드 희귀 네임드는 1막 마지막 필드(r14) 기준에서 시작
@@ -1914,9 +1914,9 @@ const fateOn=()=>P.job==="rogue"&&JUNL().some(k=>k.id==="r5");
 function forceRound(title,msg,skipFx){if(/운명의 지배/.test(title)&&!skipFx){return rogueFx("fate",()=>forceRound(title,msg,1),msg.split("<br>")[0].replace(/!$/,"")+" · 행동권 강탈")}BS.chg&&0;$("panel").innerHTML="";hidePop();BS.tie=0;BS.lose=0;
  flash(title,"#7fd4ff",msg,()=>{say(`${title} — 행동권을 강제로 가져왔다!`);if(!turnStart())return;BS.streak++;if(BS.chg){const c=BS.chg;BS.chg=null;say(`⚡ 행동권을 빼앗아 ${foe.n}의 <b>${c.n}</b> 준비를 저지했다!`)}if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}cmdMenu()},1500)}
 function foeStunRound(){BS.stun=false;BS.mslp=false;BS.chg=null;$("panel").innerHTML="";hidePop();
- quick("💫 기절!","#ffd34d",`<b>${foe.n}</b>이(가) 기절해서 행동할 수 없다!<br>내가 행동권을 자동으로 가져간다. (기절 해제)`,()=>{say(`💫 ${foe.n}이(가) 기절 — 행동권을 자동으로 얻었다! 기절이 해제됐다.`);if(!monTurn())return;if(!turnStart())return;BS.streak++;if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}cmdMenu()},1700)}
+ quick("💫 기절!","#ffd34d",`행동권 자동 획득`,()=>{say(`💫 ${foe.n}이(가) 기절 — 행동권을 자동으로 얻었다! 기절이 해제됐다.`);if(!monTurn())return;if(!turnStart())return;BS.streak++;if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}cmdMenu()},1700)}
 function foeShockRound(){BS.chg=null;$("panel").innerHTML="";hidePop();
- quick("⚡ 감전!","#ffe14d",`<b>${foe.n}</b>이(가) 감전되어 몸이 마비됐다!<br>행동하지 못하고 행동권이 나에게 넘어온다.`,()=>{say(`⚡ ${foe.n}이(가) 감전으로 행동하지 못했다 — 행동권을 강제로 얻었다!`);if(!monTurn())return;if(!turnStart())return;BS.streak++;if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}cmdMenu()},1700)}
+ quick("⚡ 감전!","#ffe14d",`행동권 강제 획득`,()=>{say(`⚡ ${foe.n}이(가) 감전으로 행동하지 못했다 — 행동권을 강제로 얻었다!`);if(!monTurn())return;if(!turnStart())return;BS.streak++;if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}cmdMenu()},1700)}
 function roll(re){rmDice();const ds=BS.ds;
  if(!re&&(BS.stun||BS.mslp)&&!ds.stun&&!ds.sleep&&!ds.fear&&!ds.freeze)return foeStunRound();
  if(!re&&BS.forceAct&&!ds.stun&&!ds.sleep&&!ds.fear&&!ds.freeze){const w=BS.forceAct;BS.forceAct=0;return w==="fate"?forceRound("🎲 운명의 지배!","3번 연속 졌다!<br>다음 행동권을 강제로 가져온다."):forceRound("🌑 그림자 걸음!","공격을 완전히 피했다!<br>이어서 행동권을 강제로 가져온다.")}
@@ -1987,7 +1987,7 @@ const brandExt=()=>{if(!BS||!BS.mc||BS.mc.k!=="brand")return null;if(BS.mc.t<MC_
 const brkTxt=(B,d)=>{const t=B.reduce((x,y)=>x+y[1],0);if(t<=0||!B.length)return"";return ` <small>(${B.map(([n,v])=>`${n} ${f(v*d/t)}`).join(" + ")})</small>`};
 const hcap=()=>!!foe&&!!foe.hero&&!!(foe.rare||foe.nm||foe.lt||foe.hn);
 const pgRaw=()=>{const d0=foe.def*(foe.trait&&foe.trait.k==="armor"?1+foe.trait.v*2:1)*(1+(BS.fb.def?BS.fb.def.v:0))*(BS.mc&&BS.mc.k==="rot"?.75:1)*(1-Math.min(100,E(22))/100)*(PBg().exposed?0:1);return d0/(100+d0)};
-const pgPop=blocked=>quick("🛡 물리피해 확정 방어",blocked?"#9bb8ff":"#ffb347",`<b>${foe.n}</b><br>${blocked?"내 물리 피해를 모두 막아냈다!":"방어가 한도(물리 피해 감소 "+(HPD_CAP*100)+"%)를 넘었다!<br>다음 물리 피해(속성 피해 제외)를 확정으로 막는다"}`,null,"r");
+const pgPop=blocked=>quick("🛡 물리피해 확정 방어",blocked?"#9bb8ff":"#ffb347",`${blocked?"물리 피해 차단":"다음 물리 피해 확정 방어"}`,null,"r");
 function pgCheck(){if(!hcap()||!BS||BS.fb.pg||BS.pgcd>0)return;if(pgRaw()>HPD_CAP){BS.fb.pg=1;say(`🛡 ${foe.n}의 방어가 한도(${HPD_CAP*100}%)를 넘었다! <b>물리피해 확정 방어</b> — 내 다음 물리 피해(속성 피해 제외)는 모두 막힌다.`);pgPop(false);foebar()}}
 function hit(m,o){const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(BS.pre&&BS.pre.charm)&&Math.random()<CHARM_MISS,dz=!!BS.ds.dazzle&&Math.random()<DAZZLE_MISS;let wkh=false;const pops=[];pops.s=[];const nm=amb?"기습":m===2?"강타":"공격";
  if(sk||amb){}else if(m===2){BS.cp-=CP_NEED;hud()}else if(!mis&&!dz&&BS.cp<CP_MAX&&!BS.ds.chill){BS.cp++;hud();say(`🔗 일반 공격으로 연계점수 +1 (${BS.cp}/${CP_MAX})`)}
@@ -2053,7 +2053,7 @@ function hit(m,o){const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(B
  if(foe.hp>0){
   if(PBg().venom){const vh=(sk&&sk.hits)||1;for(let vi=0;vi<vh;vi++){pops.push(addDot("poison",5,fd("poison",1.5),"독"));if(addDot.imm)break}}
   if(sk&&sk.burn)pops.push(addDot("burn",3,fd("burn",1.5),"화상"));
-  if(sk&&sk.stun){if(hardBlock()){pops.push(`💫 <b>기절</b><br><small>${hardBlock()}<br>기절이 걸리지 않는다.</small>`)}else{BS.stun=true;pops.push(`💫 <b>기절</b><br><small>몬스터가 다음 행동권 1회를 잃는다</small>`)}}
+  if(sk&&sk.stun){if(hardBlock()){pops.push(`💫 <b>기절</b> 🛡 면역`)}else{BS.stun=true;pops.push(`💫 <b>기절</b> 행동권 1회 상실`)}}
   {const NH=(sk&&sk.hits)||1,dh=d/NH;for(let hi=0;hi<NH;hi++){
   for(const e in EA){if(EA[e]>0)elemProc(e,pops,dh,e in ELI?ELI[e]:elemMult(foe.elm,e)===0)}
   if(E(5)&&Math.random()*100<Math.min(100,E(5)))pops.push(addDot("poison",2,fd("poison",E(5,1)/20),"독"));
@@ -2061,26 +2061,26 @@ function hit(m,o){const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(B
   if(E(44)&&Math.random()*100<Math.min(100,E(44)))pops.push(addDot("bleed",3,fd("bleed",E(44,1)/20),"출혈"));
   if(E(45)&&Math.random()*100<Math.min(100,E(45)))pops.push(addDot("disease",3,fd("disease",E(45,1)/20),"질병"));
   for(const[id,k]of[[46,"sleep"],[47,"charm"],[48,"fear"],[49,"corrode"],[50,"wound"],[51,"chill"]])if(E(id)&&Math.random()*100<Math.min(100,E(id)))pops.push(foeStatus(k));
-  if(E(19)&&Math.random()*100<Math.min(100,E(19))){if(hardBlock()){fxSay(`기절 발동! 하지만 면역!`);pops.push(`💫 <b>기절</b><br><small>${hardBlock()}<br>기절이 걸리지 않는다.</small>`)}else{BS.stun=true;fxSay("기절 발동! 몬스터의 다음 행동권 1회 상실");pops.push(`💫 <b>기절</b><br><small>몬스터가 다음 행동권 1회를 잃는다 (준비 중인 스킬도 취소)</small>`)}}
+  if(E(19)&&Math.random()*100<Math.min(100,E(19))){if(hardBlock()){fxSay(`기절 발동! 하지만 면역!`);pops.push(`💫 <b>기절</b> 🛡 면역`)}else{BS.stun=true;fxSay("기절 발동! 몬스터의 다음 행동권 1회 상실");pops.push(`💫 <b>기절</b><br><small>몬스터가 다음 행동권 1회를 잃는다 (준비 중인 스킬도 취소)</small>`)}}
   }}
-  if(pops.length||pops.s.length){const ni=pops.filter(p=>p.includes("면역")).length,all=pops.length>0&&ni===pops.length,hr="<hr style='border:0;border-top:1px dashed #c9b36a66;margin:6px 0'>",st=pops.length?(all?"":`<b>${foe.n}</b>에게 걸렸다!<br>`)+pops.join(hr):"";return quick(pops.length?(all?"🛡 면역!":"🎯 상태이상!"):"✨ 효과 발동!",pops.length?(all?"#7fd4ff":"#ff9a5a"):"#7fe3a8",[st,...pops.s].filter(Boolean).join(hr),AF,1800)}}
+  if(pops.length||pops.s.length){const ni=pops.filter(p=>p.includes("면역")).length,all=pops.length>0&&ni===pops.length,hr="<hr style='border:0;border-top:1px dashed #c9b36a66;margin:6px 0'>",st=pops.length?pops.join(hr):"";return quick(pops.length?(all?"🛡 면역!":"🎯 상태이상!"):"✨ 효과 발동!",pops.length?(all?"#7fd4ff":"#ff9a5a"):"#7fe3a8",[st,...pops.s].filter(Boolean).join(hr),AF,1800)}}
  AF()}
 function addDot(k,t,d,nx){d=r1(d*(1+E(35)/100));const ic={poison:"☠",burn:"🔥",bleed:"🩸",disease:"🤢"}[k],el={poison:"독",burn:"불",disease:"독"}[k]||null,ti=trImm(k);
  addDot.imm=ti||(el&&elemMult(foe.elm,el)===0);
  if(addDot.imm){const why=ti?`${foe.n}의 <b>${foe.trait.n}</b> 특성`:`${eTag(foe.elm)} 속성 <b>${foe.n}</b>`;fxSay(`${nx} 발동 실패 — ${ti?foe.trait.n+" 특성으로":"해당 속성에"} 면역!`);
-  return `${ic} <b>${nx}</b><br><small>🛡 ${why}은(는) 해당 속성에 면역입니다!<br>${nx} 디버프가 걸리지 않는다.</small>`}
+  return `${ic} <b>${nx}</b> 🛡 면역`}
  const a=BS[k],cap=k==="burn"?BURN_CAP*(HAS(99)?3:1):k==="disease"?3:5;let pushed=false;if(a.length<cap){a.push({t,d});pushed=true}else if(k==="burn"){let i=0;a.forEach((x,j)=>{if(x.d<a[i].d)i=j});if(d>a[i].d)a[i].d=d}else{let i=0;a.forEach((x,j)=>{if(x.t<a[i].t)i=j});a[i]={t,d}}if(k==="burn")a.forEach(x=>x.t=t);fxSay(`${nx} 발동! (${a.length}중첩${a.length>=cap?" · 최대":""}${k==="burn"?" · 지속시간 초기화":""})`);
  const tot=r1(a.reduce((q,x)=>q+x.d,0));let bx="";
- if(k==="burn"&&HAS(99)&&pushed&&a.length%3===0){const em=elemMult(foe.elm,"불"),top=a.slice(-3).reduce((q,x)=>q+x.d,0),dm=r1(top*3*em*(BS.ms.wound>0?1.25:1));if(dm>0){foe.hp=r1(foe.hp-dm);fxSay(`🔥 화상 폭발! 화상 3중첩의 3턴치 피해 ${f(dm)} (중첩은 유지)`);bx=`<hr style='border:0;border-top:1px dashed #c9b36a66;margin:6px 0'>💥 <b>화상 폭발!</b> <small>(${a.length}중첩 달성 · 가로나 - 필살의 비수)</small><br><small>화상 3중첩의 3턴치 피해 <b>${f(dm)}</b> · 중첩은 소모되지 않는다</small>`;trWatch()}}
- return `${ic} <b>${nx}</b> <small>(${a.length}중첩${a.length>=cap?" · 최대":""})</small><br><small>매 턴 ${f(tot)} ${nx} 피해 · ${t}턴 지속 (중첩 시 지속시간 초기화)</small>${bx}`}
+ if(k==="burn"&&HAS(99)&&pushed&&a.length%3===0){const em=elemMult(foe.elm,"불"),top=a.slice(-3).reduce((q,x)=>q+x.d,0),dm=r1(top*3*em*(BS.ms.wound>0?1.25:1));if(dm>0){foe.hp=r1(foe.hp-dm);fxSay(`🔥 화상 폭발! 화상 3중첩의 3턴치 피해 ${f(dm)} (중첩은 유지)`);bx=`<hr style='border:0;border-top:1px dashed #c9b36a66;margin:6px 0'>💥 <b>화상 폭발!</b> ${f(dm)} 피해`;trWatch()}}
+ return `${ic} <b>${nx}</b> ${a.length}중첩${a.length>=cap?"(최대)":""} · 매 턴 ${f(tot)} · ${t}턴${bx}`}
 function after(skip){if(BS&&BS.ds&&BS.ds.dazzle){const z=BS.ds.dazzle;if(--z.t<=0){delete BS.ds.dazzle;say("🔆 눈부심이 사라졌다.")}}if(foe.hp<=0&&!skip)return win();rollMenu()}
 function foeAct(){if(!monTurn())return;foeAct0()}
 // 네임드(던전 간부·보스, 필드 희귀)의 평타 상태이상: 속성별 후보 중 하나가 정해져 있고, 평타를 칠 때마다 10~20% 확률로 걸린다
 const NAT_POOL={"불":[["burn"],["burn"],["fear"]],"물":[["chill"],["chill"],["sleep"],["charm"]],"땅":[["corrode"],["bleed"],["stun"]],"바람":[["bleed"],["wound"],["charm"]],"빛":[["dazzle"],["dazzle"],["sleep"]],"어둠":[["curse",{k:"weak"}],["fear"],["curse",{k:"brand"}],["wound"],["curse",{k:"rot"}],["disease"],["curse",{k:"drain"}]],"번개":[["shock"],["shock"],["stun"]],"독":[["poison"],["disease"],["poison"],["sleep"],["corrode"]]};
 let NATK_=null;const natk=id=>{if(!NATK_){NATK_={};const cn={};const isNw=k=>/^(d6[1-5]_|r1[5-9]_|hn\d+$)/.test(k);for(const k of[...Object.keys(MON).filter(k=>!isNw(k)),...Object.keys(MON).filter(isNw)]){const m=MON[k],ds=/^d\d+_(m\d|n)$/.test(k);if(!(m.rare||ds)||!m.elm)continue;const e=m.elm,c=cn[e]=(cn[e]||0);cn[e]++;const pl=NAT_POOL[e],pk=pl[c%pl.length],lo=ds&&k.endsWith("_n")?.15:.10;NATK_[k]={k:pk[0],o:pk[1],p:lo+(c%2)*.05}}}return NATK_[id]||null};
 function foeAct0(){
- if(BS.mdz>0){BS.mdz--;if(Math.random()<DAZZLE_MISS){BS.chg=null;say(`🔆 눈부심! ${foe.n}이(가) 눈이 부셔 공격이 빗나갔다.`);return quick("💨 빗나감!","#ffe680",`🔆 눈부심으로 <b>${foe.n}</b>의 공격이 빗나갔다!`,rollMenu,1300)}}
- if(BS.ms.charm>0){BS.ms.charm--;if(Math.random()<CHARM_MISS){BS.chg=null;say(`🌀 현혹! ${foe.n}이(가) 정신이 흐려져 공격이 빗나갔다.`);return quick("💨 빗나감!","#c9a0ff",`🌀 현혹으로 <b>${foe.n}</b>의 공격이 빗나갔다!`,rollMenu,1300)}}
+ if(BS.mdz>0){BS.mdz--;if(Math.random()<DAZZLE_MISS){BS.chg=null;say(`🔆 눈부심! ${foe.n}이(가) 눈이 부셔 공격이 빗나갔다.`);return quick("💨 빗나감!","#ffe680",`🔆 눈부심`,rollMenu,1300)}}
+ if(BS.ms.charm>0){BS.ms.charm--;if(Math.random()<CHARM_MISS){BS.chg=null;say(`🌀 현혹! ${foe.n}이(가) 정신이 흐려져 공격이 빗나갔다.`);return quick("💨 빗나감!","#c9a0ff",`🌀 현혹`,rollMenu,1300)}}
  if(BS.chg&&BS.mc&&BS.mc.k==="silence"){const c=BS.chg;BS.chg=null;say(`🕯 침묵의 저주! ${foe.n}의 <b>${c.n}</b> 준비가 취소되었다.`)}
  if(BS.chg){const c=BS.chg;BS.chg=null;return cast(c)}
  let sk=null;
@@ -2123,9 +2123,9 @@ function applyStatus(k,o){const ds=BS.ds,S=STS[k];if(Math.random()>=(o.p!=null?o
   case"chill":{if(ds.freeze)return null;if(ds.chill){delete ds.chill;ds.freeze={t:FREEZE_N};const I=stInfo("freeze");return `🧊 <b>빙결</b> (${I.t})<br><small style="opacity:.85">❄ 한기가 2중첩되어 얼어붙었다!<br>${I.d}</small>`}ds.chill={t:o.t||S.t,n:1};break}}
  const I=stInfo(k);return `${S.i} <b>${S.n}</b>${I.t?` (${I.t})`:""}<br><small style="opacity:.85">${I.d}</small>`}
 function enemyHit(o){const ds=BS.ds,sk=o.sk,asleep=!!(ds.sleep||BS.slp);BS.slp=0;
- if(Math.random()*100<EV()){say(`${o.label} 하지만 ${cG("💨 회피!")}${PBg().dodge?" <small>(그림자 걸음은 유지된다)</small>":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`${foe.n}의 공격을 피했다!${PBg().dodge?"<br><small>🌑 그림자 걸음은 그대로 남아 있다</small>":""}`,rollMenu,"d")}
- if(E(15)&&Math.random()*100<Math.min(100,E(15))){say(`${o.label} 하지만 빗나갔다.`);fxSay(`회피 발동!${PBg().dodge?" (그림자 걸음은 유지된다)":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`${foe.n}의 공격이 빗나갔다!<br><small>회피 발동 (착용효과)</small>`,rollMenu,"d")}
- if(PBg().dodge){if(--BS.pb.dodge<=0)delete BS.pb.dodge;BS.forceAct="shadow";say(`${o.label} 하지만 ${cG("🌑 그림자 걸음! 완전히 회피")}${BS.pb.dodge?` <small>(남은 회피 ${BS.pb.dodge}회)</small>`:""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`${foe.n}의 공격을 피했다!<br><small>🌑 <b>그림자 걸음</b>으로 완전히 회피 · 행동권을 강제로 가져온다</small>`,rollMenu,"d")}
+ if(Math.random()*100<EV()){say(`${o.label} 하지만 ${cG("💨 회피!")}${PBg().dodge?" <small>(그림자 걸음은 유지된다)</small>":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`${PBg().dodge?"🌑 그림자 걸음 유지":""}`,rollMenu,"d")}
+ if(E(15)&&Math.random()*100<Math.min(100,E(15))){say(`${o.label} 하지만 빗나갔다.`);fxSay(`회피 발동!${PBg().dodge?" (그림자 걸음은 유지된다)":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`착용효과 회피`,rollMenu,"d")}
+ if(PBg().dodge){if(--BS.pb.dodge<=0)delete BS.pb.dodge;BS.forceAct="shadow";say(`${o.label} 하지만 ${cG("🌑 그림자 걸음! 완전히 회피")}${BS.pb.dodge?` <small>(남은 회피 ${BS.pb.dodge}회)</small>`:""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`🌑 그림자 걸음 · 행동권 획득`,rollMenu,"d")}
  const dd=D()*(P.hp<=.3*MHP()?1+E(6)/100:1),mcrit=Math.random()<MON_CRIT,raw=(mcrit?MON_CRIT_X:1)*foe.atk*trAtk()*MS_ATK()*(BS.mc&&BS.mc.k==="weak"?.8:1)*(1+(BS.fb.atk?BS.fb.atk.v:0))*o.m*(.9+Math.random()*.2)*(1-Math.min(90,E(21))/100)*(P.job==="warrior"?.95:1)*(1-(PBg().taken?PBg().taken.v:0))*(1+(PBg().takenUp?PBg().takenUp.v:0))*(1-(PBg().foeatk?PBg().foeatk.v:0)),pa=(sk&&sk.parts)||(o.elem?{e:1}:{n:1}),els=sk?sk.ev:[],bn=ds.burn&&els.includes("불")?ds.burn.s.length:0,burnX=bn>0,dzX=!!(ds.dazzle&&els.includes("빛")),shX=!!(ds.shock&&els.includes("번개")),fzX=!!(ds.freeze&&els.includes("물")),cuX=!!(ds.curse&&els.includes("어둠")),lbX=!!(BS.fb.shield>0&&els.includes("빛")),sb=(asleep?1+SLEEP_BONUS:1)*(burnX?1+BURN_STK[bn]:1)*(dzX?1+DAZZLE_LIGHT:1)*(shX?1+SHOCK_WEAK:1)*(fzX?1+WEAK_P:1)*(cuX?1+WEAK_P:1)*(lbX?1+LIGHT_BURST:1)*(curseIs("brand")?1.15:1);
  const LVR=lvRed(foe.lv,P.lv),dn=raw*(pa.n||0)*(1-DEF_MAX*Math.min(1,dd/(DEF_LV*P.lv)))*sb*(1-LVR),du=raw*(pa.u||0)*sb;let de=0;const rn=[];
  if(pa.e&&els.length)els.forEach(e=>{const rd=resRed(e);de+=raw*pa.e/els.length*(1-rd)*sb*(1-LVR);if(rd>0)rn.push(`${eIcon(e)}${pc(rd)}%`)});
@@ -2135,14 +2135,14 @@ function enemyHit(o){const ds=BS.ds,sk=o.sk,asleep=!!(ds.sleep||BS.slp);BS.slp=0
  if(ds.curse&&ds.curse.k==="leech"&&d>0)trHealMon(d*LEECH_P,`🩸 ${foe.n}이(가) 흡혈의 저주로 입힌 피해의 ${f(LEECH_P*100)}%를 회복했다.`,"🩸 흡혈의 저주");
  if(asleep)delete ds.sleep;
  if(!sk&&!o.elem)quick(`${mcrit?"💥 치명타! ":"🗡 "}${foe.n}의 공격!`,"#ff8f8f",`내 HP <b>-${f(d)}</b>`,null,"d");
- const wpop=[];if(mcrit)wpop.push(`💥 <b>치명타 피격!</b><br><small>${foe.n}의 공격이 급소에 꽂혔다! 피해 ×${MON_CRIT_X}</small>`);
- if(burnX)wpop.push(`🔥 <b>약점 피격!</b><br><small>화상${bn>1?` ${bn}중첩`:""} 상태에서 불 속성에 맞았다! 피해 +${pc(BURN_STK[bn])}%</small>`);
- if(cuX)wpop.push(`🌑 <b>약점 피격!</b><br><small>저주 상태에서 어둠 속성에 맞았다! 피해 +${pc(WEAK_P)}%</small>`);
- if(lbX)wpop.push(`✨ <b>빛 폭발!</b><br><small>${foe.n}의 보호막이 빛에 공명해 피해 +${pc(LIGHT_BURST)}%</small>`);
- if(fzX)wpop.push(`🧊 <b>약점 피격!</b><br><small>빙결 상태에서 물 속성에 맞았다! 피해 +${pc(WEAK_P)}%</small>`);
- if(shX)wpop.push(`⚡ <b>약점 피격!</b><br><small>감전 상태에서 번개 속성에 맞았다! 피해 +${pc(SHOCK_WEAK)}%</small>`);
- if(dzX)wpop.push(`🔆 <b>약점 피격!</b><br><small>눈부심 상태에서 빛 속성에 맞았다! 피해 +${pc(DAZZLE_LIGHT)}%</small>`);
- if(asleep)wpop.push(`💤 <b>약점 피격!</b><br><small>수면 중에 맞았다! 피해 +${pc(SLEEP_BONUS)}%</small>`);
+ const wpop=[];if(mcrit)wpop.push(`💥 <b>치명타 피격!</b> 피해 ×${MON_CRIT_X}`);
+ if(burnX)wpop.push(`🔥 <b>약점 피격!</b> 화상${bn>1?` ${bn}중첩`:""} · 피해 +${pc(BURN_STK[bn])}%`);
+ if(cuX)wpop.push(`🌑 <b>약점 피격!</b> 저주 · 피해 +${pc(WEAK_P)}%`);
+ if(lbX)wpop.push(`✨ <b>빛 폭발!</b> 보호막 공명 · 피해 +${pc(LIGHT_BURST)}%`);
+ if(fzX)wpop.push(`🧊 <b>약점 피격!</b> 빙결 · 피해 +${pc(WEAK_P)}%`);
+ if(shX)wpop.push(`⚡ <b>약점 피격!</b> 감전 · 피해 +${pc(SHOCK_WEAK)}%`);
+ if(dzX)wpop.push(`🔆 <b>약점 피격!</b> 눈부심 · 피해 +${pc(DAZZLE_LIGHT)}%`);
+ if(asleep)wpop.push(`💤 <b>약점 피격!</b> 수면 · 피해 +${pc(SLEEP_BONUS)}%`);
  if(P.job==="warrior"&&d>0)gainCP(1,"⚔ 피격!");
  {const t=foe.trait;if(t&&d>0&&t.k==="lifesteal")trHealMon(d*t.v,`${trMsg(t)}`,"입힌 피해를 흡수한다");if(t&&t.k==="cpdrain"&&BS.cp>0&&Math.random()<t.v){BS.cp--;say(`${trMsg(t)} <span style="color:#ff8f8f">연계점수 -1 (${BS.cp}/${CP_MAX})</span>`);trPop(`연계점수 -1 (${BS.cp}/${CP_MAX})`,"#ff8f8f")}}
  const hadFear=!!ds.fear,lines=[],qlines=[],efl=[],put=(k,L)=>(k==="curse"?qlines:lines).push(L);if(foe.trait&&foe.trait.k==="enrage"){const eb=trAtk()-1;if(eb>.0005)trPop(`분노로 공격력 +${pf(eb)}%`)}
@@ -2151,8 +2151,8 @@ function enemyHit(o){const ds=BS.ds,sk=o.sk,asleep=!!(ds.sleep||BS.slp);BS.slp=0
  {const t=foe.trait;if(t&&t.k==="onhit"&&P.hp>0&&Math.random()<t.v){const[a,b]=t.x.split(":");const L=applyStatus(a,{p:1,...(b?{k:b}:{})});if(L){say(`${trMsg(t)}`);put(a,`<small style="opacity:.85">✦ ${foe.n}의 고유특성 <b>${t.n}</b></small><br>`+L)}}}
  if(hadFear&&P.hp>0&&Math.random()<FEAR_CLEAR){delete ds.fear;say("😱 공격을 받자 정신이 번쩍 들었다! 공포가 풀렸다.")}
  hud();if(dieCheck())return;
- if(BS.revPop){efl.push(`✨ <b>부활</b><br><small>쓰러졌지만 HP ${f(BS.revPop)}(으)로 되살아났다</small>`);BS.revPop=0}
- if(d>0&&E(9)&&Math.random()*100<Math.min(100,E(9))){const r=r1(d*E(9,1)/100);foe.hp=r1(foe.hp-r);fxSay(`피해 반사 발동! ${foe.n}에게 ${f(r)} 피해`);efl.push(`🔁 <b>피해 반사</b><br><small>${foe.n}에게 ${f(r)} 피해</small>`);trWatch();if(foe.hp<=0){foebar();return win()}}
+ if(BS.revPop){efl.push(`✨ <b>부활</b> HP ${f(BS.revPop)}`);BS.revPop=0}
+ if(d>0&&E(9)&&Math.random()*100<Math.min(100,E(9))){const r=r1(d*E(9,1)/100);foe.hp=r1(foe.hp-r);fxSay(`피해 반사 발동! ${foe.n}에게 ${f(r)} 피해`);efl.push(`🔁 <b>피해 반사</b> ${f(r)} 피해`);trWatch();if(foe.hp<=0){foebar();return win()}}
  {const hr="<hr style='border:0;border-top:1px dashed #c9b36a66;margin:6px 0'>",ef=[...wpop,...efl,...qlines];if(ef.length)quick(mcrit?"💥 치명타 피격!":wpop.length?"⚠ 약점 피격!":qlines.length&&!efl.length?"🕯 저주!":"✨ 효과 발동!",mcrit?"#ff5b5b":wpop.length?"#ffb347":qlines.length&&!efl.length?"#b08cff":"#7fe3a8",ef.join(hr),null,"d");if(lines.length)resPop("⚠ 상태이상!","#ffb347",lines.join(hr))}
  rollMenu()}
 function endB(){rmDice();foe=null;BS=null;foebar();save();clear()}
@@ -2414,7 +2414,11 @@ function doEnh(g,src){const u=g.up||0,c=enhCost(g);if(P.gold<c||u>=10)return;P.g
  else{say(`💥 강화 실패... ${gtxt(g)} (-${f(c)}G)`);save();hud();enhMenu(src);resPop("💥 강화 실패","#ff5a5a",`+${u} 유지 (장비는 그대로입니다)<br>${gtxt(g)}<br><small style="opacity:.7">-${f(c)}G</small>`)}}
 let FXR_S="eq";
 function fxrMenu(src){if(foe)return;src=typeof src==="string"?src:FXR_S;FXR_S=src;
- enchPage("🔄 착용효과 재부여","착용 중이거나 인벤토리에 있는 장비 1개를 골라 착용효과를 새로 굴립니다. 착용효과가 없는 장비는 사용할 수 없습니다. +10 강화로 붙은 ★10강 착용효과도 함께 다시 굴려지며(다시 ★10강 효과로 붙습니다), 일반 착용효과와 10강 착용효과를 모두 가진 장비는 둘 다 새로 굴립니다. 실패하면 효과는 그대로이고 골드만 사라집니다.",src,fxrMenu,g=>{if(!(g.fx||[]).some(x=>!isUq(g,x)))return[["효과 없음",()=>{},1]];const c=fxrCost(g);return[[`재부여 ${f(c)}G (실패 ${Math.round(FXR_FAIL[g.r]*100)}%)`,()=>doFxr(g),P.gold<c]]},enchMenu)}
+ enchPage("🔄 착용효과 재부여","착용 중이거나 인벤토리에 있는 장비 1개를 골라 착용효과를 새로 굴립니다. 착용효과가 없는 장비는 사용할 수 없습니다. +10 강화로 붙은 ★10강 착용효과도 함께 다시 굴려지며(다시 ★10강 효과로 붙습니다), 일반 착용효과와 10강 착용효과를 모두 가진 장비는 둘 다 새로 굴립니다. 실패하면 효과는 그대로이고 골드만 사라집니다. 착용효과가 2개 이상이면 전체를 다시 굴리거나, 원하는 효과 하나만 골라 다시 굴릴 수 있습니다(비용·실패 확률은 동일).",src,fxrMenu,g=>{const rr=(g.fx||[]).filter(x=>!isUq(g,x));if(!rr.length)return[["효과 없음",()=>{},1]];const c=fxrCost(g),fl=Math.round(FXR_FAIL[g.r]*100);const bt=[[`${rr.length>1?"전체 ":""}재부여 ${f(c)}G (실패 ${fl}%)`,()=>doFxr(g),P.gold<c]];if(rr.length>1)rr.forEach(x=>{const t=String(fxDesc(x.i,x.v)).replace(/<[^>]*>/g,"");bt.push([`${x.b?"★ ":""}${t.length>22?t.slice(0,22)+"…":t} 만 재부여`,()=>doFxr1(g,x),P.gold<c])});return bt},enchMenu)}
+function doFxr1(g,x){const c=fxrCost(g);if(P.gold<c||!g.fx.includes(x)||isUq(g,x))return;P.gold=r1(P.gold-c);
+ if(Math.random()<FXR_FAIL[g.r]){say(`💥 재부여 실패... 착용효과는 그대로다. (-${f(c)}G)`);save();hud();fxrMenu();resPop("💥 재부여 실패","#ff5a5a",`착용효과는 그대로입니다.<br>${gtxt(g)}<br><small style="opacity:.7">-${f(c)}G</small>`);return}
+ let nx;if(x.b)nx=roll10Fx(g);else{let pool=[],rare=g.r===3&&Math.random()<FX_CHANCE.rarePick;const ok=r=>EFF.filter(e=>!!e[3]===r&&!g.fx.some(o=>o!==x&&o.i===e[0])&&fxOk(e));pool=ok(rare);if(!pool.length)pool=ok(!rare);if(!pool.length)pool=EFF.filter(e=>fxOk(e));const e=pool[R(0,pool.length-1)];nx={i:e[0],v:e[2].map(([a,b])=>r1(a+Math.random()*(b-a)))}}
+ const m0=MHP(),i=g.fx.indexOf(x);g.fx[i]=nx;mhUp(m0);say(`✨ 재부여 성공! ${g.up?`+${g.up} `:""}${g.n}${fxHtml([nx])}<br><small style="opacity:.7">이전 효과:${fxHtml([x])}</small>`);resPop("✨ 재부여 성공!","#5be36b",`${gtxt(g)}<br><small style="opacity:.7">이전 효과:</small>${fxHtml([x])}<br><small style="opacity:.7">-${f(c)}G</small>`);save();hud();fxrMenu()}
 function doFxr(g){const c=fxrCost(g);if(P.gold<c||!(g.fx||[]).some(x=>!isUq(g,x)))return;P.gold=r1(P.gold-c);
  if(Math.random()<FXR_FAIL[g.r]){say(`💥 재부여 실패... 착용효과는 그대로다. (-${f(c)}G)`);save();hud();fxrMenu();resPop("💥 재부여 실패","#ff5a5a",`착용효과는 그대로입니다.<br>${gtxt(g)}<br><small style="opacity:.7">-${f(c)}G</small>`);return}
  else{let nf=[];for(let i=0;i<2000&&!nf.length;i++)nf=rollFx(g.r);const uq=g.fx.filter(x=>isUq(g,x)),gx=g.fx.filter(x=>!isUq(g,x)),hadB=gx.filter(x=>x.b),norm=gx.filter(x=>!x.b);if(norm.length){if(!nf.length)nf=norm}else nf=[];const keep=hadB.length?[roll10Fx(g)]:[];const old=[...norm,...hadB],m0=MHP();g.fx=[...uq,...nf,...keep];mhUp(m0);say(`✨ 재부여 성공! ${g.up?`+${g.up} `:""}${g.n}${fxHtml([...nf,...keep])}<br><small style="opacity:.7">이전 효과:${fxHtml(old)}</small>`);resPop("✨ 재부여 성공!","#5be36b",`${gtxt(g)}<br><small style="opacity:.7">이전 효과:</small>${fxHtml(old)}<br><small style="opacity:.7">-${f(c)}G</small>`)}
