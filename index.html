@@ -314,10 +314,6 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 #dbtn::after{animation-delay:1.1s}
 #dbtn .di{font-size:42px;line-height:1;filter:drop-shadow(0 3px 6px #000a);animation:dbWob 2.2s ease-in-out infinite}
 #dbtn .dl{font-size:12px;font-weight:800;letter-spacing:.18em;margin-top:2px;text-shadow:0 1px 3px #000}
-#rrbox{position:fixed;z-index:7;display:flex;flex-direction:column;gap:6px;width:max-content;max-width:min(300px,calc(100vw - 12px));padding:10px;border-radius:12px;background:linear-gradient(#241a52f2,#150f33f2);border:2px solid var(--gold);box-shadow:0 0 22px #8a5cff88,0 10px 26px #000c;animation:rrIn .25s cubic-bezier(.2,1.3,.4,1) both;transform-origin:100% 100%}
-#rrbox .rrm{font-size:12.5px;font-weight:700;color:#fff3c4;text-align:center;line-height:1.35;word-break:keep-all}
-#rrbox button{width:100%}#rrbox button.rrs{background:linear-gradient(#3a4048,#262a30);color:#e8e2cc;border-color:#6b7380}
-@keyframes rrIn{0%{opacity:0;transform:translateY(10px) scale(.85)}100%{opacity:1;transform:none}}
 #dbtn:hover{filter:brightness(1.15);box-shadow:0 0 0 8px #e8cf8633,0 0 42px #a47cff,0 10px 26px #000c}
 #dbtn:active{transform:translate(-50%,-48%) scale(.95)}
 @keyframes dbFloat{50%{margin-top:-6px}}@keyframes dbRing{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.55)}}@keyframes dbWob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(10deg)}}
@@ -1834,8 +1830,6 @@ function foebar(){trTipInit();const e=$("foebar");e.style.display=foe?"block":"n
 // 주사위: 예전의 "주사위 굴리기" 메뉴 판 대신 화면 가운데에 🎲 아이콘을 띄우고, 누르면(또는 스페이스·엔터) 굴린다
 var dbT=0;
 function rmDice(){clearInterval(dbT);const e=document.getElementById("dbtn");e&&e.remove();const q=document.getElementById("rrbox");q&&q.remove()}
-function posRR(){const b=document.getElementById("rrbox"),l=document.getElementById("blog");if(!b||!l)return;const r=l.parentElement.getBoundingClientRect(),w=88,cx=Math.max(4,Math.min(innerWidth-4,r.right-w/2-14)),cy=Math.max(w/2+4,Math.min(innerHeight-w/2-4,r.bottom-w/2-14)),bw=b.offsetWidth,bh=b.offsetHeight;b.style.left=Math.max(6,Math.min(innerWidth-bw-6,cx+w/2-bw))+"px";b.style.top=Math.max(6,Math.min(innerHeight-bh-6,cy+w/2-bh))+"px"}
-function showRR(msg,btns){rmDice();hideTip();hidePop();$("panel").innerHTML="";const b=document.createElement("div");b.id="rrbox";const m=document.createElement("div");m.className="rrm";m.textContent=msg;b.append(m);btns.forEach(([t,fn],i)=>{const x=document.createElement("button");x.type="button";x.textContent=t;if(i)x.className="rrs";x.onclick=()=>{rmDice();fn()};b.append(x)});document.body.append(b);posRR();dbT=setInterval(posRR,250)}
 function posDice(){const b=document.getElementById("dbtn"),l=document.getElementById("blog");if(!b||!l)return;const r=l.parentElement.getBoundingClientRect(),w=b.offsetWidth||88;let x=r.right-w/2-14,y=r.bottom-w/2-14;x=Math.max(w/2+4,Math.min(innerWidth-w/2-4,x));y=Math.max(w/2+4,Math.min(innerHeight-w/2-4,y));b.style.left=x+"px";b.style.top=y+"px"}
 function showDice(){rmDice();const b=document.createElement("button");b.id="dbtn";b.type="button";b.setAttribute("aria-label","주사위 굴리기");b.innerHTML='<span class="di">🎲</span><span class="dl">굴리기</span>';b.onclick=()=>{rmDice();roll()};document.body.append(b);posDice();dbT=setInterval(posDice,250);try{b.focus({preventScroll:true})}catch(e){}}
 const rollMenu=()=>{back=rollMenu;foebar();hideTip();hidePop();{const q=$("panel");q.classList.remove("drop","dropin");q.style.top=q.style.maxHeight="";DK=null;syncBtn()}$("panel").innerHTML="";showDice()};
@@ -1938,7 +1932,7 @@ function roll(re){rmDice();const ds=BS.ds;
    return cmdMenu()}
   BS.streak=0;
   const lossFlow=()=>{if(ambush(lossRest))return;lossRest()},lossRest=()=>{BS.tie=0;BS.lose=(BS.lose||0)+1;if(fateOn()&&BS.lose>=3){BS.lose=0;BS.forceAct="fate"}if(BS.stun||BS.mslp){const sl=!BS.stun&&BS.mslp;BS.stun=false;BS.mslp=false;BS.chg=null;say(`🎲 나 ${a} < 몬스터 ${b}`);fxSay(sl?"수면! 몬스터가 잠들어 행동권을 잃었다 (깨어남).":"기절! 몬스터가 행동권을 잃었다.");return rollMenu()}if(BS.shk>0&&Math.random()<SHOCK_FAIL*(isNm()?.5:1)){say(`🎲 나 ${a} < 몬스터 ${b}`);return foeShockRound()}say(`🎲 나 ${a} < 몬스터 ${b} — ${foe.n}의 선공!`);foeAct()};
-  if(HAS(20)&&BS.reroll>0&&!re){foebar();showRR(`🎲 나 ${a} < 몬스터 ${b} — 주사위에서 졌다.`,[["🔄 재굴림 (착용효과, 전투당 1회)",()=>{BS.reroll--;fxSay("주사위 재굴림!");roll(true)}],["결과 받아들이기",lossFlow]]);return}
+  if(HAS(20)&&BS.reroll>0&&!re){foebar();popMenu(`🎲 나 ${a} < 몬스터 ${b} — 주사위에서 졌다.`,[["🔄 재굴림 (착용효과, 전투당 1회)",()=>{BS.reroll--;fxSay("주사위 재굴림!");roll(true)}],["결과 받아들이기",lossFlow]]);return}
   lossFlow()})}
 const heal=(it)=>{const pb=(1+E(3)/100)*HM();if(it.pct)P.hp=Math.min(MHP(),P.hp+it.pct*MHP()*pb);else if(it.hp)P.hp=Math.min(MHP(),P.hp+Math.max(it.hp,.3*MHP())*pb)};
 function popMenu(title,list){panel("",[]);const c=$("pop").querySelector(".pcard");c.innerHTML="";const t=document.createElement("b");t.textContent=title;c.append(t);
@@ -2187,7 +2181,7 @@ function winNow(){rmDice();const dl=[],dgs=[],gdrop=g=>`<div class="dgear" data-
  t+=jqTrack();t+=lqTrack(dl);
  if(P.gear.slice(GL0).some(g=>g.leg)){t+=`<br><b style="color:#ffd34d">★ 명품의 기운이 느껴집니다! ★</b>`;}
  say(`💀 ${foe.n} 처치!`);say(t,1);const legd=P.gear.slice(GL0).some(g=>g.leg);foe=null;BS=null;foebar();save();
- const go=()=>{if(rr){say(`🌟 ${MON[rr].e} <b>${MON[rr].n}</b>이(가) 나타났다!`,1);return nmFx(rr,"enc",()=>spawn(rr,RARE_MULT,"희귀 네임드",false,null))}menu("전투 종료",[...(P.loc!=="town"?[["다음 전투",fightBtn]]:[]),["닫기",closeP]])};
+ const go=()=>{if(rr){say(`🌟 ${MON[rr].e} <b>${MON[rr].n}</b>이(가) 나타났다!`,1);return nmFx(rr,"enc",()=>spawn(rr,RARE_MULT,"희귀 네임드",false,null))}popMenu("전투 종료",[...(P.loc!=="town"?[["다음 전투",fightBtn]]:[]),["닫기",closeP]])};
  {hidePop();$("panel").innerHTML="";resPop(!dl.length?"💰 처치 보상":legd?"★ 명품 · 아이템 획득":"🎁 아이템 획득","#ffd34d",(legd?`<div style="color:#ffd34d;font-weight:700;margin-bottom:4px">★ 명품 장비(4칸 몰빵)가 드랍되었다! ★</div>`:"")+`<div style="margin-bottom:6px;font-size:13.5px">${noxp?"⭐ EXP 없음":`⭐ EXP <b>+${f(xp)}</b>`} · 💰 <b style="color:#ffd34d">+${f(gd)}G</b></div>${dl.length?`<div>${dl.join("")}</div>`:""}`,true,go);if(document.querySelectorAll)document.querySelectorAll("#res .dgear").forEach(r=>{const g=dgs[+r.dataset.i],tip=eqTip(g);r.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};r.onmousemove=moveTip;r.onmouseleave=hideTip;longPress(r,tip)})}}
 function lose(){rmDice();const kb=foe?foe.n:"몬스터",dgo=!!P.dg,g0=P.gold;say("쓰러졌다...");say("쓰러졌다... 골드를 절반 잃고 마을에서 깨어났다.",1);if(P.dg){say("던전에서 쫓겨났다. 던전 진행 상황이 초기화되었다.",1);P.dg=null}P.gold=r1(P.gold/2);P.hp=MHP();P.loc="town";endB();hidePop();resPop("💀 사망했습니다","#ff5a5a",`<b>${kb}</b>에게 패배했다.<br>골드를 절반 잃었다. <span style="color:#ff8a8a">-${f(g0-P.gold)}G</span>${dgo?"<br>던전에서 쫓겨났다. (진행 상황 초기화)":""}<br>마을에서 깨어났다.`)}
 /* ----- 인벤토리 / 상점 / 장비 / 상태 ----- */
