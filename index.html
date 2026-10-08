@@ -42,6 +42,7 @@ button{font:inherit;font-weight:700;background:var(--line);color:#1d1a0c;border:
 button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:default}
 #pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:44;pointer-events:none}
 .pcard{pointer-events:auto;background:var(--panel);border:3px solid var(--line);padding:16px 22px;min-width:240px;max-width:90vw;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;box-shadow:0 4px 18px #000b}
+.tilecard{max-width:96vw}.tilerow{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:100%}.tile{width:84px!important;height:100px;padding:8px 4px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:13px!important;line-height:1.2;border-radius:10px}.tile .ti{font-size:30px;line-height:1.1}.tile .tn{font-weight:700;font-size:12.5px;word-break:keep-all}.tile .ts{font-size:11px;opacity:.8}.tile.ap{border-color:#ffb347;box-shadow:0 0 8px #ffb34766 inset}.tile:disabled{opacity:.4}
 .pcard b{font-size:17px}.pcard button{width:100%;padding:10px 14px;font-size:16px;text-align:center}
 #fxt{position:fixed;left:50%;top:28%;width:0;height:0;z-index:9997;pointer-events:none}
 #fxi{position:fixed;left:50%;top:28%;width:0;height:0;z-index:9997;pointer-events:none}
@@ -1663,18 +1664,18 @@ const eqCur=g=>{const sn=Object.fromEntries(SLOTS),ks=g.t==="finger"||g.t==="tri
 const eqTip=g=>()=>{const sn=Object.fromEntries(SLOTS),ks=g.t==="finger"||g.t==="trinket"?[g.t+"1",g.t+"2"]:g.t==="weapon"?["weapon1","weapon2"]:g.t==="offhand"?["weapon2"]:[g.t];
  return ks.map(k=>`<div style="opacity:.7;font-size:12px">현재 착용 중 — ${sn[k]}</div><div>${P.eq[k]?gtxt(P.eq[k],1):"<span style='opacity:.6'>착용 중인 장비 없음</span>"}</div><div style="margin-top:3px;padding-top:3px;border-top:1px dashed #556;font-size:12px"><span style="opacity:.7">${P.eq[k]?"교체 시 변화":"착용 시 변화"}</span><br>${cmpHtml(g,P.eq[k])}</div>`).join("<hr style='border:0;border-top:1px solid #556;margin:4px 0'>")};
 const hidePop=()=>{const p=$("pop");if(p)p.style.display="none"};
-var PWAS=false,DK=null;
+var PWAS=false,DK=null,DKNOW=false;
 const DKB=["b-move","b-inv","b-eq","b-st","b-dex"];
 function syncBtn(){const on=!!$("panel").classList.contains("drop");DKB.forEach(i=>{const e=$(i);e&&e.classList.toggle("on",on&&DK===i)});const h=$("b-ham");if(h){const a=on&&DK&&$(DK);h.classList.toggle("on",!!a);h.textContent=a?"☰ "+a.textContent:"☰"}}
 function hamSet(o){const b=$("bar"),h=$("b-ham");if(!b)return;b.classList.toggle("mopen",!!o);if(h)h.setAttribute("aria-expanded",o?"true":"false");posDrop()}
-const dk=(id,fn)=>()=>{if(!foe&&DK===id&&$("panel").classList.contains("drop"))return clear();DK=id;fn();if(!$("panel").classList.contains("drop"))DK=null;syncBtn()};
+const dk=(id,fn)=>()=>{if(DK===id&&$("panel").classList.contains("drop"))return foe&&back?closeP():clear();DK=id;DKNOW=true;try{fn()}finally{DKNOW=false}if(!$("panel").classList.contains("drop"))DK=null;syncBtn()};
 function posDrop(){const p=$("panel");if(!p||!p.classList.contains("drop"))return;const b=$("bar"),a=$("app"),t=b.offsetTop+b.offsetHeight+6;p.style.top=t+"px";p.style.maxHeight=Math.max(120,a.clientHeight-t-10)+"px"}
 addEventListener("resize",posDrop);
-function panel(title,rows){rmDice();hideTip();hidePop();const p=$("panel");PWAS=p.classList.contains("drop");p.classList.remove("drop","dropin");p.style.top=p.style.maxHeight=p.style.position="";if(DK&&!foe){p.classList.add("drop");if(!PWAS)p.classList.add("dropin");posDrop()}p.innerHTML=title?`<div style="margin-bottom:4px"><b>${title}</b></div>`:"";
+function panel(title,rows){rmDice();hideTip();hidePop();const p=$("panel");PWAS=p.classList.contains("drop");p.classList.remove("drop","dropin");p.style.top=p.style.maxHeight=p.style.position="";if(DK&&(!foe||DKNOW||PWAS)){p.classList.add("drop");if(!PWAS)p.classList.add("dropin");posDrop()}p.innerHTML=title?`<div style="margin-bottom:4px"><b>${title}</b></div>`:"";
  rows.forEach(([txt,btns,tip])=>{const r=document.createElement("div");r.className="row";if(tip){r.classList&&r.classList.add("hv");r.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};r.onmousemove=e=>{if(Date.now()-LT>1000)moveTip(e)};r.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(r,tip)}const s=document.createElement("span");s.innerHTML=txt;r.append(s);
   (btns||[]).forEach(([l,fn,d])=>{const b=document.createElement("button"),on=/^▶\s*/.test(l);b.textContent=l.replace(/^▶\s*/,"");if(on)b.classList.add("on");b.disabled=!!d;b.onclick=fn;r.append(b)});p.append(r)})}
 const menu=(title,list)=>panel(title,list.map(([l,fn,d])=>["",[[l,fn,d]]]));
-const clear=()=>{rmDice();hideTip();hidePop();{const q=$("panel");q.classList.remove("drop","dropin");q.style.top=q.style.maxHeight="";DK=null;syncBtn()}$("panel").innerHTML="";hud()},closeP=()=>foe&&back?back():clear();
+const clear=()=>{rmDice();hideTip();hidePop();{const q=$("panel");q.classList.remove("drop","dropin");q.style.top=q.style.maxHeight="";DK=null;syncBtn()}$("panel").innerHTML="";hud()},closeP=()=>{if(foe&&back){DK=null;syncBtn();return back()}clear()};
 const restCost=()=>REST_BASE+P.lv*REST_LV;
 function takeRest(){if(inB())return false;if(P.hp>=MHP()){say("이미 체력이 가득 차 있습니다.",1);return false}
  const c=restCost();if(P.gold<c){say(`골드가 부족합니다. (필요 ${f(c)}G)`,1);return false}P.gold=r1(P.gold-c);P.hp=MHP();return c}
@@ -1916,6 +1917,7 @@ function tnb(id,hero){const b=MON[id],dg=DG_TUNE[id],nt=(hero&&NTH[id])||NT[id];
   for(const k of["skU","skU2","skU3","skE","skE2","skE3"]){const q=b[k];if(q)c[k]={...q,m:q.m*sm,st:(q.st||[]).map(([x,o])=>[x,{...o,p:Math.min(.85,(o.p!=null?o.p:STS[x].p)*(1+(sm-1)*.5))}])}}
   if(b.skB)c.skB={...b.skB,v:Math.min(b.skB.k==="h"?.3:.6,b.skB.v*pas)};
   const t=TRD[b.n];if(t&&typeof t.v==="number"&&t.k!=="immune")c.trt={...t,v:Math.min(TR_CAP[t.k]||.95,t.v*pas)}}
+ if(hero&&id==="d55_m1"){if(c.trt&&c.trt.k==="evade")c.trt={...c.trt,v:.3};for(const k of["skU","skU2","skU3"])if(c[k])c[k]={...c[k],m:c[k].m*.9}} // 영웅 실피드 조정: 회피 30%, 고유 스킬 계수 -10%
  return c}
 // ===== 네임드 유형 =====
 const NTYPES={
@@ -2107,7 +2109,7 @@ function roll(re){rmDice();const ds=BS.ds;
   if(HAS(20)&&BS.reroll>0&&!re){foebar();popMenu(`🎲 나 ${a} < 몬스터 ${b} — 주사위에서 졌다.`,[["🔄 재굴림 (착용효과, 전투당 1회)",()=>{BS.reroll--;fxSay("주사위 재굴림!");roll(true)}],["결과 받아들이기",lossFlow]]);return}
   lossFlow()})}
 const heal=(it)=>{const pb=(1+E(3)/100)*HM();if(it.pct)P.hp=Math.min(MHP(),P.hp+it.pct*MHP()*pb);else if(it.hp)P.hp=Math.min(MHP(),P.hp+Math.max(it.hp,.3*MHP())*pb)};
-function popMenu(title,list){panel("",[]);const c=$("pop").querySelector(".pcard");c.innerHTML="";const t=document.createElement("b");t.textContent=title;c.append(t);
+function popMenu(title,list){DK=null;panel("",[]);const c=$("pop").querySelector(".pcard");c.innerHTML="";const t=document.createElement("b");t.textContent=title;c.append(t);
  list.forEach(([l,fn,d,tip])=>{const b=document.createElement("button");b.textContent=l;b.disabled=!!d;b.onclick=()=>{hidePop();hideTip();fn()};if(tip){b.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};b.onmousemove=e=>{if(Date.now()-LT>1000)moveTip(e)};b.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(b,tip)}c.append(b)});$("pop").style.display="flex"}
 const skTip=k=>()=>`<div><b>${k.ap?"★ 정점 · ":"✦ "}${k.n}</b> <small>(연계점수 ${k.cp} · Lv ${k.lv})</small></div><div style="font-size:12.5px">${k.d}</div>`;
 let IMQ=null;
@@ -2143,7 +2145,15 @@ function skillUse2(k){const r=k.fx();say(`${k.ap?"★":"✦"} ${JOBS[P.job].i} <
  if(k.self&&P.job==="cleric")gainCP(1,"✝ 자신에게 회복/보호막!");
  if(IMQ){const h=IMQ;IMQ=null;return quick("🛡 면역!","#7fd4ff",h,after,"i")}
  after()}
-function cmdMenu(){back=cmdMenu;foebar();popMenu("행동을 선택하세요.",[["공격",()=>hit(1)],...(P.job?[]:[[`강타 (연계점수 ${CP_NEED})${curseIs("silence")?" — 침묵":""}`,()=>hit(2),BS.cp<CP_NEED||curseIs("silence")]]),...JUNL().filter(k=>k.t!=="passive").map(k=>[`${k.ap?"★ 정점 · ":"✦ "}${k.n} (연계점수 ${k.cp})`,()=>skillUse(k.id),BS.cp<k.cp||curseIs("silence"),skTip(k)]),["물약",potionPick,![...POT_IDS,...CURE_IDS].some(id=>P.inv[id]>0)],])}
+const SKI={w1:"💥",w2:"🛡",w3:"📣",w4:"🌋",w5:"😡",r1:"🎯",r2:"☠",r3:"👣",r4:"💀",m1:"✴",m2:"🔄",m3:"🔰",m4:"🌌",m5:"☄",c1:"✨",c2:"🙏",c3:"🕊",c4:"⚖",c5:"😇"};
+// 행동 선택: 스킬마다 어울리는 아이콘을 가로로 배치한 타일 팝업
+function tilePop(title,items){DK=null;panel("",[]);const c=$("pop").querySelector(".pcard");c.innerHTML="";c.classList.add("tilecard");const t=document.createElement("b");t.textContent=title;c.append(t);const row=document.createElement("div");row.className="tilerow";
+ items.forEach(([ic,nm,sub,fn,d,tip,cls])=>{const b=document.createElement("button");b.className="tile"+(cls?" "+cls:"");b.disabled=!!d;b.innerHTML=`<span class="ti">${ic}</span><span class="tn">${nm}</span><span class="ts">${sub||"&nbsp;"}</span>`;b.onclick=()=>{hidePop();hideTip();fn()};if(tip){b.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};b.onmousemove=e=>{if(Date.now()-LT>1000)moveTip(e)};b.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(b,tip)}row.append(b)});c.append(row);$("pop").style.display="flex"}
+function cmdMenu(){back=cmdMenu;foebar();const sp=P.job==="mage"||P.job==="cleric",sil=curseIs("silence"),noP=![...POT_IDS,...CURE_IDS].some(id=>P.inv[id]>0);
+ tilePop("행동을 선택하세요.",[[sp?"🔮":"⚔","공격","",()=>hit(1),0,()=>`<div><b>공격</b></div><div style="font-size:12.5px">연계점수 없이 기본 공격을 한다. 적중하면 연계점수 +1.</div>`],
+  ...(P.job?[]:[["💢","강타",`연계 ${CP_NEED}`,()=>hit(2),BS.cp<CP_NEED||sil,()=>`<div><b>강타</b> <small>(연계점수 ${CP_NEED})</small></div><div style="font-size:12.5px">연계점수를 소모해 더 강하게 공격한다.${sil?" (침묵 중에는 사용할 수 없다)":""}</div>`]]),
+  ...JUNL().filter(k=>k.t!=="passive").map(k=>[SKI[k.id]||"✦",k.n,`연계 ${k.cp}`,()=>skillUse(k.id),BS.cp<k.cp||sil,skTip(k),k.ap?"ap":""]),
+  ["🧪","물약","",potionPick,noP,()=>`<div><b>물약</b></div><div style="font-size:12.5px">HP 회복 물약이나 상태이상 해제 물약을 사용한다.</div>`]])}
 function potionPick(){const l=POT_IDS.filter(id=>P.inv[id]>0).map(id=>[`${ITEMS[id].n} ×${P.inv[id]} (HP ${Math.round(ITEMS[id].pct*100)}%)`,()=>usePotion(id),0,itemTip(id)]);const c=CURE_IDS.filter(id=>P.inv[id]>0).map(id=>[`${ITEMS[id].n} ×${P.inv[id]} (${STS[ITEMS[id].cure].n} 해제)`,()=>useCure(id),!BS.ds[ITEMS[id].cure],itemTip(id)]);popMenu("사용할 물약을 고르세요.",[...l,...c,["취소",cmdMenu]])}
 function useCure(id){const it=ITEMS[id];P.inv[id]--;delete BS.ds[it.cure];say(`${it.n}을(를) 사용했다. ${STS[it.cure].i} ${STS[it.cure].n}이(가) 해제되었다.`);after()}
 function playerSt(){if(!BS||!BS.ds)return[];return STS_ORDER.filter(k=>BS.ds[k==="disease"?"dis":k])}
