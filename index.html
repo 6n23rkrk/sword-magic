@@ -42,7 +42,20 @@ button{font:inherit;font-weight:700;background:var(--line);color:#1d1a0c;border:
 button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:default}
 #pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:44;pointer-events:none}
 .pcard{pointer-events:auto;background:var(--panel);border:3px solid var(--line);padding:16px 22px;min-width:240px;max-width:90vw;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;box-shadow:0 4px 18px #000b}
-.tilecard{max-width:96vw}.tilerow{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:100%}.tile{width:84px!important;height:100px;padding:8px 4px!important;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:13px!important;line-height:1.2;border-radius:10px}.tile .ti{font-size:30px;line-height:1.1}.tile .tn{font-weight:700;font-size:12.5px;word-break:keep-all}.tile .ts{font-size:11px;opacity:.8}.tile.ap{border-color:#ffb347;box-shadow:0 0 8px #ffb34766 inset}.tile:disabled{opacity:.4}
+.tilecard{max-width:96vw}.tilerow{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 8px;width:100%}
+.tile{width:80px!important;padding:2px 0!important;background:none!important;border:none!important;box-shadow:none!important;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.tile .iw{position:relative;display:block;width:64px;height:64px;border-radius:50%;box-shadow:0 0 0 2px var(--c4),0 0 0 4px #000b,0 0 15px 3px color-mix(in srgb,var(--c2) 70%,transparent);transition:transform .15s,box-shadow .15s}
+.tile .ic{position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--c1);background:radial-gradient(circle at 34% 26%,var(--c1) 0,var(--c2) 38%,var(--c3) 92%);box-shadow:inset 0 0 16px #000c;clip-path:circle(50%)}
+.tile .ic::before{content:"";position:absolute;inset:-30%;background:conic-gradient(from 10deg,transparent 0,color-mix(in srgb,var(--c1) 80%,transparent) 8%,transparent 22%,color-mix(in srgb,var(--c1) 55%,transparent) 48%,transparent 62%,color-mix(in srgb,var(--c1) 70%,transparent) 82%,transparent 100%);mix-blend-mode:screen;opacity:.5;animation:icSpin 7s linear infinite}
+.tile .ic::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(ellipse at 50% 8%,#fff9 0,transparent 42%),radial-gradient(circle,transparent 58%,#0008 100%)}
+.tile .ic svg{position:relative;z-index:1;width:36px;height:36px;filter:drop-shadow(0 0 5px var(--c1)) drop-shadow(0 1px 1px #000)}
+.tile:hover:not(:disabled) .iw{transform:scale(1.1);box-shadow:0 0 0 2px var(--c1),0 0 0 4px #000b,0 0 22px 6px var(--c2)}
+.tile:active:not(:disabled) .iw{transform:scale(.95)}
+.tile .cpb{position:absolute;right:-3px;bottom:-3px;min-width:20px;height:20px;padding:0 4px;box-sizing:border-box;border-radius:10px;background:#0b0f18;border:1.5px solid #8fd0ff;color:#cfeaff;font-size:12px;font-weight:900;line-height:17px;text-align:center;z-index:2;box-shadow:0 0 6px #000}
+.tile .tn{font-weight:700;font-size:12px;line-height:1.2;word-break:keep-all;color:#f2ead0;text-shadow:0 1px 2px #000}
+.tile.ap .iw{box-shadow:0 0 0 2px #ffd34d,0 0 0 4px #000b,0 0 20px 5px #ffb347}.tile.ap .ic::before{animation-duration:3.5s}
+.tile:disabled{opacity:.5;cursor:default}.tile:disabled .ic{filter:grayscale(.85) brightness(.65)}.tile:disabled .iw{box-shadow:0 0 0 2px #444,0 0 0 4px #000b}
+@keyframes icSpin{to{transform:rotate(360deg)}}
 .pcard b{font-size:17px}.pcard button{width:100%;padding:10px 14px;font-size:16px;text-align:center}
 #fxt{position:fixed;left:50%;top:28%;width:0;height:0;z-index:9997;pointer-events:none}
 #fxi{position:fixed;left:50%;top:28%;width:0;height:0;z-index:9997;pointer-events:none}
@@ -1206,7 +1219,7 @@ sleep:{n:"수면",i:"💤",p:.25,t:5,d:"5턴 동안 몬스터가 행동권을 �
 charm:{n:"현혹",i:"🌀",p:.25,t:5,d:"5턴 동안 정신이 흐려져 내 공격·강타 및 모든 스킬이 40% 확률로 빗나간다. 공격당해도 풀리지 않는다. (중첩 불가)"},
 bleed:{n:"출혈",i:"🩸",p:.8,t:5,d:"5턴 동안 매 턴 출혈 피해를 입는다. 해제할 수 없다. 최대 5중첩, 중첩될 때마다 지속시간이 초기화된다."},
 poison:{n:"중독",i:"☠",p:.5,t:5,d:"5턴 동안 매 턴 독 피해를 입는다. 해독 물약으로 해제할 수 있다. 최대 5중첩, 중첩될 때마다 지속시간이 초기화된다."},
-curse:{n:"저주",i:"🕯",p:.3,t:4,d:"4턴 동안 매 턴 어둠 속성 피해(어둠 저항으로 감소)와 함께 저주 종류별 효과가 따른다. 나와 몬스터에게 똑같이 적용된다. 정화의 성수로 해제할 수 있다. (중첩 불가)"},
+curse:{n:"저주",i:"🕯",p:.3,t:4,d:"4턴 동안 매 턴 어둠 속성 피해(어둠 저항으로 감소)와 함께 저주 종류별 효과가 따른다. 나와 몬스터에게 똑같이 적용된다. 정화의 성수로 해제할 수 있다. (저주는 하나만 유지된다 — 새 저주가 걸리면 기존 저주가 사라지고 새 저주와 지속시간으로 교체)"},
 disease:{n:"질병",i:"🤢",p:.3,d:"즉시 질병 피해를 입고, 무작위 스탯 하나가 전투가 끝날 때까지 감소한다. (이미 걸린 스탯과 다른 스탯이면 추가로 걸린다 · 최대 4종)"},
 burn:{n:"화상",i:"🔥",p:.5,t:3,d:"3턴 동안 매 턴 화상 피해를 입는다. 최대 3중첩, 추가로 걸리면 지속시간이 초기화된다. 화상 상태에서 불 속성 공격에 맞으면 추가 약점 피해를 입는다. (1중첩 +30% · 2중첩 +60% · 3중첩 +100%)"},
 dazzle:{n:"눈부심",i:"🔆",p:.3,t:2,d:"빛 속성 전용. 내가 행동권을 2번 사용하는 동안 내 공격(평타·강타 및 모든 스킬)이 50% 확률로 빗나간다. 이 동안 몬스터의 빛 속성 공격에 맞으면 피해가 30% 늘어난다(약점 피격). (중첩 불가)"},
@@ -1228,7 +1241,7 @@ const isNm=()=>!!(foe&&(foe.nm||foe.lt||(foe.n||"").startsWith("[희귀 네임�
 const CHILL_FAIL=.5,CURSE_T=4,WEAK_C=.4,ROT_C=.25,BRAND_C=.15,DOOM_B=.08,DOOM_TK=[.25,.5,.75,1];
 const CURSE={
 weak:{n:"쇠약의 저주",f:.010,d:"공격력 -40%"},rot:{n:"부식의 저주",f:.012,d:"방어력 -25%"},
-drain:{n:"고갈의 저주",f:.012,d:"정신력 효과(턴당 HP 재생·연계점수 진행)가 멈춘다"},silence:{n:"침묵의 저주",f:.010,d:"모든 스킬 사용 불가 (일반 공격만 가능)"},
+drain:{n:"고갈의 저주",f:.012,d:"나: 정신력 효과(턴당 HP 재생)가 멈추고 연계점수도 얻을 수 없다 / 몬스터: 재생 특성이 멈춘다"},silence:{n:"침묵의 저주",f:.010,d:"모든 스킬 사용 불가 (일반 공격만 가능)"},
 brand:{n:"낙인의 저주",f:.012,d:"받는 피해 +15% (시전자가 치명타를 입히면 지속 +1턴)"},leech:{n:"흡혈의 저주",f:.015,d:"시전자가 입힌 피해의 20.0%를 회복한다"},doom:{n:"파멸의 저주",f:DOOM_B,d:"최초 매우 큰 어둠 속성 피해를 입고, 이후 4턴 동안 매 턴 최초 피해의 25%→50%→75%→100%만큼 어둠 속성 피해를 입는다"}};
 // 속성 스킬(전 몬스터 중 속성에 어울리는 몬스터만): 이름 → [속성, 스킬명, 상태이상, 피해배율(생략 1.4), {p:확률 t:턴수 f:지속피해 계수 k:저주 종류}]
 const SKD={
@@ -1327,7 +1340,7 @@ HN.forEach((h,f)=>{const key="hn"+f,lv=65,b0=2+lv*.8;ZONES[f].h=key;
   us=h.u.map(([un,ev,um,chg,sts],k)=>{const q={u:k+1,c:["u","u2","u3"][k],n:un,ev:ev.split(","),m:um*SKU_M,...(chg?{chg:1}:{}),st:prs(sts)};q.parts=uparts(q);return q});
  MON[key]={n:h.n,e:h.e,lv,zi:Math.floor(f/3),gm:h.gm+"의",rare:1,hn:1,...STAT(lv),drops:[[key+"_a",1],[key+"_b",.6],[key+"_c",.25],...potionDrops(lv,3)],elm:sk[0].ev[0],skE:sk[0],skE2:sk[1],skE3:sk[2],skU:us[0],skU2:us[1],skU3:us[2]}});
 // ===== 전설 단검 '필살의 비수' 퀘스트 (아이템 · 설정) =====
-const LQ={drop:.05,k1:20,need:{q_leg_a:15,q_leg_b:3,q_leg_c:1},pa:.15,pe:.3,pb:.25},LEG_EV=500; // pa: 불씨(불 속성 일반) / pe: 불씨(불 속성 정예) / pb: 파편(간부·보스) · LEG_EV: 필살의 비수 화염 속성 공격력
+const LQ={bossA:[2,3],drop:.05,k1:20,need:{q_leg_a:15,q_leg_b:3,q_leg_c:1},pa:.15,pe:.3,pb:.25},LEG_EV=500; // pa: 불씨(불 속성 일반) / pe: 불씨(불 속성 정예) / pb: 파편(간부·보스) · LEG_EV: 필살의 비수 화염 속성 공격력
 ITEMS.q_leg0={n:"그을린 대장장이의 의뢰서",p:0,r:4,t:"qst",dsc:"영웅 난이도 원소의 균열 신전에서 흘러나온 불길에 그을린 의뢰서. 사용하면 퀘스트 '필살의 비수'를 받는다."};
 ITEMS.q_leg_a={n:"꺼지지 않는 불씨",p:0,r:3,t:"qst",dsc:"영웅 난이도 원소의 균열 신전의 불 속성 몬스터에게서 떨어진, 꺼지지 않는 불씨. 퀘스트 '필살의 비수'의 재료다."};
 ITEMS.q_leg_b={n:"군주의 불꽃 파편",p:0,r:3,t:"qst",dsc:"영웅 난이도 원소의 균열 신전의 불 속성 네임드(간부·보스)에게서 떨어진 불꽃의 파편. 퀘스트 '필살의 비수'의 재료다."};
@@ -1426,7 +1439,7 @@ const GM0=NGM;const GM={"슬라임": "끈적이는", "들쥐": "들쥐가죽", "
 const JOB_LV=20,JOB_FEE=30,SPELL_K=.85; // 전직 가능 레벨 / 재전직 비용(g × 30, 현재 직업이 있을 때) / 주문 피해 계수(몬스터 방어력 무시의 대가)
 const PBN={taken:"철벽 방어",takenUp:"광폭화(받는 피해 증가)",dealt:"광폭화",foeatk:"도발의 포효",venom:"맹독 칼날",swap:"원소 전환",regen2:"신성한 가호",dodge:"그림자 걸음",exposed:"방어 붕괴"};
 const PBo=()=>BS.pb||(BS.pb={}),setPB=(k,t,v)=>{PBo()[k]={t:t+1,v}};
-const gainCP=(n,why)=>{if(!BS||BS.cp>=CP_MAX)return;BS.cp=Math.min(CP_MAX,BS.cp+n);hud();say(`🔗 ${why} 연계점수 +${n} (${BS.cp}/${CP_MAX})`)};
+const gainCP=(n,why)=>{if(!BS||BS.cp>=CP_MAX||curseIs("drain"))return;BS.cp=Math.min(CP_MAX,BS.cp+n);hud();say(`🔗 ${why} 연계점수 +${n} (${BS.cp}/${CP_MAX})`)};
 const shieldP=fr=>{const v=r1(MHP()*fr*(1+E(42)/100));BS.shield=r1((BS.shield||0)+v);return v},healP=fr=>{const h=r1(Math.min(MHP()-P.hp,MHP()*fr*(1+E(42)/100)*HM()));P.hp=r1(P.hp+h);return h},cleanseP=()=>{const n=Object.keys(BS.ds).length;for(const k of Object.keys(BS.ds))delete BS.ds[k];return n};
 // 직업 스킬: t atk=공격(hit 사용) / buff=즉시 효과, cp=연계점수 소모, ap=정점 스킬(Lv50). self=자신에게 회복/보호막(성직자 연계 +1)
 const JOBS={
@@ -1899,7 +1912,7 @@ function elemProc(e,pops,d,imm){if(!e||imm||d<=0||Math.random()>=PROC_P*(1-foeRe
   case"땅":if(hardBlock())pops.push(`💫 <b>기절</b> 🛡 면역`);else{BS.stun=true;fxSay("⛰ 땅 속성 발동! 몬스터의 다음 행동권 1회 상실");pops.push(`💫 <b>기절</b> 행동권 1회 상실`)}break;
   case"바람":gainCP(1,"🌪 바람 속성 발동!");pops.s&&pops.s.push(`🌪 <b>바람 속성</b><br><small>연계점수 +1</small>`);break;
   case"빛":{const v=shieldP(.08);hud();fxSay(`✨ 빛 속성 발동! 보호막 ${f(v)} 생성`);pops.s&&pops.s.push(`✨ <b>빛 속성</b><br><small>보호막 ${f(v)} 생성</small>`);if(IMM[foe.elm]&&IMM[foe.elm].includes("빛"))pops.push(`🔆 <b>눈부심</b> 🛡 면역`);else{BS.mdz=2;fxSay("✨ 빛 속성 발동! 몬스터가 눈부심 — 다음 2번의 행동이 50% 확률로 빗나간다");pops.push(`🔆 <b>눈부심</b> 2회 · 50% 빗나감`)}break}
-  case"어둠":if(IMM[foe.elm]&&IMM[foe.elm].includes("어둠"))pops.push(`🕯 <b>저주</b> 🛡 면역`);else if(BS.mc)pops.push(`🕯 <b>저주</b> 이미 저주에 걸려 있다`);else{const ks=Object.keys(CURSE),k=ks[R(0,ks.length-1)],B=k==="doom"?r1(foe.mhp*DOOM_B*(isNm()?NDOT_R:1)):0;BS.mc={k,t:MC_T,n:0,B};let x="";if(k==="doom"){const dm=r1(B*(1-foeRes()));foe.hp=r1(foe.hp-dm);x=` · 최초 어둠 피해 ${f(dm)}`}fxSay(`🌑 어둠 속성 발동! 몬스터에게 ${CURSE[k].n} (${MCURSE[k]}) ${MC_T}턴${x}`);pops.push(`🕯 <b>${CURSE[k].n}</b>${x?`<br><small>${x.slice(3)}</small>`:""}<br><small>${MCURSE[k]} · ${MC_T}턴</small>`)}break;
+  case"어둠":if(IMM[foe.elm]&&IMM[foe.elm].includes("어둠"))pops.push(`🕯 <b>저주</b> 🛡 면역`);else{const ks=Object.keys(CURSE),k=ks[R(0,ks.length-1)],B=k==="doom"?r1(foe.mhp*DOOM_B*(isNm()?NDOT_R:1)):0;BS.mc={k,t:MC_T,n:0,B};let x="";if(k==="doom"){const dm=r1(B*(1-foeRes()));foe.hp=r1(foe.hp-dm);x=` · 최초 어둠 피해 ${f(dm)}`}fxSay(`🌑 어둠 속성 발동! 몬스터에게 ${CURSE[k].n} (${MCURSE[k]}) ${MC_T}턴${x}`);pops.push(`🕯 <b>${CURSE[k].n}</b>${x?`<br><small>${x.slice(3)}</small>`:""}<br><small>${MCURSE[k]} · ${MC_T}턴</small>`)}break;
   case"번개":if(IMM[foe.elm]&&IMM[foe.elm].includes("번개"))pops.push(im("shock"));else{BS.shk=3;fxSay("⚡ 번개 속성 발동! 몬스터가 감전 — 3턴 동안 행동권을 얻어도 25% 확률로 마비");pops.push(`⚡ <b>감전</b> 3턴 · 25% 마비`)}break}}
 // 네임드(Lv45+ 던전 간부·보스 / 필드 희귀) 상향 계수: [공격,체력,방어,스킬(배율·상태이상 확률),패시브(강화스킬·고유특성 수치)] — 직업별 최고장비 시뮬레이션으로 맞춘 값
 const NT={"d5_m0":[1.81,2.34,1.67,3.69,3.25],"d5_m1":[1.61,1.98,1.51,2.76,2.46],"d5_n":[1.59,1.94,1.49,2.66,2.38],"d6_m0":[1.87,2.44,1.71,3.98,3.48],"d6_m1":[1.54,1.86,1.45,2.48,2.23],"d6_n":[1.58,1.92,1.48,2.62,2.35],"d45_m0":[1.87,2.44,1.71,3.98,3.48],"d45_m1":[1.73,2.19,1.6,3.27,2.9],"d45_n":[1.49,1.77,1.41,2.29,2.08],"d55_m0":[1.85,2.41,1.69,3.88,3.4],"d55_m1":[1.69,2.12,1.57,3.09,2.74],"d55_n":[1.77,2.26,1.63,3.46,3.05],"r10_0":[1.64,2.02,1.53,2.85,2.54],"r10_1":[1.68,2.1,1.56,3.04,2.7],"r10_2":[1.67,2.08,1.55,2.99,2.66],"r10_3":[1.53,1.84,1.44,2.43,2.19],"r10_4":[1.54,1.86,1.45,2.48,2.23],"r11_0":[1.71,2.15,1.58,3.18,2.81],"r11_1":[1.44,1.69,1.37,2.1,1.92],"r11_2":[1.61,1.98,1.51,2.76,2.46],"r11_3":[1.79,2.29,1.65,3.56,3.13],"r11_4":[1.74,2.21,1.61,3.32,2.94],"r12_0":[1.7,2.13,1.58,3.13,2.77],"r12_1":[1.54,1.86,1.45,2.48,2.23],"r12_2":[1.81,2.33,1.66,3.65,3.21],"r12_3":[1.44,1.69,1.37,2.1,1.92],"r12_4":[1.63,2.0,1.52,2.81,2.5],"r13_0":[1.73,2.19,1.6,3.27,2.9],"r13_1":[1.74,2.21,1.61,3.32,2.94],"r13_2":[1.7,2.13,1.58,3.13,2.77],"r13_3":[1.29,1.43,1.24,1.63,1.52],"r13_4":[1.69,2.12,1.57,3.09,2.74],"r14_0":[1.54,1.86,1.45,2.48,2.23],"r14_1":[1.54,1.86,1.45,2.48,2.23],"r14_2":[1.7,2.13,1.58,3.13,2.77],"r14_3":[1.64,2.02,1.53,2.85,2.54],"r14_4":[1.32,1.49,1.27,1.73,1.6]};
@@ -1919,7 +1932,8 @@ function tnb(id,hero){const b=MON[id],dg=DG_TUNE[id],nt=(hero&&NTH[id])||NT[id];
   for(const k of["skU","skU2","skU3","skE","skE2","skE3"]){const q=b[k];if(q)c[k]={...q,m:q.m*sm,st:(q.st||[]).map(([x,o])=>[x,{...o,p:Math.min(.85,(o.p!=null?o.p:STS[x].p)*(1+(sm-1)*.5))}])}}
   if(b.skB)c.skB={...b.skB,v:Math.min(b.skB.k==="h"?.3:.6,b.skB.v*pas)};
   const t=TRD[b.n];if(t&&typeof t.v==="number"&&t.k!=="immune")c.trt={...t,v:Math.min(TR_CAP[t.k]||.95,t.v*pas)}}
- if(hero&&id==="d55_m1"){if(c.trt&&c.trt.k==="evade")c.trt={...c.trt,v:.3};for(const k of["skU","skU2","skU3"])if(c[k])c[k]={...c[k],m:c[k].m*.9}} // 영웅 실피드 조정: 회피 30%, 고유 스킬 계수 -10%
+ if(hero&&id==="d55_m1"){if(c.trt&&c.trt.k==="evade")c.trt={...c.trt,v:.3};for(const k of["skU","skU2","skU3"])if(c[k])c[k]={...c[k],m:c[k].m*.9}} else if(!hero&&id==="d55_m1"&&c.trt&&c.trt.k==="evade")c.trt={...c.trt,v:.2};
+ if(id==="d55_m0")for(const k of["skU","skU2","skU3"])if(c[k])c[k]={...c[k],m:c[k].m*.7}; // 이프리 고유 스킬 계수 -30% (일반·영웅 공통) // 실피드 조정: 영웅 회피 30%·고유 스킬 계수 -10% / 일반 회피 20%
  return c}
 // ===== 네임드 유형 =====
 const NTYPES={
@@ -2073,7 +2087,7 @@ function monTurn(){
 function turnStart(){BS.turn++;const ds=BS.ds;
  BS.pre={shock:!!ds.shock,charm:!!ds.charm,curse:ds.curse?ds.curse.k:null};
  for(const k of Object.keys(BS.pb||{})){const v=BS.pb[k];if(v&&typeof v==="object"&&--v.t<=0){delete BS.pb[k];say(`✨ ${PBN[k]} 효과가 끝났다.`)}}
- if(BS.pre.curse==="drain")say(`🕳 ${cR("고갈의 저주")}로 정신력 효과가 멈췄다.`);
+ if(BS.pre.curse==="drain")say(`🕳 ${cR("고갈의 저주")}로 정신력 효과가 멈췄고 연계점수도 얻을 수 없다.`);
  else{const rh=r1((ST("spi")/10+(P.job==="cleric"?MHP()*.01:0))*(PBg().regen2?2:1)*HM()),h0=P.hp;P.hp=Math.min(MHP(),P.hp+rh);
   say(`🧠 정신력 효과: ${cG(`HP +${f(P.hp-h0)}`)}`);
   if(E(29)){const h1=P.hp;P.hp=Math.min(MHP(),P.hp+E(29)*HM());fxSay(`매 턴 추가 회복 ${cG(`HP +${f(P.hp-h1)}`)}`)}
@@ -2140,7 +2154,7 @@ function slashFx(cb){if(SLFX)return;SLFX=true;hideTip();const o=document.createE
 function skillUse(id){const k=JSK(P.job).find(x=>x.id===id);if(!k||k.t==="passive"||BS.cp<k.cp||curseIs("silence"))return;
  if(k.pre&&!k.pre()){say(`✦ ${k.n}: ${k.preMsg}`);return cmdMenu()}
  if(k.cp>0&&E(52)&&Math.random()*100<E(52)){quick("🔗 연계점수 보존!","#6aa9e6","",null,"l");fxSay(`연계점수가 소모되지 않았다! (${k.n})`)}else BS.cp-=k.cp;hud();
- if(BS.ds.chill&&Math.random()<CHILL_FAIL){say(`❄ 한기! <b>${k.n}</b> 시전에 실패했다.`);quick("❄ 시전 실패!","#bfe9ff",`${k.n}이(가) 불발되었다`,null,"d");return after()}
+ if(BS.ds.chill&&Math.random()<CHILL_FAIL){say(`❄ 한기! <b>${k.n}</b> 시전에 실패했다.`);return chillFx(k.n,"me",()=>after())}
  if(k.t==="atk"){if(k.n==="죽음의 선고"&&P.job==="rogue")return slashFx(()=>hit(k.m,{sk:k}));if(k.n==="급소 찌르기"&&P.job==="rogue")return rogueFx("weak",()=>hit(k.m,{sk:k}));return hit(k.m,{sk:k})}
  if(P.job==="rogue"&&(k.n==="맹독 칼날"||k.n==="그림자 걸음")&&!k.fxd)return rogueFx(k.n==="맹독 칼날"?"venom":"shadow",()=>{k.fxd=1;try{skillUse2(k)}finally{k.fxd=0}});
  return skillUse2(k)}
@@ -2148,15 +2162,40 @@ function skillUse2(k){const r=k.fx();say(`${k.ap?"★":"✦"} ${JOBS[P.job].i} <
  if(k.self&&P.job==="cleric")gainCP(1,"✝ 자신에게 회복/보호막!");
  if(IMQ){const h=IMQ;IMQ=null;return quick("🛡 면역!","#7fd4ff",h,after,"i")}
  after()}
-const SKI={w1:"💥",w2:"🛡",w3:"📣",w4:"🌋",w5:"😡",r1:"🎯",r2:"☠",r3:"👣",r4:"💀",m1:"✴",m2:"🔄",m3:"🔰",m4:"🌌",m5:"☄",c1:"✨",c2:"🙏",c3:"🕊",c4:"⚖",c5:"😇"};
-// 행동 선택: 스킬마다 어울리는 아이콘을 가로로 배치한 타일 팝업
+// 행동 선택 팝업: 스킬마다 원형 발광 아이콘(직업별 색 · 직접 그린 SVG 문양)을 가로로 배치한다
+const IC_TH={warrior:["#ffe2b0","#ff8a2a","#4a1400","#ffb35a"],rogue:["#f0d2ff","#a64dff","#26084c","#cf96ff"],mage:["#c8efff","#2e9bff","#04204a","#72c8ff"],cleric:["#e0ffbd","#5fcf3a","#0a3410","#a6ee66"],atk:["#fff0c8","#d9a63a","#3a2a08","#ffd966"],heavy:["#ffe2b0","#ff7a2a","#4a1400","#ffb35a"],spell:["#e6d2ff","#7a55e0","#1d0f4a","#b89cff"],potion:["#ffd2dc","#ff4d6a","#4a0a1a","#ff8fa6"]};
+const IC_G={
+atk:`<path d="M11 37L33 15M37 37L15 15"/><path d="M9 39l5-5M39 39l-5-5M33 15l4-4M15 15l-4-4"/><circle cx="24" cy="26" r="2.5" fill="currentColor" stroke="none"/>`,
+spell:`<circle cx="24" cy="24" r="9" fill="currentColor" fill-opacity=".4"/><path d="M24 6v6M24 36v6M6 24h6M36 24h6M12 12l4 4M32 32l4 4M36 12l-4 4M16 32l-4 4"/><circle cx="24" cy="24" r="3" fill="currentColor" stroke="none"/>`,
+heavy:`<path d="M14 21h20v10a6 6 0 0 1-6 6h-8a6 6 0 0 1-6-6z" fill="currentColor" fill-opacity=".35"/><path d="M19 21v-5M24 21v-6M29 21v-5M14 27h-3M34 27h3"/>`,
+potion:`<path d="M20 8h8M21 8v12L12 37a3 3 0 0 0 3 4h18a3 3 0 0 0 3-4L27 20V8"/><path d="M15 31h18l3 6a2 2 0 0 1-2 3H14a2 2 0 0 1-2-3z" fill="currentColor" fill-opacity=".6" stroke="none"/><circle cx="21" cy="27" r="1.6" fill="currentColor" stroke="none"/><circle cx="27" cy="24" r="1.2" fill="currentColor" stroke="none"/>`,
+w1:`<path d="M24 5l4 10 11-3-5 10 10 5-11 3 3 11-10-5-4 10-4-10-10 5 3-11-11-3 10-5-5-10 11 3z" fill="currentColor" fill-opacity=".38"/><path d="M24 17l-3 7 5 2-3 7"/>`,
+w2:`<path d="M24 6l14 5v11c0 9-6 15-14 19-8-4-14-10-14-19V11z" fill="currentColor" fill-opacity=".3"/><path d="M24 13v23M16 21h16"/>`,
+w3:`<path d="M9 19l10-5v20l-10-5z" fill="currentColor" fill-opacity=".45"/><path d="M25 17c4 3 4 11 0 14M30 13c7 5 7 17 0 22M35 9c10 7 10 23 0 30"/>`,
+w4:`<path d="M25 5l-4 10 7 6-7 7 5 6-3 9"/><path d="M8 38l9-8M40 38l-9-8M10 26l8-3M38 26l-8-3M14 16l6 2M34 16l-6 2" opacity=".85"/>`,
+w5:`<path d="M13 7c5 11 5 24 2 35M24 5c5 12 5 26 2 38M35 7c5 11 5 24 2 35"/><path d="M9 28c8-4 22-4 30 0" opacity=".6"/>`,
+r1:`<circle cx="24" cy="25" r="12"/><circle cx="24" cy="25" r="4" fill="currentColor" stroke="none"/><path d="M24 5v10M24 35v10M4 25h10M34 25h10"/>`,
+r2:`<path d="M32 7L17 29l4 4 15-22z" fill="currentColor" fill-opacity=".35"/><path d="M17 29L9 39M21 33l-3 3"/><path d="M33 31c3 4 3 8 0 9-3-1-3-5 0-9zM40 24c2 3 2 5 0 6-2-1-2-3 0-6z" fill="currentColor" stroke="none"/>`,
+r3:`<ellipse cx="17" cy="19" rx="5" ry="8" fill="currentColor" fill-opacity=".4"/><ellipse cx="31" cy="32" rx="5" ry="8" fill="currentColor" fill-opacity=".4"/><path d="M6 40c7-2 11-3 15-9M42 8c-7 2-11 3-15 9" opacity=".6"/>`,
+r4:`<path d="M12 23a12 12 0 0 1 24 0v6l-4 3v6H16v-6l-4-3z" fill="currentColor" fill-opacity=".3"/><circle cx="19" cy="24" r="3.4" fill="currentColor" stroke="none"/><circle cx="29" cy="24" r="3.4" fill="currentColor" stroke="none"/><path d="M22 33v5M26 33v5"/>`,
+m1:`<circle cx="24" cy="24" r="8" fill="currentColor" fill-opacity=".5"/><path d="M24 5v8M24 35v8M5 24h8M35 24h8M11 11l6 6M31 31l6 6M37 11l-6 6M17 31l-6 6"/>`,
+m2:`<path d="M35 17a12 12 0 0 0-21 3"/><path d="M35 8v9h-9"/><path d="M13 31a12 12 0 0 0 21-3"/><path d="M13 40v-9h9"/><circle cx="24" cy="24" r="3" fill="currentColor" stroke="none"/>`,
+m3:`<path d="M24 5l16 9v15L24 43 8 29V14z" fill="currentColor" fill-opacity=".25"/><path d="M24 14l9 5v9l-9 9-9-9v-9z"/><path d="M24 14v23" opacity=".5"/>`,
+m4:`<path d="M24 24c0-3 4-3 4 0s-6 6-9 3-3-11 4-14 17 1 16 12-13 17-23 11"/><circle cx="24" cy="24" r="2" fill="currentColor" stroke="none"/>`,
+m5:`<circle cx="31" cy="31" r="7" fill="currentColor" fill-opacity=".5"/><path d="M26 26L8 8M33 24L21 8M24 33L8 21M40 20L33 8" opacity=".9"/>`,
+c1:`<path d="M24 4l4 16 16 4-16 4-4 16-4-16-16-4 16-4z" fill="currentColor" fill-opacity=".4"/><circle cx="24" cy="24" r="3" fill="currentColor" stroke="none"/>`,
+c2:`<path d="M24 41C9 30 7 19 13 13c4-4 10-2 11 3 1-5 7-7 11-3 6 6 4 17-11 28z" fill="currentColor" fill-opacity=".35"/><path d="M24 19v11M18.5 24.5h11"/>`,
+c3:`<path d="M24 5c8 10 12 16 12 23a12 12 0 0 1-24 0c0-7 4-13 12-23z" fill="currentColor" fill-opacity=".3"/><path d="M19 28a5 5 0 0 0 5 5"/><path d="M38 8v6M35 11h6M10 36v5M7.5 38.5h5" opacity=".8"/>`,
+c4:`<path d="M24 5v29M17 27h14M24 34v9"/><path d="M10 12l7 7M38 12l-7 7M5 25h8M35 25h8" opacity=".75"/><circle cx="24" cy="15" r="3.4" fill="currentColor" stroke="none"/>`,
+c5:`<ellipse cx="24" cy="8" rx="8" ry="2.8"/><path d="M24 15l10 4v9c0 6-5 10-10 12-5-2-10-6-10-12v-9z" fill="currentColor" fill-opacity=".3"/><path d="M12 21c-6 0-8 7-5 11M36 21c6 0 8 7 5 11" opacity=".85"/>`};
+const icV=th=>{const c=IC_TH[th]||IC_TH.atk;return `--c1:${c[0]};--c2:${c[1]};--c3:${c[2]};--c4:${c[3]}`},icoH=(key,th)=>{return `<span class="ic"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${IC_G[key]||IC_G.atk}</svg></span>`};
 function tilePop(title,items){DK=null;panel("",[]);const c=$("pop").querySelector(".pcard");c.innerHTML="";c.classList.add("tilecard");const t=document.createElement("b");t.textContent=title;c.append(t);const row=document.createElement("div");row.className="tilerow";
- items.forEach(([ic,nm,sub,fn,d,tip,cls])=>{const b=document.createElement("button");b.className="tile"+(cls?" "+cls:"");b.disabled=!!d;b.innerHTML=`<span class="ti">${ic}</span><span class="tn">${nm}</span><span class="ts">${sub||"&nbsp;"}</span>`;b.onclick=()=>{hidePop();hideTip();fn()};if(tip){b.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};b.onmousemove=e=>{if(Date.now()-LT>1000)moveTip(e)};b.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(b,tip)}row.append(b)});c.append(row);$("pop").style.display="flex"}
-function cmdMenu(){back=cmdMenu;foebar();const sp=P.job==="mage"||P.job==="cleric",sil=curseIs("silence"),noP=![...POT_IDS,...CURE_IDS].some(id=>P.inv[id]>0);
- tilePop("행동을 선택하세요.",[[sp?"🔮":"⚔","공격","",()=>hit(1),0,()=>`<div><b>공격</b></div><div style="font-size:12.5px">연계점수 없이 기본 공격을 한다. 적중하면 연계점수 +1.</div>`],
-  ...(P.job?[]:[["💢","강타",`연계 ${CP_NEED}`,()=>hit(2),BS.cp<CP_NEED||sil,()=>`<div><b>강타</b> <small>(연계점수 ${CP_NEED})</small></div><div style="font-size:12.5px">연계점수를 소모해 더 강하게 공격한다.${sil?" (침묵 중에는 사용할 수 없다)":""}</div>`]]),
-  ...JUNL().filter(k=>k.t!=="passive").map(k=>[SKI[k.id]||"✦",k.n,`연계 ${k.cp}`,()=>skillUse(k.id),BS.cp<k.cp||sil,skTip(k),k.ap?"ap":""]),
-  ["🧪","물약","",potionPick,noP,()=>`<div><b>물약</b></div><div style="font-size:12.5px">HP 회복 물약이나 상태이상 해제 물약을 사용한다.</div>`]])}
+ items.forEach(([ik,nm,sub,fn,d,tip,cls,th])=>{const b=document.createElement("button");b.className="tile"+(cls?" "+cls:"");b.disabled=!!d;b.innerHTML=`<span class="iw" style="${icV(th)}">${icoH(ik,th)}${sub?`<span class="cpb">${sub}</span>`:""}</span><span class="tn">${nm}</span>`;b.onclick=()=>{hidePop();hideTip();fn()};if(tip){b.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};b.onmousemove=e=>{if(Date.now()-LT>1000)moveTip(e)};b.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(b,tip)}row.append(b)});c.append(row);$("pop").style.display="flex"}
+function cmdMenu(){back=cmdMenu;foebar();const sp=P.job==="mage"||P.job==="cleric",sil=curseIs("silence"),noP=![...POT_IDS,...CURE_IDS].some(id=>P.inv[id]>0),jt=P.job||"atk";
+ tilePop("행동을 선택하세요.",[[sp?"spell":"atk","공격","",()=>hit(1),0,()=>`<div><b>공격</b></div><div style="font-size:12.5px">연계점수 없이 기본 공격을 한다. 적중하면 연계점수 +1.</div>`,"",sp?"spell":"atk"],
+  ...(P.job?[]:[["heavy","강타",`${CP_NEED}`,()=>hit(2),BS.cp<CP_NEED||sil,()=>`<div><b>강타</b> <small>(연계점수 ${CP_NEED})</small></div><div style="font-size:12.5px">연계점수를 소모해 더 강하게 공격한다.${sil?" (침묵 중에는 사용할 수 없다)":""}</div>`,"","heavy"]]),
+  ...JUNL().filter(k=>k.t!=="passive").map(k=>[k.id,k.n,`${k.cp}`,()=>skillUse(k.id),BS.cp<k.cp||sil,skTip(k),k.ap?"ap":"",jt]),
+  ["potion","물약","",potionPick,noP,()=>`<div><b>물약</b></div><div style="font-size:12.5px">HP 회복 물약이나 상태이상 해제 물약을 사용한다.</div>`,"","potion"]])}
 function potionPick(){const l=POT_IDS.filter(id=>P.inv[id]>0).map(id=>[`${ITEMS[id].n} ×${P.inv[id]} (HP ${Math.round(ITEMS[id].pct*100)}%)`,()=>usePotion(id),0,itemTip(id)]);const c=CURE_IDS.filter(id=>P.inv[id]>0).map(id=>[`${ITEMS[id].n} ×${P.inv[id]} (${STS[ITEMS[id].cure].n} 해제)`,()=>useCure(id),!BS.ds[ITEMS[id].cure],itemTip(id)]);popMenu("사용할 물약을 고르세요.",[...l,...c,["취소",cmdMenu]])}
 function useCure(id){const it=ITEMS[id];P.inv[id]--;delete BS.ds[it.cure];say(`${it.n}을(를) 사용했다. ${STS[it.cure].i} ${STS[it.cure].n}이(가) 해제되었다.`);after()}
 function playerSt(){if(!BS||!BS.ds)return[];return STS_ORDER.filter(k=>BS.ds[k==="disease"?"dis":k])}
@@ -2179,8 +2218,8 @@ const hcap=()=>!!foe&&!!foe.hero&&!!(foe.rare||foe.nm||foe.lt||foe.hn);
 const pgRaw=()=>{const d0=foe.def*(foe.trait&&foe.trait.k==="armor"?1+foe.trait.v*2:1)*(1+(BS.fb.def?BS.fb.def.v:0))*(BS.mc&&BS.mc.k==="rot"?.75:1)*(1-Math.min(100,E(22))/100)*(PBg().exposed?0:1);return d0/(100+d0)};
 const pgPop=blocked=>quick("🛡 물리피해 확정 방어",blocked?"#9bb8ff":"#ffb347",`${blocked?"물리 피해 차단":"다음 물리 피해 확정 방어"}`,null,"r");
 function pgCheck(){if(!hcap()||!BS||BS.fb.pg||BS.pgcd>0)return;if(pgRaw()>HPD_CAP){BS.fb.pg=1;say(`🛡 ${foe.n}의 방어가 한도(${HPD_CAP*100}%)를 넘었다! <b>물리피해 확정 방어</b> — 내 다음 물리 피해(속성 피해 제외)는 모두 막힌다.`);pgPop(false);foebar()}}
-function hit(m,o){if(m===2&&BS.ds.chill&&Math.random()<CHILL_FAIL&&!(o&&o.amb)){BS.cp-=CP_NEED;hud();say("❄ 한기! <b>강타</b> 시전에 실패했다.");quick("❄ 시전 실패!","#bfe9ff","강타가 불발되었다",null,"d");return after()}const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(BS.pre&&BS.pre.charm)&&Math.random()<CHARM_MISS,dz=!!BS.ds.dazzle&&Math.random()<DAZZLE_MISS;let wkh=false,cpg=false;const pops=[];pops.s=[];const nm=amb?"기습":m===2?"강타":"공격";
- if(sk||amb){}else if(m===2){BS.cp-=CP_NEED;hud()}else if(!mis&&!dz&&BS.cp<CP_MAX)cpg=true;
+function hit(m,o){if(m===2&&BS.ds.chill&&Math.random()<CHILL_FAIL&&!(o&&o.amb)){BS.cp-=CP_NEED;hud();say("❄ 한기! <b>강타</b> 시전에 실패했다.");return chillFx("강타","me",()=>after())}const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(BS.pre&&BS.pre.charm)&&Math.random()<CHARM_MISS,dz=!!BS.ds.dazzle&&Math.random()<DAZZLE_MISS;let wkh=false,cpg=false;const pops=[];pops.s=[];const nm=amb?"기습":m===2?"강타":"공격";
+ if(sk||amb){}else if(m===2){BS.cp-=CP_NEED;hud()}else if(!mis&&!dz&&BS.cp<CP_MAX&&!curseIs("drain"))cpg=true;
   if(mis||dz){if(mis)say(`🌀 ${cR("현혹")}! 정신이 흐려져 ${nm}이(가) 빗나갔다.`);if(dz){say(`🔆 ${cR("눈부심")}! 눈이 부셔 ${nm}이(가) 빗나갔다.`);return flash("💨 빗나감!","#ffe680",`🔆 눈부심으로 <b>${foe.n}</b>을(를) 제대로 보지 못했다!<br>${nm}이(가) 빗나갔다.`,AF,1500)}return AF()}
  if(foe.trait&&foe.trait.k==="evade"&&Math.random()<foe.trait.v){say(`💨 ${trMsg(foe.trait)} ${foe.n}이(가) ${nm}을 피했다!`);trPop(`💨 내 ${nm}을 피했다!`);return AF()}
  if(cpg){BS.cp++;hud();say(`🔗 일반 공격 적중으로 연계점수 +1 (${BS.cp}/${CP_MAX})`)}
@@ -2278,7 +2317,7 @@ function foeAct0(){
  if(foe.skU&&BS.cd.u<=0&&Math.random()<SK_U)sk=foe.skU;else if(foe.skU2&&BS.cd.u2<=0&&Math.random()<SK_U2)sk=foe.skU2;else if(foe.skU3&&BS.cd.u3<=0&&Math.random()<SK_U2)sk=foe.skU3;else for(const q of[foe.skE,foe.skE2,foe.skE3])if(q&&BS.cd[ck(q)]<=0&&Math.random()<SK_E){sk=q;break}
  if(BS.mc&&BS.mc.k==="silence")sk=null;
  let bf=!sk&&foe.skB&&BS.cd.b<=0&&buffOk(foe.skB)&&Math.random()<SK_B&&!(BS.mc&&BS.mc.k==="silence");
- if((sk||bf)&&BS.ms.chill>0&&Math.random()<CHILL_FAIL){const u=sk||foe.skB;if(sk)BS.cd[ck(sk)]=SKILL_CD;else BS.cd.b=SKILL_CD;say(`❄ 한기! ${foe.n}의 <b>${u.n}</b> 시전이 실패했다.`);return quick("❄ 시전 실패!","#bfe9ff",`${foe.n}의 ${u.n}`,rollMenu,"d")}
+ if((sk||bf)&&BS.ms.chill>0&&Math.random()<CHILL_FAIL){const u=sk||foe.skB;if(sk)BS.cd[ck(sk)]=SKILL_CD;else BS.cd.b=SKILL_CD;say(`❄ 한기! ${foe.n}의 <b>${u.n}</b> 시전이 실패했다.`);return chillFx(u.n,"foe",rollMenu)}
  if(bf)return useBuff(foe.skB);
  if(!sk)return enemyHit({label:`${foe.n}의 공격!`,m:1,elem:false});
  if(sk.chg){BS.chg=sk;say(`⚠ ${foe.n}이(가) ${sk.ev.map(eIcon).join("")}<b>${sk.n}</b>을(를) 준비한다! <small>(힘을 모으는 중 — 다음 행동권을 내가 빼앗으면 저지할 수 있다)</small>`);return skillPop(sk,"⚠ 힘을 모으는 중! 다음 행동권을 빼앗으면 저지할 수 있다.",rollMenu)}
@@ -2297,6 +2336,16 @@ function ukFx(sk,body,cb){if(UKFX){cb&&cb();return}UKFX=true;const e0=sk.ev[0],c
  let pt="";for(let i=0;i<16;i++){const a=Math.PI*2*i/16+Math.random()*.3,d=110+Math.random()*130;pt+=`<span class="pt" style="--dx:${Math.cos(a)*d|0}px;--dy:${Math.sin(a)*d|0}px;--rot:${R(-200,200)}deg;animation-delay:${.3+Math.random()*.25}s">${ic[i%ic.length]}</span>`}
  o.innerHTML=`<div class="wv"></div><div class="wv w2"></div><div class="sl"></div><div class="sl s2" style="--r:16deg"></div>${pt}<div class="sb"><div class="tg">${sk.u===3?"✦ 고 유 스 킬 Ⅲ ✦":sk.u===2?"✦ 고 유 스 킬 Ⅱ ✦":"✦ 고 유 스 킬 ✦"}</div><div class="em">${foe.e||ic[0]}</div><div class="nm">${ic.join("")} ${sk.n}</div><div class="bd"><b>${foe.n}</b><br><small>${body}</small></div></div>`;document.body.append(o);
  let done=false;const go=()=>{if(done)return;done=true;o.classList.add("out");setTimeout(()=>{o.remove();UKFX=false;cb&&cb()},250)};o.onclick=go;setTimeout(go,1900)}
+// 한기로 스킬 시전에 실패했을 때: 얼음이 깨지며 스킬 이름이 불발되는 연출 (탭하면 건너뜀)
+let CHFX=false;
+function chillFx(name,who,cb){if(CHFX){cb&&cb();return}CHFX=true;hideTip();const o=document.createElement("div");o.id="chfx";let sh="";for(let i=0;i<14;i++){const a=Math.PI*2*i/14+Math.random()*.4,d=90+Math.random()*120;sh+=`<i style="--dx:${Math.cos(a)*d|0}px;--dy:${Math.sin(a)*d|0}px;--r:${R(-180,180)}deg;animation-delay:${.42+Math.random()*.1}s">${i%3?"❄":"✦"}</i>`}
+ o.innerHTML=`<div class="chb"><div class="chi">❄</div><div class="cht">${who==="foe"?"몬스터의 ":""}${name}</div><div class="chs">한기로 시전 실패!</div></div>${sh}`;document.body.append(o);
+ let done=false;const go=()=>{if(done)return;done=true;o.classList.add("out");setTimeout(()=>{o.remove();CHFX=false;cb&&cb()},220)};o.onclick=go;setTimeout(go,1250)}
+// 아이템 보상: 상자가 덜컹거리며 올라온 뒤 열리고 보상 팝업이 나온다 (탭하면 건너뜀)
+let CHEST=false;
+function chestOpen(has,leg,cb){if(!has||CHEST){cb&&cb();return}CHEST=true;hideTip();const o=document.createElement("div");o.id="chest";let sp="";for(let i=0;i<10;i++){const a=Math.PI*2*i/10,d=70+Math.random()*60;sp+=`<i style="--dx:${Math.cos(a)*d|0}px;--dy:${Math.sin(a)*d-20|0}px;animation-delay:${.85+Math.random()*.1}s">${i%2?"✦":"✨"}</i>`}
+ o.innerHTML=`<div class="cbx${leg?" leg":""}"><span class="cl">📦</span></div>${sp}<div class="cbt2">보상 상자!</div>`;document.body.append(o);
+ let done=false;const go=()=>{if(done)return;done=true;o.remove();CHEST=false;cb&&cb();const c=document.querySelector("#res .rcard");if(c){c.classList.add("rcpop");setTimeout(()=>c.classList.remove("rcpop"),500)}};o.onclick=go;setTimeout(go,1250)}
 function skillPop(sk,body,cb){if(sk.u&&!/^⚠ 힘을 모으/.test(body))return ukFx(sk,body,cb);const e0=sk.ev[0];flash(`${sk.ev.map(e=>ELEM[e].i).join("")} ${sk.n}`,ELEM[e0].c,`<b>${foe.n}</b>${sk.u?" — 고유 스킬":sk.st||sk.m?" — 속성 스킬":" — 강화 스킬"}<br><small>${sk.ev.map(eTag).join(" ")}</small><br>${body}`,cb,1700)}
 const ck=sk=>sk.c||(sk.u===2?"u2":sk.u?"u":"e");
 function cast(sk){BS.cd[ck(sk)]=SKILL_CD;const stl=sk.st.map(([k])=>`${STS[k].i}${STS[k].n}`).join(" ");
@@ -2319,7 +2368,7 @@ function applyStatus(k,o){const ds=BS.ds,S=STS[k];if(Math.random()>=(o.p!=null?o
   case"bleed":case"poison":{const d=r1(MHP()*DOT_F[k]*F),v=ds[k]||(ds[k]={t:S.t,s:[]});if(v.s.length<5)v.s.push(d);else{let i=0;v.s.forEach((x,j)=>{if(x<v.s[i])i=j});if(d>v.s[i])v.s[i]=d}v.t=o.t||S.t;break}
   case"burn":{const d=r1(MHP()*DOT_F.burn*F),v=ds.burn||(ds.burn={t:0,s:[]});if(v.s.length<BURN_CAP_P)v.s.push(d);else{let i=0;v.s.forEach((x,j)=>{if(x<v.s[i])i=j});if(d>v.s[i])v.s[i]=d}v.t=o.t||S.t;break}
   case"dazzle":if(ds.dazzle)return null;ds.dazzle={t:S.t};break;
-  case"curse":{if(ds.curse)return null;const kd=o.k||"weak";ds.curse={t:o.t||S.t,k:kd,d:r1(MHP()*CURSE[kd].f*(kd==="doom"?(o.f||1):F)),n:0};if(kd==="doom"){const b=r1(ds.curse.d*(1-resRed("어둠")));pDot("🕯 파멸의 저주 — 최초 어둠 피해!",b);clamp()}break}
+  case"curse":{const kd=o.k||"weak";ds.curse={t:o.t||S.t,k:kd,d:r1(MHP()*CURSE[kd].f*(kd==="doom"?(o.f||1):F)),n:0};if(kd==="doom"){const b=r1(ds.curse.d*(1-resRed("어둠")));pDot("🕯 파멸의 저주 — 최초 어둠 피해!",b);clamp()}break}
   case"disease":{const fr=STK.filter(x=>!(ds.dis&&ds.dis[x]));if(!fr.length)return null;const st=fr[R(0,fr.length-1)],amt=Math.max(1,r1(ST(st)*.15));ds.dis=ds.dis||{};ds.dis[st]=amt;const d=r1(MHP()*DOT_F.disease*F);P.hp=r1(P.hp-d);clamp();say(`🤢 질병! ${cR(`${f(d)} 피해`)} · ${STATN[st]} -${f(amt)}`);break}
   case"fear":if(ds.fear)return null;ds.fear={t:o.t||R(1,3)};break;
   case"corrode":{const v=ds.corrode||(ds.corrode={t:0,n:0});v.n=Math.min(4,v.n+1);v.t=o.t||S.t;break}
@@ -2387,7 +2436,7 @@ function winNow(){rmDice();const dl=[],dgs=[],gdrop=g=>`<div class="dgear" data-
  if(P.gear.slice(GL0).some(g=>g.leg)){t+=`<br><b style="color:#ffd34d">★ 명품의 기운이 느껴집니다! ★</b>`;}
  say(`💀 ${foe.n} 처치!`);say(t,1);const legd=P.gear.slice(GL0).some(g=>g.leg);foe=null;BS=null;foebar();save();
  const go=()=>{if(rr){say(`🌟 ${MON[rr].e} <b>${MON[rr].n}</b>이(가) 나타났다!`,1);return nmFx(rr,"enc",()=>spawn(rr,RARE_MULT,"희귀 네임드",false,null))}popMenu("전투 종료",[...(P.loc!=="town"?[["다음 전투",fightBtn]]:[]),["닫기",closeP]])};
- {hidePop();$("panel").innerHTML="";resPop(!dl.length?"💰 처치 보상":legd?"★ 명품 · 아이템 획득":"🎁 아이템 획득","#ffd34d",(legd?`<div style="color:#ffd34d;font-weight:700;margin-bottom:4px">★ 명품 장비(4칸 몰빵)가 드랍되었다! ★</div>`:"")+`<div style="margin-bottom:6px;font-size:13.5px">${noxp?"⭐ EXP 없음":`⭐ EXP <b>+${f(xp)}</b>`} · 💰 <b style="color:#ffd34d">+${f(gd)}G</b></div>${dl.length?`<div>${dl.join("")}</div>`:""}`,true,go);if(document.querySelectorAll)document.querySelectorAll("#res .dgear").forEach(r=>{const g=dgs[+r.dataset.i],tip=eqTip(g);r.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};r.onmousemove=moveTip;r.onmouseleave=hideTip;longPress(r,tip)})}}
+ {hidePop();$("panel").innerHTML="";chestOpen(dl.length,legd,()=>{resPop(!dl.length?"💰 처치 보상":legd?"★ 명품 · 아이템 획득":"🎁 아이템 획득","#ffd34d",(legd?`<div style="color:#ffd34d;font-weight:700;margin-bottom:4px">★ 명품 장비(4칸 몰빵)가 드랍되었다! ★</div>`:"")+`<div style="margin-bottom:6px;font-size:13.5px">${noxp?"⭐ EXP 없음":`⭐ EXP <b>+${f(xp)}</b>`} · 💰 <b style="color:#ffd34d">+${f(gd)}G</b></div>${dl.length?`<div>${dl.join("")}</div>`:""}`,true,go);if(document.querySelectorAll)document.querySelectorAll("#res .dgear").forEach(r=>{const g=dgs[+r.dataset.i],tip=eqTip(g);r.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};r.onmousemove=moveTip;r.onmouseleave=hideTip;longPress(r,tip)})})}}
 function lose(){rmDice();const kb=foe?foe.n:"몬스터",dgo=!!P.dg,g0=P.gold;say("쓰러졌다...");say("쓰러졌다... 골드를 절반 잃고 마을에서 깨어났다.",1);if(P.dg){say("던전에서 쫓겨났다. 던전 진행 상황이 초기화되었다.",1);P.dg=null}P.gold=r1(P.gold/2);P.hp=MHP();P.loc="town";endB();hidePop();resPop("💀 사망했습니다","#ff5a5a",`<b>${kb}</b>에게 패배했다.<br>골드를 절반 잃었다. <span style="color:#ff8a8a">-${f(g0-P.gold)}G</span>${dgo?"<br>던전에서 쫓겨났다. (진행 상황 초기화)":""}<br>마을에서 깨어났다.`)}
 /* ----- 인벤토리 / 상점 / 장비 / 상태 ----- */
 /* ===== 카드형 UI 도우미 ===== */
@@ -2682,6 +2731,7 @@ function lqTrack(dl){const q=lqQ();let o="";const add=id=>{P.inv[id]=(P.inv[id]|
  if(q.s===1){if(foe.elm==="불"){q.n=(q.n||0)+1;if(q.n>=LQ.k1){q.s=2;o+=`<br><b style="color:#ff9a2e">📜 필살의 비수 (1/2) 완료!</b><br>📜 <b>이어지는 퀘스트 (2/2) 비수의 재료</b> — 재료를 모아 마을의 제작자에게 가져가라.<br><small>꺼지지 않는 불씨 ×${LQ.need.q_leg_a} (불 속성 몬스터) · 군주의 불꽃 파편 ×${LQ.need.q_leg_b} (불 속성 네임드) · 원소 군주의 불꽃 열쇠 ×${LQ.need.q_leg_c} (원소 군주 에테르온)</small>`}else o+=`<br><small style="color:#ff9a2e">📜 필살의 비수 (1/2) 불의 시험 ${q.n}/${LQ.k1}</small>`}}
  else if(q.s===2){const nm=foe.rare||foe.lt||foe.nm,tp=foe.hero&&/^d55_/.test(foe.id); // 퀘스트 재료는 영웅 난이도 원소의 균열 신전에서만
   if(tp&&foe.elm==="불"&&!nm&&lqHave("q_leg_a")<LQ.need.q_leg_a&&Math.random()<(foe.el?LQ.pe:LQ.pa)){add("q_leg_a");o+=`<br>📜 획득: ${inm("q_leg_a")} <small>(${lqHave("q_leg_a")}/${LQ.need.q_leg_a})</small>`}
+  if(tp&&(foe.lt||foe.nm)&&lqHave("q_leg_a")<LQ.need.q_leg_a){const n=R(LQ.bossA[0],LQ.bossA[1]);for(let i=0;i<n;i++)add("q_leg_a");o+=`<br>📜 획득: ${inm("q_leg_a")} ×${n} <small>(${lqHave("q_leg_a")}/${LQ.need.q_leg_a})</small>`}
   if(tp&&foe.elm==="불"&&nm&&lqHave("q_leg_b")<LQ.need.q_leg_b&&Math.random()<LQ.pb){add("q_leg_b");o+=`<br>📜 획득: ${inm("q_leg_b")} <small>(${lqHave("q_leg_b")}/${LQ.need.q_leg_b})</small>`}
   if(tp&&foe.id==="d55_n"&&lqHave("q_leg_c")<LQ.need.q_leg_c){add("q_leg_c");o+=`<br>📜 획득: ${inm("q_leg_c")} <small>(${lqHave("q_leg_c")}/${LQ.need.q_leg_c})</small>`}
   if(Object.keys(LQ.need).every(k=>lqHave(k)>=LQ.need[k]))o+=`<br><b style="color:#ff9a2e">📜 재료를 모두 모았다!</b> 마을의 제작자에게 가자.`}
@@ -2784,7 +2834,7 @@ function dexMenu(tab,cat,idx){if(typeof tab!=="string")tab="el";
  root.append(secEl("⚠ 상태이상 <small style='opacity:.75'>(확률은 스킬마다 다를 수 있다)</small>",cardGrid(STS_ORDER.map(k=>{const S=STS[k];return {col:"#e0a040",html:`<div>${S.i} <b>${S.n}</b> <small style="opacity:.8">(기본 ${pc(S.p)}%)</small></div><div style="font-size:12.5px;margin-top:2px;opacity:.9">${S.d}</div>`}}))));
  root.append(secEl("🛡 영웅 네임드 물리 방어",`<div style="font-size:12.5px;line-height:1.6">영웅 난이도의 네임드(필드 희귀·영웅 / 던전 간부·보스)가 받는 물리 피해 감소는 최대 <b>${HPD_CAP*100}%</b>까지다. 방어력이 높거나 방어력 강화로 이 한도를 넘으면 몬스터가 <b>🛡 물리피해 확정 방어</b> 버프를 얻어, 내 <b>다음 물리 피해(속성 피해 제외)를 전부 막는다</b>. 버프는 몬스터 플레이트에 표시되고 한 번 막으면 사라지며, 이후 ${PG_CD}턴 동안은 다시 생기지 않는다. 주문 피해는 방어력을 무시하므로 영향이 없다.</div>`));
  root.append(secEl("📉 레벨 차 피해 감소",`<div style="font-size:12.5px;line-height:1.6">공격하는 쪽의 레벨이 맞는 쪽보다 <b>낮으면</b> 레벨 차 1당 피해가 <b>${pc(LVD_P)}%</b>씩 줄어든다(최대 ${pc(LVD_MAX)}%). 나와 몬스터에게 똑같이 적용된다.<br>· 적용 대상: <b>일반 피해</b>(방어력 쪽)와 <b>속성 피해</b>(저항력 쪽). <b>고유 피해</b>와 지속 피해는 줄지 않는다.<br>· 예) 만렙(Lv ${LV_CAP})인 내가 Lv 65 몬스터를 공격하면 ${pc(LVD_P*5)}% 감소. 반대로 Lv 55 몬스터가 Lv ${LV_CAP}인 나를 공격해도 같은 비율로 감소한다.</div>`));
- {const q1=x=>f(x*100);root.append(secEl("🕯 저주 공통 규칙",`<div style="font-size:12.5px;line-height:1.65">· 저주는 나와 몬스터가 <b>똑같은 효과</b>를 쓴다. (내가 몬스터에게 거는 저주 = 어둠 속성 공격이 15% 확률로 발동 · 몬스터가 나에게 거는 저주 = 몬스터의 스킬·평타)<br>· 모두 <b>${MC_T}턴</b> 지속되고 <b>중첩되지 않는다</b>. 걸려 있는 동안 다른 저주는 걸리지 않는다. 정화의 성수·정화 스킬로 해제할 수 있다.<br>· 매 턴 <b>어둠 속성 피해</b>를 입는다 (대상 최대 HP의 비율, 저주마다 다름). 방어력은 무시하고 <b>어둠 저항력</b>으로 줄어든다. 몬스터는 자신의 속성 저항(영웅 난이도 ${q1(HERO_RES)}% · 탱커형 ${q1(HERO_RES+TYPE_RES.tank)}% · 회복형 ${q1(HERO_RES+TYPE_RES.sustain)}%)으로 줄어든다.<br>· 네임드(간부·보스·필드 희귀)는 받는 지속 피해가 ×${NDOT_R}, 네임드가 거는 저주의 피해는 ×${NDOT_M}다 (파멸의 저주는 제외).<br>· <b>어둠 속성 몬스터는 저주에 면역</b>이다.</div>`));
+ {const q1=x=>f(x*100);root.append(secEl("🕯 저주 공통 규칙",`<div style="font-size:12.5px;line-height:1.65">· 저주는 나와 몬스터가 <b>똑같은 효과</b>를 쓴다. (내가 몬스터에게 거는 저주 = 어둠 속성 공격이 15% 확률로 발동 · 몬스터가 나에게 거는 저주 = 몬스터의 스킬·평타)<br>· 모두 <b>${MC_T}턴</b> 지속되고 <b>하나만 유지</b>된다. 저주가 걸린 상태에서 또 걸리면(같은 저주든 다른 저주든) <b>기존 저주가 사라지고 새 저주로 교체</b>되며, 지속시간도 새로 시작한다. 정화의 성수·정화 스킬로 해제할 수 있다.<br>· 매 턴 <b>어둠 속성 피해</b>를 입는다 (대상 최대 HP의 비율, 저주마다 다름). 방어력은 무시하고 <b>어둠 저항력</b>으로 줄어든다. 몬스터는 자신의 속성 저항(영웅 난이도 ${q1(HERO_RES)}% · 탱커형 ${q1(HERO_RES+TYPE_RES.tank)}% · 회복형 ${q1(HERO_RES+TYPE_RES.sustain)}%)으로 줄어든다.<br>· 네임드(간부·보스·필드 희귀)는 받는 지속 피해가 ×${NDOT_R}, 네임드가 거는 저주의 피해는 ×${NDOT_M}다 (파멸의 저주는 제외).<br>· <b>어둠 속성 몬스터는 저주에 면역</b>이다.</div>`));
  root.append(secEl("🕯 저주의 종류",cardGrid(Object.entries(CURSE).map(([k,c])=>({col:"#b08cff",html:`<div>🕯 <b>${c.n}</b></div><div style="font-size:12.5px;opacity:.9;margin-top:2px">${c.d}</div><div style="font-size:12px;opacity:.85;color:#9be3a8;margin-top:3px">${k==="doom"?`최초 대상 최대 HP ${q1(DOOM_B)}%의 어둠 피해 → 이후 4턴 매 턴 최초 피해의 ${DOOM_TK.map(x=>q1(x)).join("% → ")}%`:`${MC_T}턴 · 매 턴 대상 최대 HP ${q1(c.f)}%의 어둠 속성 피해`}</div>`})))))};
  {const p1=x=>f(x*100);root.append(secEl("📐 상태이상 공통 규칙",`<div style="font-size:12.5px;line-height:1.6">· 상태이상과 저주는 나와 몬스터가 같은 규칙을 쓴다. 나는 착용효과와 공격 속성 효과로, 몬스터는 스킬로 건다. 달라지는 건 발동 확률뿐이다.<br>· 지속 피해는 <b>대상 최대 HP의 비율</b>로 들어간다 (방어력 무시): 출혈 ${p1(DOT_F.bleed)}% · 중독 ${p1(DOT_F.poison)}% · 화상 ${p1(DOT_F.burn)}% · 저주는 종류별(저주의 종류 항목 참고) · 질병 즉시 ${p1(DOT_F.disease)}%. 중첩마다 따로 들어간다.<br>· 네임드(간부·필드 희귀·보스)가 거는 지속 피해는 ×${NDOT_M}, 네임드가 받는 지속 피해는 ×${NDOT_R}이다.<br>· <b>내가 몬스터에게 거는 상태이상</b>(착용효과, 타마다 따로 판정): 출혈·질병(지속 피해) · 수면(행동권 1회 상실, 먼저 때리면 깨어나며 첫 일격 +50%) · 현혹(공격 40% 빗나감 3회) · 공포(공격력 -25% 2턴) · 침식(받는 피해 +10% 3턴) · 상처(회복 -60%, 받는 지속 피해 +25% 3턴) · 한기(모든 스킬 시전 성공 확률 절반 3턴). 수면·공포는 네임드 면역, 질병은 독·침식은 땅·한기는 물 속성 몬스터 면역이다.<br>· 행동 불가 계열(기절·수면·공포)은 <b>네임드 몬스터에게 걸리지 않는다</b>. 감전은 걸리지만 마비 확률이 절반(${p1(SHOCK_FAIL/2)}%)이다. 땅 속성 몬스터는 기절에도 면역이다.<br>· 나와 일반 난이도 몬스터는 모든 속성에 <b>기본 저항 ${p1(BASE_RES)}%</b>가 있다. <b>영웅 난이도 몬스터</b>(필드·던전 전부)는 모든 속성 저항이 <b>${p1(HERO_RES)}%</b>이고, 유형이 <b>🛡탱커형</b>이면 +${p1(TYPE_RES.tank)}%p(${p1(HERO_RES+TYPE_RES.tank)}%), <b>💚회복형</b>이면 +${p1(TYPE_RES.sustain)}%p(${p1(HERO_RES+TYPE_RES.sustain)}%)다. 속성 피해와 속성 지속 피해(독·화상·질병)가 저항만큼 줄고, 속성 효과가 발동할 확률도 저항만큼 줄어든다. 속성이 없는 지속 피해(출혈·저주 등)는 줄지 않는다. (같은 속성 몬스터는 별개로 75% 면역 / 25% 피해 -75%)<br>· 약점 관계(상태이상 쪽): 화상↔불 · 감전↔번개 · 눈부심↔빛 · 저주↔어둠 · 수면 중 피격 +${pc(SLEEP_BONUS)}%. 나와 몬스터 모두에게 똑같이 적용된다. 빛 속성 공격은 보호막이 있는 대상에게 폭발해 +${pc(LIGHT_BURST)}%.</div>`))}
  root.append(btnRow([["상태 창으로",stMenu],["닫기",closeP]]))}
@@ -2857,6 +2907,7 @@ function nmCard(key,mult,drop,tag,hl){const b0=tnb(key,!!hl),b=hl?heroScale(b0,h
   const rm=/^r(\d+)_\d+$/.exec(key);if(hl&&rm&&+rm[1]<15)o.push(`👑 영웅 네임드 소환 재료: ${inm("hn"+rm[1]+"_s")} <b>${pc(HERO_SUM)}%</b> (영웅 난이도 · 한 번에 1개)`);
   const dq=!!hl&&/^d55_/.test(key),fq=dq&&b.elm==="불";
   if(dq)o.push(`📜 퀘스트 시작 아이템: ${inm("q_leg0")} <b>${pc(LQ.drop)}%</b> (영웅 난이도 신전 전용 · 진행 중인 퀘스트·보유 의뢰서가 없을 때 · 신전 몬스터 공통)`);
+  if(dq&&(b.lt||b.nm||/^d55_(m\d|n)$/.test(key)))o.push(`📜 퀘스트 재료(필살의 비수 2단계 중): ${inm("q_leg_a")} <b>확정 ${LQ.bossA[0]}~${LQ.bossA[1]}개</b> (간부·보스 · 속성 무관)`);
   if(fq)o.push(`📜 퀘스트 재료(필살의 비수 2단계 중): ${inm("q_leg_b")} <b>${pc(LQ.pb)}%</b>`+(key==="d55_n"?` · ${inm("q_leg_c")} <b>100%</b>`:""));
   else if(dq&&key==="d55_n")o.push(`📜 퀘스트 재료(필살의 비수 2단계 중): ${inm("q_leg_c")} <b>100%</b>`);
   return o.join("<br>")})(),pl=b.drops.filter(([i])=>!/^potion/.test(i)).map(([i,p])=>`${inm(i)} ${pc(p)}%`).join(" · "),po=b.drops.filter(([i])=>/^potion/.test(i)).map(([i,p])=>`${ITEMS[i].n} ${(p*100).toFixed(1)}%`).join(" · "),cx=(l,v)=>`<div class="sx"><small style="opacity:.8">${l}</small><div style="font-weight:700">${v}</div></div>`;
@@ -2926,7 +2977,7 @@ function dexDrop(nav,cat,idx){idx=idx||0;
   root.append(card("⚠ 정예 몬스터 <small style='opacity:.8'>(던전마다 3마리)</small>","#e0a040",big(DG_ELITE_DROP,"최대 1개")+bar(RAR_T.e)+`<div style="margin-top:6px;font-size:12.5px">부위: 14개 부위 균등 <b>${p1(1/14)}</b> <small style="opacity:.8">(처치 1회당 특정 부위 ${p1(DG_ELITE_DROP/14)})</small></div>`+tip));
   root.append(card(`🗡 간부 네임드 <small style='opacity:.8'>— ${x.n} (2마리)</small>`,"#5b9bff",big(LT_GEAR,"1개 확정")+bar(RAR_T.lt)+partRows([x.id+"_m0",x.id+"_m1"],LT_GEAR,0)));
   root.append(card(`👑 보스 네임드 <small style='opacity:.8'>— ${x.n}</small>`,"#ff7ac6",big(1,`1개 확정 + ${p1(NAMED_EXTRA)} 확률로 1개 추가`)+bar(RAR_T.b)+partRows([x.id+"_n"],1,NAMED_EXTRA)))}
- if(kind==="dg"&&x.id==="d55")root.append(card("📜 퀘스트 아이템 (필살의 비수)","#ff9a2e",`<div style="font-size:12.5px;line-height:1.65">· <b>필살의 비수 관련 아이템은 영웅 난이도의 이 던전에서만 나온다</b> (일반 난이도에서는 나오지 않는다)<br>· 시작 아이템 <b>${inm("q_leg0")}</b>: 이 던전의 <b>모든 몬스터</b>(정예·간부·보스)가 영웅 난이도에서 처치 시 각 <b>${p1(LQ.drop)}</b> (진행 중인 퀘스트나 보유한 의뢰서가 없을 때만)<br>· 퀘스트 2단계 재료: ${inm("q_leg_a")} — 불 속성 일반 ${p1(LQ.pa)} · 정예 ${p1(LQ.pe)} / ${inm("q_leg_b")} — 불 속성 네임드(희귀·간부·보스) ${p1(LQ.pb)} / ${inm("q_leg_c")} — 에테르온 <b>100%</b></div>`));
+ if(kind==="dg"&&x.id==="d55")root.append(card("📜 퀘스트 아이템 (필살의 비수)","#ff9a2e",`<div style="font-size:12.5px;line-height:1.65">· <b>필살의 비수 관련 아이템은 영웅 난이도의 이 던전에서만 나온다</b> (일반 난이도에서는 나오지 않는다)<br>· 시작 아이템 <b>${inm("q_leg0")}</b>: 이 던전의 <b>모든 몬스터</b>(정예·간부·보스)가 영웅 난이도에서 처치 시 각 <b>${p1(LQ.drop)}</b> (진행 중인 퀘스트나 보유한 의뢰서가 없을 때만)<br>· 퀘스트 2단계 재료: ${inm("q_leg_a")} — 불 속성 일반 ${p1(LQ.pa)} · 정예 ${p1(LQ.pe)} · <b>이 던전의 간부·보스는 속성 무관 확정 ${LQ.bossA[0]}~${LQ.bossA[1]}개</b> / ${inm("q_leg_b")} — 불 속성 네임드(희귀·간부·보스) ${p1(LQ.pb)} / ${inm("q_leg_c")} — 에테르온 <b>100%</b></div>`));
  root.append(card("📦 장비 공통 규칙","#7fd4ff",rule));
  root.append(btnRow([["닫기",closeP]]))}
 function fxRows(){const m=fxSum(),ids=Object.keys(m).map(Number).sort((a,b)=>a-b);
