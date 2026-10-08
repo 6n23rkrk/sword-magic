@@ -1368,7 +1368,7 @@ charm:["장비 '현혹' 8~18%","3회 동안 몬스터의 공격이 40% 확률로
 dazzle:["빛 속성 공격 "+Math.round(PROC_P*100)+"%","몬스터의 다음 2번 행동이 50% 확률로 빗나간다. 빛 속성 몬스터는 면역이다."],
 bleed:["장비 '출혈' 8~18%","3턴 동안 매 턴 출혈 피해. 최대 5중첩."],
 poison:["장비 '독' 5~15%(2턴) · 독 속성 공격 "+Math.round(PROC_P*100)+"%(5턴) · 맹독 칼날","매 턴 독 피해. 최대 5중첩. 독 속성 몬스터는 면역이다."],
-burn:["장비 '화상' 10~25% · 불 속성 공격 "+Math.round(PROC_P*100)+"%","3턴 동안 매 턴 화상 피해. 최대 3중첩(필살의 비수 착용 시 확률 2배 · 최대 9중첩). 불 속성 몬스터는 면역이다."],
+burn:["장비 '화상' 10~25% · 불 속성 공격 "+Math.round(PROC_P*100)+"%","3턴 동안 매 턴 화상 피해. 최대 3중첩. 불 속성 몬스터는 면역이다."],
 curse:["어둠 속성 공격 "+Math.round(PROC_P*100)+"%","랜덤 저주 1개를 4턴 건다(저주는 하나만 유지). 어둠 속성 몬스터는 면역이다."],
 disease:["장비 '질병' 4~10%","3턴 동안 매 턴 질병 피해. 최대 3중첩. 독 속성 몬스터는 면역이다."],
 fear:["장비 '공포' 6~14%","2턴 동안 몬스터 공격력 -25%. 몬스터가 피해를 입을 때마다 50% 확률로 풀린다. 땅 속성 몬스터와 네임드는 면역이다."],
@@ -1574,7 +1574,7 @@ const EFF=[
 [53,"막기 확률 +{0}% (몬스터의 공격 1타를 막아 피해를 입지 않는다)",[[2,6]]]];
 const FX_CHANCE={green:.03,blue:.15,purple:.4,purple2:.1,rarePick:.05}; // 녹색 3% / 파랑 15% / 보라 40%(그중 10%는 2개) / 보라 중 희귀효과 선택 5%
 const EFFM=Object.fromEntries(EFF.map(e=>[e[0],e]));
-EFFM[99]=[99,"[전설 고유효과] 착용하는 동안 적에게 화상을 적용할 확률이 2배가 되며, 화상의 최대 중첩 한도가 3배(3 → 9중첩)로 늘어난다. 화상이 3중첩 쌓일 때마다 중첩을 소모하지 않고 화상이 폭발해, 화상 3중첩의 3턴치 피해를 즉시 입힌다.",[[1,1]],1];
+EFFM[99]=[99,"[전설 고유효과] 착용하는 동안 적에게 화상을 적용할 확률이 적에게 공격 시 50%가 되며, 화상의 최대 중첩 한도가 3배(3 → 9중첩)로 늘어난다. 화상이 3중첩 쌓일 때마다 중첩을 소모하지 않고 화상이 폭발해, 화상 3중첩의 3턴치 피해를 즉시 입힌다.",[[1,1]],1];
 const fxDesc=(id,v)=>EFFM[id][1].replace(/\{(\d)(?:\*([\d.]+))?\}/g,(_,k,m)=>f(v[k]*(m?+m:1))).replace(/§/g,ATKN());
 const fxOk=e=>{const t=e[4];if(!t)return true;if(t==='phys'||t==='spell')return !P.job||!JOBS[P.job]||JOBS[P.job].kind===t;return P.job===t};
 function rollFx(r){let n=0;const x=Math.random();
@@ -2063,7 +2063,7 @@ function trTurn(){const t=foe.trait;if(!t)return;
  else if(t.k==="aura"){const ad=r1(MHP()*t.v*NDOT_M*(1-Math.min(75,E(34))/100));pDot(`${trMsg(t)}`,MHP()*t.v*NDOT_M);trPop(`내 HP -${f(ad)} (방어 무시)`,"#ff8f8f")}}
 const LEECH_P=.2; // 몬스터에게 건 흡혈의 저주: 지속시간 동안 내가 입힌 피해의 20.0%만큼 HP 회복
 const EL_FX={"불":"15% 확률로 몬스터에게 화상 (최대 3중첩 · 화상 중인 몬스터에게 불 공격 시 약점)","물":"15% 확률로 최대 HP 8.0% 회복","땅":"15% 확률로 몬스터 기절","바람":"15% 확률로 연계점수 +1","빛":"15% 확률로 보호막 (최대 HP 8.0%) · 보호막이 있을 때 빛 공격은 폭발해 피해 +20%","어둠":"15% 확률로 몬스터에게 랜덤 저주 1개 (4턴 · 매 턴 어둠 속성 피해 · 저주 중인 몬스터에게 어둠 공격 시 약점)","번개":"15% 확률로 몬스터 감전 (3턴 · 행동권을 얻어도 25% 확률로 마비 · 감전 중 번개 공격 시 약점)","독":"15% 확률로 몬스터에게 중독 (5턴)"},MCURSE=Object.fromEntries(Object.entries(CURSE).map(([k,c])=>[k,c.d])),LIGHT_BURST=.2,SHOCK_WEAK=.3,MC_T=4,PROC_P=.15;
-function elemProc(e,pops,d,imm){if(!e||imm||d<=0||Math.random()>=PROC_P*(e==="불"&&HAS(99)?2:1)*(1-foeRes()))return;
+function elemProc(e,pops,d,imm){if(!e||imm||d<=0||(e==="불"&&HAS(99))||Math.random()>=PROC_P*(1-foeRes()))return;
  const im=ek=>`${ek==="stun"?"💫":"⚡"} <b>${ek==="stun"?"기절":"감전"}</b> 🛡 면역`;
  switch(e){
   case"불":pops.push(addDot("burn",3,fd("burn"),"화상"));break;
@@ -2474,7 +2474,7 @@ function hit(m,o){if(m===2&&BS.ds.chill&&Math.random()<CHILL_FAIL&&!(o&&o.amb)){
   {const NH=NH0-nb,dh=d/NH;for(let hi=0;hi<NH;hi++){
   for(const e in EA){if(EA[e]>0)plateBurst("foebar",e);if(EA[e]>0)elemProc(e,pops,dh,e in ELI?ELI[e]:elemMult(foe.elm,e)===0)}
   if(E(5)&&Math.random()*100<Math.min(100,E(5)))pops.push(addDot("poison",2,fd("poison",E(5,1)/20),"독"));
-  if(E(11)&&Math.random()*100<Math.min(100,E(11)*(HAS(99)?2:1)))pops.push(addDot("burn",3,fd("burn",E(11,1)/15),"화상"));
+  if(HAS(99)){if(Math.random()<.5)pops.push(addDot("burn",3,E(11)?fd("burn",E(11,1)/15):fd("burn"),"화상"))}else if(E(11)&&Math.random()*100<Math.min(100,E(11)))pops.push(addDot("burn",3,fd("burn",E(11,1)/15),"화상"));
   if(E(44)&&Math.random()*100<Math.min(100,E(44)))pops.push(addDot("bleed",3,fd("bleed",E(44,1)/20),"출혈"));
   if(E(45)&&Math.random()*100<Math.min(100,E(45)))pops.push(addDot("disease",3,fd("disease",E(45,1)/20),"질병"));
   for(const[id,k]of[[46,"sleep"],[47,"charm"],[48,"fear"],[49,"corrode"],[50,"wound"],[51,"chill"]])if(E(id)&&Math.random()*100<Math.min(100,E(id)))pops.push(foeStatus(k));
