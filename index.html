@@ -247,6 +247,15 @@ body{background:radial-gradient(1200px 700px at 50% -10%,#1d2c24 0%,#0d1310 60%)
 .row button.on,.tgl.on{background:linear-gradient(#2a3a30,#18241d);color:var(--gold);border:2px solid #ffe08a;padding:5px 11px;box-shadow:0 0 0 2px #ffe08a33,0 0 12px #ffd34d77,inset 0 3px 8px #000a}
 #bar button.on{background:linear-gradient(#2a3a30,#18241d);color:var(--gold);border:2px solid #ffe08a;padding:6px 13px;box-shadow:0 0 0 3px #ffe08a33,0 0 16px #ffd34d88,inset 0 3px 8px #000a;transform:translateY(1px);position:relative}
 #bar button.on::after{content:"";position:absolute;left:50%;bottom:-9px;margin-left:-6px;border:6px solid transparent;border-top:0;border-bottom:7px solid #ffe08a;filter:drop-shadow(0 0 4px #ffd34d)}
+#b-ham{display:none}
+@media(max-width:640px){
+ #b-ham{display:inline-block;min-width:46px;font-size:20px;line-height:1;padding:6px 14px;text-align:left}
+ #b-ham.on{background:linear-gradient(#2a3a30,#18241d);color:var(--gold);border:2px solid #ffe08a;padding:5px 13px;box-shadow:0 0 0 2px #ffe08a33,0 0 12px #ffd34d77,inset 0 3px 8px #000a}
+ #bar>button:not(#b-ham):not(#b-set){display:none}
+ #bar.mopen>button:not(#b-ham):not(#b-set){display:inline-block;animation:hamIn .2s ease-out both}
+ #bar.mopen>#b-inv{margin-left:0!important}
+}
+@keyframes hamIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
 #panel.dropin{animation:dropIn .32s cubic-bezier(.2,.9,.25,1) both}
 @keyframes dropIn{0%{opacity:0;transform:translateY(-16px) scaleY(.92)}60%{opacity:1}100%{opacity:1;transform:none}}
 button{border-radius:7px;background:linear-gradient(#ecd68f,#bf9f45);color:#241c07;box-shadow:0 1px 0 #fff6 inset,0 2px 5px #0006;transition:filter .12s,transform .08s,box-shadow .12s;border:1px solid #8f7630}
@@ -320,7 +329,7 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 @media(max-width:640px){#dbtn{width:80px;height:80px}#dbtn .di{font-size:38px}}
 </style></head><body>
 <div id="app">
- <div id="bar"><button id="b-move">이동</button><button id="b-fight">전투</button><button id="b-rest">휴식</button><button id="b-save">저장</button><button id="b-inv" style="margin-left:auto">인벤토리</button><button id="b-eq">장비</button><button id="b-st">상태</button><button id="b-dex">도감</button><button id="b-set" title="설정">⚙</button><div id="setm"><button id="m-title">🏠 시작화면</button><button id="m-cloud">☁ 클라우드 동기화</button></div></div>
+ <div id="bar"><button id="b-ham" type="button" aria-label="메뉴" aria-expanded="false">☰</button><button id="b-move">이동</button><button id="b-fight">전투</button><button id="b-rest">휴식</button><button id="b-save">저장</button><button id="b-inv" style="margin-left:auto">인벤토리</button><button id="b-eq">장비</button><button id="b-st">상태</button><button id="b-dex">도감</button><button id="b-set" title="설정">⚙</button><div id="setm"><button id="m-title">🏠 시작화면</button><button id="m-cloud">☁ 클라우드 동기화</button></div></div>
  <div id="hud"></div><div id="pbar"></div><div id="qbar"></div><div id="foebar"></div><div id="logs"><div class="lp"><h4>📜 일반 로그</h4><div id="log" class="lg"></div></div><div class="lp"><h4>⚔ 전투 로그</h4><div id="blog" class="lg"></div></div></div><div id="lqbar"></div><div id="panel"></div>
 </div>
 <div id="pop"><div class="pcard"></div></div>
@@ -1498,7 +1507,8 @@ const eqTip=g=>()=>{const sn=Object.fromEntries(SLOTS),ks=g.t==="finger"||g.t===
 const hidePop=()=>{const p=$("pop");if(p)p.style.display="none"};
 var PWAS=false,DK=null;
 const DKB=["b-move","b-inv","b-eq","b-st","b-dex"];
-function syncBtn(){const on=!!$("panel").classList.contains("drop");DKB.forEach(i=>{const e=$(i);e&&e.classList.toggle("on",on&&DK===i)})}
+function syncBtn(){const on=!!$("panel").classList.contains("drop");DKB.forEach(i=>{const e=$(i);e&&e.classList.toggle("on",on&&DK===i)});const h=$("b-ham");if(h){const a=on&&DK&&$(DK);h.classList.toggle("on",!!a);h.textContent=a?"☰ "+a.textContent:"☰"}}
+function hamSet(o){const b=$("bar"),h=$("b-ham");if(!b)return;b.classList.toggle("mopen",!!o);if(h)h.setAttribute("aria-expanded",o?"true":"false");posDrop()}
 const dk=(id,fn)=>()=>{if(!foe&&DK===id&&$("panel").classList.contains("drop"))return clear();DK=id;fn();if(!$("panel").classList.contains("drop"))DK=null;syncBtn()};
 function posDrop(){const p=$("panel");if(!p||!p.classList.contains("drop"))return;const b=$("bar"),a=$("app"),t=b.offsetTop+b.offsetHeight+6;p.style.top=t+"px";p.style.maxHeight=Math.max(120,a.clientHeight-t-10)+"px"}
 addEventListener("resize",posDrop);
@@ -2727,7 +2737,7 @@ async function saveMenu(){save();const code=await encSave();
    ["파일에서 불러오기",()=>{const i=document.createElement("input");i.type="file";i.onchange=()=>{const fl=i.files[0];if(!fl)return;const r=new FileReader();r.onload=async()=>{let j;try{j=await decSave(r.result)}catch(e){say("❌ "+(typeof e==="string"?e:"올바른 저장 파일이 아닙니다."));return}applySave(j)};r.readAsText(fl)};i.click()}]]],
   ["",[["닫기",closeP]]]])}
 $("res").onclick=e=>{if((e.target===$("res")&&!RES_LOCK)||(e.target.classList&&e.target.classList.contains("rok")))resClose()};document.addEventListener("keydown",e=>{if($("res").style.display==="flex"&&(e.key==="Enter"||e.key==="Escape"||e.key===" ")){e.preventDefault();if(!RES_LOCK)resClose()}});
-$("b-move").onclick=dk("b-move",moveMenu);$("b-fight").onclick=fightBtn;$("b-inv").onclick=dk("b-inv",()=>invMenu());$("b-eq").onclick=dk("b-eq",eqMenu);{const fe=$("foebar");fe.style.cursor="help";fe.onmouseenter=e=>{if(foe&&Date.now()-LT>1000)showTip(foeTip(),e)};fe.onmousemove=e=>{if(foe&&Date.now()-LT>1000)moveTip(e)};fe.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(fe,()=>foeTip())}
+$("b-ham").onclick=()=>hamSet(!$("bar").classList.contains("mopen"));$("bar").addEventListener("click",e=>{const b=e.target.closest&&e.target.closest("button");if(b&&b.id!=="b-ham"&&b.id!=="b-set"&&$("bar").contains(b)&&b.parentNode===$("bar"))setTimeout(()=>hamSet(false),0)});$("b-move").onclick=dk("b-move",moveMenu);$("b-fight").onclick=fightBtn;$("b-inv").onclick=dk("b-inv",()=>invMenu());$("b-eq").onclick=dk("b-eq",eqMenu);{const fe=$("foebar");fe.style.cursor="help";fe.onmouseenter=e=>{if(foe&&Date.now()-LT>1000)showTip(foeTip(),e)};fe.onmousemove=e=>{if(foe&&Date.now()-LT>1000)moveTip(e)};fe.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(fe,()=>foeTip())}
 $("b-st").onclick=dk("b-st",stMenu);$("b-dex").onclick=dk("b-dex",()=>dexMenu());$("b-rest").onclick=rest;$("b-save").onclick=saveMenu;
 clamp();hud();if(REFUND){save();say(`💱 마나 물약이 폐지되어 보유분이 판매가로 환급되었습니다. (+${f(REFUND)}G)`,1)}if(P.lvNote){say(`⚠ 만렙이 Lv ${LV_CAP}로 고정되어, 초과했던 ${P.lvNote}레벨분을 되돌렸습니다. (레벨업으로 올랐던 공격력 -${f(2*P.lvNote)} · 방어력 -${f(P.lvNote)} · 능력치 각 -${f(P.lvNote)})`,1);P.lvNote=0;save()}say(fresh?"모험가로서 첫발을 내디뎠다. 여기는 시작 마을. <b>이동</b>에서 전투지역을 고르고, <b>전투</b>로 몬스터를 찾아보자.":"다시 돌아온 것을 환영한다, 모험가여.");
 
