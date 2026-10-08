@@ -35,6 +35,7 @@ body{background:var(--bg);color:var(--ink);font:15px/1.55 "Malgun Gothic","Apple
 .hv{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 .bxh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:-8px;z-index:3;background:var(--panel);padding:4px 0;margin-bottom:2px}.bxh .r{margin-left:auto}
 .bxw{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}.bxc{min-width:0;max-height:calc(46vh - 76px);overflow:auto;padding-right:2px}.bxc .cg{grid-template-columns:1fr}.bxt{font-weight:700;padding:2px 0 3px;border-bottom:1px solid var(--line);margin-bottom:2px}
+.bck{font-style:normal;margin-right:3px;color:#ffd34d;font-size:13px}.bxg.b4{grid-template-columns:repeat(4,minmax(0,1fr))}.bxtab{border-bottom:0;flex-wrap:wrap;gap:6px;padding:2px 0 4px}.bxtab button{padding:5px 9px;white-space:nowrap}.bxtab small{opacity:.8;font-weight:400}
 .bxg{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:4px}.bs{border:1px solid #556;background:#0d0d14;padding:5px 6px;min-height:32px;display:flex;align-items:center;font-size:12.5px;font-weight:700;line-height:1.25;word-break:keep-all;overflow:hidden;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.bs span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.bs:hover{background:#1a1a26;border-color:#aab}.bs.sel{outline:2px solid #ffd34d;background:#23230f}.bs.em{border-style:dashed;border-color:#334;background:#0a0a10;cursor:default}.bs.em:hover{background:#0a0a10;border-color:#334}.bs small{opacity:.8;font-weight:400;margin-left:3px;white-space:nowrap}
 .row{display:flex;gap:8px;align-items:center;padding:3px 0;border-bottom:1px solid #0004}#panel .row{flex-wrap:wrap}.ipop{position:absolute;z-index:30;background:#1d2a20;border:2px solid #ffd34d;padding:6px 8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;max-width:min(92%,360px);box-shadow:0 4px 14px #000a}#panel .row>span:has(>i.dl){display:none}#panel .row button{white-space:nowrap}@media(max-width:520px){#panel .row{gap:5px}#panel .row button{padding:6px 8px}}.row span{flex:1}
 button{font:inherit;font-weight:700;background:var(--line);color:#1d1a0c;border:0;padding:6px 12px;cursor:pointer}
@@ -469,6 +470,13 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 #rfx.sw .ew{width:46vw;height:22vw;margin-top:-11vw}
 #rfx.sw .ew.l{left:2%}#rfx.sw .ew.r{right:2%}
 #rfx.sw .ey{filter:drop-shadow(0 0 10px #b27aff)}
+}
+
+@media(max-width:640px){
+.bxw{grid-template-columns:1fr}.bxc{max-height:none;overflow:visible}
+.bxtab{flex-wrap:nowrap;gap:4px}.bxtab button{flex:1 1 0;min-width:0;padding:6px 2px;font-size:12.5px}
+.bxtab button.on{padding:5px 1px!important}
+.bxg.b4 .bs{font-size:11.5px;padding:4px 3px}
 }
 </style></head><body>
 <div id="app">
@@ -2455,20 +2463,24 @@ function resClose(){RES_LOCK=false;hideTip();const r=$("res");if(r)r.style.displ
 // 마을 NPC. 칸(슬롯) 수 제한이 있고 같은 소모품·재료는 한 칸에 쌓인다. 창고 안 아이템은 이름(등급 색)만 슬롯으로 보이고, 마우스를 올리면(모바일은 길게 누르면) 툴팁이 뜬다.
 const BOX_CAP=100,BSORT=[["rar","등급·부위·레벨순"],["lv","레벨순"],["name","이름순"],["part","부위순"],["old","보관순"]];
 const boxUsed=()=>Object.keys(P.box.inv).filter(id=>P.box.inv[id]>0&&ITEMS[id]).length+P.box.gear.length;
-let BSEL=null;
+let BSEL=null,LSEL=null,LCAT="use",BMULTI=false;const BMS=new Set();
 const boxTipI=id=>()=>{const it=ITEMS[id];return `<div>${inm(id)}</div><div>${itemDesc(id)}</div><div style="opacity:.7;font-size:12px">${it.t==="use"||it.t==="cure"?"소모품":"재료"} · 창고 ${P.box.inv[id]||0}개 · 판매가 ${f(it.p)}G</div>`};
 const boxTipG=g=>()=>`<div style="opacity:.7;font-size:12px">창고 보관 중</div>${gearBody(g)}`;
 const gIdx=g=>Math.max(0,TYPES.findIndex(t=>t[0]===g.t)),gOrd=(a,b)=>b.r-a.r||gIdx(a)-gIdx(b)||b.lv-a.lv; // 장비 기본 정렬: 등급 → 부위 → 레벨(높은 순)
 const boxSortG=m=>({rar:(a,b)=>gOrd(a.g,b.g)||a.i-b.i,lv:(a,b)=>b.g.lv-a.g.lv||b.g.r-a.g.r||a.i-b.i,name:(a,b)=>a.g.n.localeCompare(b.g.n,"ko")||a.i-b.i,part:(a,b)=>gIdx(a.g)-gIdx(b.g)||b.g.r-a.g.r||b.g.lv-a.g.lv||a.i-b.i,old:(a,b)=>a.i-b.i})[m]||(()=>0);
 const boxSortI=m=>({rar:(a,b)=>ITEMS[b].r-ITEMS[a].r||ITEMS[a].n.localeCompare(ITEMS[b].n,"ko"),lv:(a,b)=>ITEMS[b].r-ITEMS[a].r||ITEMS[a].n.localeCompare(ITEMS[b].n,"ko"),name:(a,b)=>ITEMS[a].n.localeCompare(ITEMS[b].n,"ko"),part:(a,b)=>ITEMS[b].r-ITEMS[a].r||ITEMS[a].n.localeCompare(ITEMS[b].n,"ko"),old:()=>0})[m]||(()=>0);
 function boxPut(kind,x,all){const B=P.box;
- if(kind==="g"){if(boxUsed()>=BOX_CAP)return say("📦 창고가 가득 찼다.",1);const g=P.gear[x];if(!g)return;P.gear.splice(x,1);B.gear.push(g);say(`📦 창고에 맡겼다: <span style="color:${RC[g.r]}">${g.up?`+${g.up} `:""}${g.n}</span>`,1)}
+ if(kind==="g"){if(boxUsed()>=BOX_CAP)return say("📦 창고가 가득 찼다.",1);const g=P.gear[x];if(!g)return;P.gear.splice(x,1);B.gear.push(g);LSEL=null;say(`📦 창고에 맡겼다: <span style="color:${RC[g.r]}">${g.up?`+${g.up} `:""}${g.n}</span>`,1)}
  else{const have=P.inv[x]||0;if(have<=0)return;if(!(B.inv[x]>0)&&boxUsed()>=BOX_CAP)return say("📦 창고가 가득 찼다.",1);const n=all?have:1;P.inv[x]=have-n;B.inv[x]=(B.inv[x]||0)+n;say(`📦 창고에 맡겼다: ${inm(x)} ×${n}`,1)}
  save();boxMenu()}
 function boxTake(kind,x,all){const B=P.box;
  if(kind==="g"){const g=B.gear[x];if(!g)return;B.gear.splice(x,1);P.gear.push(g);BSEL=null;say(`🎒 창고에서 꺼냈다: <span style="color:${RC[g.r]}">${g.up?`+${g.up} `:""}${g.n}</span>`,1)}
  else{const have=B.inv[x]||0;if(have<=0)return;const n=all?have:1;B.inv[x]=have-n;if(B.inv[x]<=0){delete B.inv[x];BSEL=null}P.inv[x]=(P.inv[x]||0)+n;say(`🎒 창고에서 꺼냈다: ${inm(x)} ×${n}`,1)}
  save();boxMenu()}
+function boxTakeMulti(all){const B=P.box;let ni=0,ng=0;const gi=[];
+ BMS.forEach(k=>{const a=k[0],x=k.slice(2);if(a==="i"){const have=B.inv[x]||0;if(have<=0)return;const n=all?have:1;B.inv[x]=have-n;if(B.inv[x]<=0)delete B.inv[x];P.inv[x]=(P.inv[x]||0)+n;ni++;say(`🎒 창고에서 꺼냈다: ${inm(x)} ×${n}`,1)}else if(B.gear[+x])gi.push(+x)});
+ gi.sort((p,q)=>q-p).forEach(i=>{const g=B.gear.splice(i,1)[0];P.gear.push(g);ng++;say(`🎒 창고에서 꺼냈다: <span style="color:${RC[g.r]}">${g.up?`+${g.up} `:""}${g.n}</span>`,1)});
+ BMS.clear();BSEL=null;save();boxMenu()}
 function boxSlot(label,col,tip,selOn,onClick){const d=document.createElement("div");d.className="bs hv"+(selOn?" sel":"");d.style.color=col;d.innerHTML=`<span>${label}</span>`;d.onclick=()=>{if(Date.now()-LT>1000&&LPF){LPF=false;return}onClick()};
  d.onmouseenter=e=>{if(Date.now()-LT>1000)showTip(tip(),e)};d.onmousemove=e=>{if(Date.now()-LT>1000)moveTip(e)};d.onmouseleave=()=>{if(Date.now()-LT>1000)hideTip()};longPress(d,tip);return d}
 function boxPlate(title,slots,n,emptyMsg){const g=document.createElement("div");g.className="bxg";slots.forEach(x=>g.append(x));
@@ -2481,23 +2493,42 @@ function boxMenu(){if(foe||P.loc!=="town")return;const B=P.box,sm=B.sort||"rar",
  const wrap=document.createElement("div");wrap.className="bxw";const L=document.createElement("div"),Rr=document.createElement("div");L.className="bxc";Rr.className="bxc";wrap.append(L,Rr);root.append(wrap);
  // 좌측: 인벤토리 (맡기기)
  const lh=document.createElement("div");lh.className="bxt";lh.innerHTML="🎒 인벤토리 <small style='opacity:.75;font-weight:400'>(맡기기)</small>";L.append(lh);
- const iu=[],im=[];Object.entries(P.inv).filter(x=>x[1]>0&&ITEMS[x[0]]).forEach(([id,n])=>{const it=ITEMS[id],bt=[["1개 맡기기",()=>boxPut("i",id,0)],["전부",()=>boxPut("i",id,1),n<2]];
-  (it.t==="mat"?im:iu).push({html:`<div><b>${inm(id)}</b> <span style="opacity:.9">×${n}</span></div>`,btns:bt,tip:itemTip(id),col:RC[it.r]})});
- if(iu.length)L.append(secEl(`🧪 소모품 <small style="opacity:.75">(${iu.length}종)</small>`,cardGrid(iu)));
- if(im.length)L.append(secEl(`🧱 재료 <small style="opacity:.75">(${im.length}종)</small>`,cardGrid(im)));
- const ig=P.gear.map((g,i)=>[g,i]).sort((a,b)=>gOrd(a[0],b[0])).map(([g,i])=>({html:gearBody(g),col:RC[g.r],tip:eqTip(g),btns:[["맡기기",()=>boxPut("g",i)]]}));
- if(ig.length)L.append(secEl(`🛡 장비 <small style="opacity:.75">(${ig.length}개 · 착용 중 제외)</small>`,cardGrid(ig)));
- if(!iu.length&&!im.length&&!ig.length)L.append(secEl("🎒 비어 있음","<span style='opacity:.7'>맡길 물건이 없습니다.</span>"));
+ // 카테고리(소모품/재료/장비) 중 하나만 골라 보고, 한 줄 4칸 슬롯으로 표시. 슬롯을 눌러 선택 → 맡기기
+ const iu=[],im=[];Object.entries(P.inv).filter(x=>x[1]>0&&ITEMS[x[0]]).forEach(([id,n])=>(ITEMS[id].t==="mat"?im:iu).push(id));
+ const sortId=(x,y)=>ITEMS[y].r-ITEMS[x].r||ITEMS[x].n.localeCompare(ITEMS[y].n,"ko");iu.sort(sortId);im.sort(sortId);
+ const ig=P.gear.map((g,i)=>({g,i})).sort((x,y)=>gOrd(x.g,y.g));
+ const cnt={use:iu.length,mat:im.length,gear:ig.length};if(!cnt[LCAT])LCAT="use";
+ if(LSEL&&!((LSEL.k==="i"&&P.inv[LSEL.x]>0)||(LSEL.k==="g"&&P.gear[LSEL.x])))LSEL=null;
+ const tb=document.createElement("div");tb.className="row bxtab";[["use","🧪 소모품"],["mat","🧱 재료"],["gear","🛡 장비"]].forEach(([k,l])=>{const b=document.createElement("button");b.type="button";b.className=LCAT===k?"on":"";b.innerHTML=`${l} <small>(${cnt[k]})</small>`;b.onclick=()=>{LCAT=k;LSEL=null;boxMenu()};tb.append(b)});L.append(tb);
+ const la=document.createElement("div");la.className="row";
+ if(LSEL){const nm=LSEL.k==="i"?inm(LSEL.x)+` ×${P.inv[LSEL.x]}`:`<span style="color:${RC[P.gear[LSEL.x].r]}">${P.gear[LSEL.x].n}</span>`;const sp=document.createElement("span");sp.innerHTML=`선택: <b>${nm}</b>`;la.append(sp);
+  if(LSEL.k==="i"){const b1=document.createElement("button");b1.textContent="1개 맡기기";b1.onclick=()=>boxPut("i",LSEL.x,0);const b2=document.createElement("button");b2.textContent="전부";b2.disabled=P.inv[LSEL.x]<2;b2.onclick=()=>boxPut("i",LSEL.x,1);la.append(b1,b2)}
+  else{const b1=document.createElement("button");b1.textContent="맡기기";b1.onclick=()=>boxPut("g",LSEL.x,0);la.append(b1)}}
+ else{const sp=document.createElement("span");sp.style.opacity=".7";sp.style.fontSize="12.5px";sp.textContent="슬롯을 눌러 선택한 뒤 맡깁니다.";la.append(sp)}
+ L.append(la);
+ const lg=document.createElement("div");lg.className="bxg b4";
+ const mkLI=id=>boxSlot(`${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],itemTip(id),LSEL&&LSEL.k==="i"&&LSEL.x===id,()=>{LSEL={k:"i",x:id};boxMenu()});
+ const mkLG=({g,i})=>boxSlot(`<span style="color:${RC[g.r]}"><small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],eqTip(g),LSEL&&LSEL.k==="g"&&LSEL.x===i,()=>{LSEL={k:"g",x:i};boxMenu()});
+ const sl=LCAT==="use"?iu.map(mkLI):LCAT==="mat"?im.map(mkLI):ig.map(mkLG);
+ sl.forEach(x=>lg.append(x));
+ if(!sl.length){const e=document.createElement("div");e.style.cssText="grid-column:1/-1;opacity:.65;padding:6px 2px";e.textContent=LCAT==="gear"?"맡길 장비가 없습니다. (착용 중 제외)":"맡길 "+(LCAT==="use"?"소모품":"재료")+"이 없습니다.";lg.append(e)}
+ else for(let i=sl.length;i<Math.ceil(sl.length/4)*4;i++){const e=document.createElement("div");e.className="bs em";lg.append(e)}
+ L.append(lg);
  // 우측: 개인창고 (슬롯형 · 이름(색 유지)만 표기 · 툴팁은 해당 아이템의 상세 내용)
  const rh=document.createElement("div");rh.className="bxt";rh.innerHTML="📦 개인창고 <small style='opacity:.75;font-weight:400'>(꺼내기)</small>";Rr.append(rh);
  const ids=Object.keys(B.inv).filter(id=>B.inv[id]>0&&ITEMS[id]),cmpI=boxSortI(sm);
  const use=ids.filter(id=>ITEMS[id].t!=="mat").sort(cmpI),mat=ids.filter(id=>ITEMS[id].t==="mat").sort(cmpI);
  const gl=B.gear.map((g,i)=>({g,i})).sort(boxSortG(sm));
  if(BSEL&&!((BSEL.k==="i"&&B.inv[BSEL.x]>0)||(BSEL.k==="g"&&B.gear[BSEL.x])))BSEL=null;
- const mkI=id=>boxSlot(`${inm(id)}<small>×${B.inv[id]}</small>`,RC[ITEMS[id].r],boxTipI(id),BSEL&&BSEL.k==="i"&&BSEL.x===id,()=>{BSEL={k:"i",x:id};boxMenu()});
- const mkG=({g,i})=>boxSlot(`<span style="color:${RC[g.r]}"><small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],boxTipG(g),BSEL&&BSEL.k==="g"&&BSEL.x===i,()=>{BSEL={k:"g",x:i};boxMenu()});
+ const ck=key=>BMULTI?`<i class="bck">${BMS.has(key)?"☑":"☐"}</i>`:"",tg=key=>()=>{BMS.has(key)?BMS.delete(key):BMS.add(key);boxMenu()};
+ const mkI=id=>boxSlot(`${ck("i:"+id)}${inm(id)}<small>×${B.inv[id]}</small>`,RC[ITEMS[id].r],boxTipI(id),BMULTI?BMS.has("i:"+id):BSEL&&BSEL.k==="i"&&BSEL.x===id,BMULTI?tg("i:"+id):()=>{BSEL={k:"i",x:id};boxMenu()});
+ const mkG=({g,i})=>boxSlot(`${ck("g:"+i)}<span style="color:${RC[g.r]}"><small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],boxTipG(g),BMULTI?BMS.has("g:"+i):BSEL&&BSEL.k==="g"&&BSEL.x===i,BMULTI?tg("g:"+i):()=>{BSEL={k:"g",x:i};boxMenu()});
  const ab=document.createElement("div");ab.className="row";
- if(BSEL){const nm=BSEL.k==="i"?inm(BSEL.x)+` ×${B.inv[BSEL.x]}`:`<span style="color:${RC[B.gear[BSEL.x].r]}">${B.gear[BSEL.x].n}</span>`;const sp=document.createElement("span");sp.innerHTML=`선택: <b>${nm}</b>`;ab.append(sp);
+ const mb=document.createElement("button");mb.type="button";mb.textContent="☑ 선택";mb.className=BMULTI?"on":"";mb.title="여러 개를 골라 한 번에 꺼내기 (다시 누르면 해제)";mb.onclick=()=>{BMULTI=!BMULTI;BMS.clear();BSEL=null;boxMenu()};ab.append(mb);
+ if(BMULTI){[...BMS].forEach(k=>{const[a,x]=[k[0],k.slice(2)];if(a==="i"?!(B.inv[x]>0):!B.gear[+x])BMS.delete(k)});
+  const sp=document.createElement("span");sp.innerHTML=BMS.size?`선택 <b>${BMS.size}</b>개`:"<span style='opacity:.7;font-size:12.5px'>슬롯을 눌러 여러 개 선택</span>";ab.append(sp);
+  const t1=document.createElement("button");t1.textContent="1개씩 꺼내기";t1.disabled=!BMS.size;t1.onclick=()=>boxTakeMulti(0);const t2=document.createElement("button");t2.textContent="전부 꺼내기";t2.disabled=!BMS.size;t2.onclick=()=>boxTakeMulti(1);ab.append(t1,t2)}
+ else if(BSEL){const nm=BSEL.k==="i"?inm(BSEL.x)+` ×${B.inv[BSEL.x]}`:`<span style="color:${RC[B.gear[BSEL.x].r]}">${B.gear[BSEL.x].n}</span>`;const sp=document.createElement("span");sp.innerHTML=`선택: <b>${nm}</b>`;ab.append(sp);
   if(BSEL.k==="i"){const b1=document.createElement("button");b1.textContent="1개 꺼내기";b1.onclick=()=>boxTake("i",BSEL.x,0);const b2=document.createElement("button");b2.textContent="전부";b2.disabled=B.inv[BSEL.x]<2;b2.onclick=()=>boxTake("i",BSEL.x,1);ab.append(b1,b2)}
   else{const b1=document.createElement("button");b1.textContent="꺼내기";b1.onclick=()=>boxTake("g",BSEL.x,0);ab.append(b1)}}
  else{const sp=document.createElement("span");sp.style.opacity=".7";sp.style.fontSize="12.5px";sp.textContent="슬롯을 눌러 선택한 뒤 꺼냅니다. 마우스를 올리면 상세 툴팁이 뜹니다(모바일은 길게 누르기).";ab.append(sp)}
