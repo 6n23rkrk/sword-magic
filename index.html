@@ -46,7 +46,7 @@ button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:de
 #fxd{position:fixed;left:50%;top:72%;width:0;height:0;z-index:9997;pointer-events:none}
 #fxr{position:fixed;left:min(calc(50% + 280px),calc(100vw - 200px));top:50%;transform:translate(0,-50%);z-index:9997;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px;max-width:190px}
 .fxq{text-align:center;background:#0d0d14d9;border:1px solid #889;border-radius:8px;padding:6px 14px;font-size:13px;line-height:1.5;color:#fff;text-shadow:0 1px 0 #000;opacity:0;transform:scale(.6);transition:transform .18s ease-out,opacity .18s ease-out}
-.fxq .qt{font-size:20px;font-weight:900;line-height:1.2}
+.fxq.qb .qt{font-size:30px;letter-spacing:.04em}.fxq .qt{font-size:20px;font-weight:900;line-height:1.2}
 #res{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;z-index:45;padding:16px}
 .rcard{background:var(--panel);border:3px solid var(--line);padding:20px 28px;min-width:260px;max-width:min(520px,94vw);text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 4px 22px #000c}
 .rcard .rt{font-size:26px}.rcard .rb{font-size:15px;line-height:1.6;max-height:60vh;overflow:auto;width:100%}.rcard button{padding:10px 36px;font-size:16px}
@@ -259,7 +259,7 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 #setm button{border-radius:0;background:transparent;color:var(--ink);box-shadow:none;border:0;border-bottom:1px solid #b9a15c33}
 #setm button:hover:not(:disabled){background:#2b3a31;filter:none;box-shadow:none}
 #hud{padding:2px 4px;color:var(--gold);text-shadow:0 1px 0 #000a}
-#pbar,#foebar,#qbar,#lqbar,#panel,.lp,.mvg,.sc,.cc{border-radius:10px}
+#pbar,#foebar,#qbar,#lqbar,#panel,.lp,.mvg,#panel .sc,#panel .cc{border-radius:10px}
 #pbar{background:linear-gradient(#1c2a23,#141d18);border:1px solid var(--line);box-shadow:0 1px 0 #ffffff10 inset,0 4px 14px #0008;padding:8px 12px}
 #foebar{background:linear-gradient(#2a1c1c,#1a1212);border:1px solid #b6665d;box-shadow:0 1px 0 #ffffff10 inset,0 4px 14px #0008;padding:8px 12px}
 #qbar{background:linear-gradient(#2a2316,#18140c);border:1px solid #ffb347;box-shadow:0 4px 12px #0007}
@@ -297,10 +297,10 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 .lg p{padding:1px 0}
 #panel{background:linear-gradient(#1b2721,#131b17);border:1px solid var(--line);box-shadow:0 4px 16px #0009,0 1px 0 #ffffff10 inset;scrollbar-width:thin;scrollbar-color:#6f6030 transparent}
 #panel:empty{display:none}
-.mvg,.sc{background:linear-gradient(#ffffff08,#00000022);border:1px solid #b9a15c88}
-.sh{background:linear-gradient(#26352b,#1a2620);border-bottom:1px solid #b9a15c66;color:var(--gold)}
-.cc{background:linear-gradient(#ffffff0a,#00000030);border:1px solid #5d6a62;transition:border-color .12s,transform .12s,box-shadow .12s}
-.cc:hover{border-color:var(--gold);box-shadow:0 4px 14px #000a}
+.mvg,#panel .sc{background:linear-gradient(#ffffff08,#00000022);border:1px solid #b9a15c88}
+#panel .sh{background:linear-gradient(#26352b,#1a2620);border-bottom:1px solid #b9a15c66;color:var(--gold)}
+#panel .cc{background:linear-gradient(#ffffff0a,#00000030);border:1px solid #5d6a62;transition:border-color .12s,transform .12s,box-shadow .12s}
+#panel .cc:hover{border-color:var(--gold);box-shadow:0 4px 14px #000a}
 .bs{border-radius:6px;background:linear-gradient(#171b22,#0f1218);border:1px solid #3a4452;transition:border-color .12s,background .12s}
 .mvg2{grid-template-columns:repeat(auto-fill,minmax(172px,1fr))}.bs.mvt2{min-height:36px;font-size:13px}.bs.mvt2.sel{border-color:#e0c060;background:linear-gradient(#3a3216,#241f0d);color:#ffe08a}.bs.mvt2.dis{opacity:.5;cursor:not-allowed}
 .bs:hover{border-color:var(--gold);background:linear-gradient(#202734,#141a22)}
@@ -309,7 +309,7 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 .fxq{border-radius:10px;background:linear-gradient(#141722e6,#0b0d16e6);border:1px solid #8fa0c0aa;box-shadow:0 4px 16px #000a}
 .rcard{border-radius:14px}
 /* 주사위 아이콘 (화면 가운데) */
-#dbtn{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:7;width:88px;height:88px;border-radius:50%;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;cursor:pointer;color:#fff7d6;background:radial-gradient(circle at 35% 30%,#4a3a86,#241a52 70%);border:3px solid var(--gold);box-shadow:0 0 0 6px #e8cf8622,0 0 30px #8a5cff88,0 10px 26px #000c;animation:dbFloat 2.2s ease-in-out infinite}
+#dbtn{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:7;width:88px;height:88px;border-radius:50%;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;cursor:pointer;color:#fff7d6;background:transparent;border:3px solid var(--gold);box-shadow:0 0 0 6px #e8cf8622,0 0 30px #8a5cff88,0 10px 26px #000c;animation:dbFloat 2.2s ease-in-out infinite}
 #dbtn::before,#dbtn::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid #e8cf86;opacity:0;animation:dbRing 2.2s ease-out infinite;pointer-events:none}
 #dbtn::after{animation-delay:1.1s}
 #dbtn .di{font-size:42px;line-height:1;filter:drop-shadow(0 3px 6px #000a);animation:dbWob 2.2s ease-in-out infinite}
@@ -1869,7 +1869,7 @@ const dsHtml=()=>{const ds=BS&&BS.ds;if(!ds)return"";const a=STS_ORDER.filter(k=
  return `<div class="dsr">${sb.map(([n,d])=>`<div class="ds" style="border-color:#7fe3a888"><b style="color:#7fe3a8">${n}</b><small>${d}</small></div>`).join("")}${pk.map(k=>`<div class="ds" style="border-color:#7fd4ff88"><b style="color:#7fd4ff">✦ ${PBN[k]}${k==="dodge"||k==="exposed"?(pb[k]>1?` ×${pb[k]}`:""):` · ${pb[k].t-1}턴`}</b><small>${k==="dodge"?`몬스터의 다음 공격 ${pb.dodge}회 회피`:k==="exposed"?`몬스터 방어력 0 (내 다음 공격 ${pb.exposed}번까지)`:PBD[k](pb[k].v)}</small></div>`).join("")}${a.map(k=>{const I=stInfo(k),S=STS[k];return `<div class="ds"><b>${S.i} ${S.n}${I.t?` · ${I.t}`:""}</b><small>${I.d}</small></div>`}).join("")}</div>`};
 // 빠르게 사라지는 효과 알림(조작을 막지 않고 곧바로 다음 진행으로 넘어간다)
 // 빠르게 사라지는 팝업: 위쪽(#fxt)=내가 몬스터에게 일으키는 효과 · 아래쪽(#fxd)=몬스터가 나에게 일으키는 효과 · 오른쪽(#fxr)=몬스터 고유특성 발동 (클릭해서 닫는 팝업은 화면 정중앙)
-function quick(title,color,html,cb,dir){try{const cid=dir==="d"?"fxd":dir==="r"?"fxr":"fxt";let c=document.getElementById(cid);if(!c){c=document.createElement("div");c.id=cid;document.body.appendChild(c)}const e=document.createElement("div");e.className="fxq";e.style.borderColor=color+"aa";e.innerHTML=`<div class="qt" style="color:${color}">${title}</div><div>${html}</div>`;
+function quick(title,color,html,cb,dir,big){try{const cid=dir==="d"?"fxd":dir==="r"?"fxr":"fxt";let c=document.getElementById(cid);if(!c){c=document.createElement("div");c.id=cid;document.body.appendChild(c)}const e=document.createElement("div");e.className="fxq"+(big?" qb":"");e.style.borderColor=color+"aa";e.innerHTML=`<div class="qt" style="color:${color}">${title}</div>${html?`<div>${html}</div>`:""}`;
  // 위(내가 일으키는 효과)·아래(몬스터가 일으키는 효과) 팝업이 겹쳐서 연속으로 뜨면 새 팝업이 해당 방향으로 조금씩 밀려난 자리에서 나온다
  let tr="scale(1)",t0="scale(.6)";if(dir!=="r"){const off=(dir==="d"?1:-1)*c.children.length*QSTEP,b=`translate(-50%,calc(-50% + ${off}px)) `;Object.assign(e.style,{position:"absolute",left:"0",top:"0",width:"max-content",maxWidth:"86vw"});tr=b+"scale(1)";t0=b+"scale(.6)"}
  e.style.transform=t0;c.appendChild(e);setTimeout(()=>{e.style.opacity="1";e.style.transform=tr},20);setTimeout(()=>{e.style.transition="opacity .35s";e.style.opacity="0"},1000);setTimeout(()=>{e.remove()},1400)}catch(x){}cb&&cb()}
@@ -1989,10 +1989,11 @@ const hcap=()=>!!foe&&!!foe.hero&&!!(foe.rare||foe.nm||foe.lt||foe.hn);
 const pgRaw=()=>{const d0=foe.def*(foe.trait&&foe.trait.k==="armor"?1+foe.trait.v*2:1)*(1+(BS.fb.def?BS.fb.def.v:0))*(BS.mc&&BS.mc.k==="rot"?.75:1)*(1-Math.min(100,E(22))/100)*(PBg().exposed?0:1);return d0/(100+d0)};
 const pgPop=blocked=>quick("🛡 물리피해 확정 방어",blocked?"#9bb8ff":"#ffb347",`${blocked?"물리 피해 차단":"다음 물리 피해 확정 방어"}`,null,"r");
 function pgCheck(){if(!hcap()||!BS||BS.fb.pg||BS.pgcd>0)return;if(pgRaw()>HPD_CAP){BS.fb.pg=1;say(`🛡 ${foe.n}의 방어가 한도(${HPD_CAP*100}%)를 넘었다! <b>물리피해 확정 방어</b> — 내 다음 물리 피해(속성 피해 제외)는 모두 막힌다.`);pgPop(false);foebar()}}
-function hit(m,o){const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(BS.pre&&BS.pre.charm)&&Math.random()<CHARM_MISS,dz=!!BS.ds.dazzle&&Math.random()<DAZZLE_MISS;let wkh=false;const pops=[];pops.s=[];const nm=amb?"기습":m===2?"강타":"공격";
- if(sk||amb){}else if(m===2){BS.cp-=CP_NEED;hud()}else if(!mis&&!dz&&BS.cp<CP_MAX&&!BS.ds.chill){BS.cp++;hud();say(`🔗 일반 공격으로 연계점수 +1 (${BS.cp}/${CP_MAX})`)}
+function hit(m,o){const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(BS.pre&&BS.pre.charm)&&Math.random()<CHARM_MISS,dz=!!BS.ds.dazzle&&Math.random()<DAZZLE_MISS;let wkh=false,cpg=false;const pops=[];pops.s=[];const nm=amb?"기습":m===2?"강타":"공격";
+ if(sk||amb){}else if(m===2){BS.cp-=CP_NEED;hud()}else if(!mis&&!dz&&BS.cp<CP_MAX&&!BS.ds.chill)cpg=true;
   if(mis||dz){if(mis)say(`🌀 ${cR("현혹")}! 정신이 흐려져 ${nm}이(가) 빗나갔다.`);if(dz){say(`🔆 ${cR("눈부심")}! 눈이 부셔 ${nm}이(가) 빗나갔다.`);return flash("💨 빗나감!","#ffe680",`🔆 눈부심으로 <b>${foe.n}</b>을(를) 제대로 보지 못했다!<br>${nm}이(가) 빗나갔다.`,AF,1500)}return AF()}
  if(foe.trait&&foe.trait.k==="evade"&&Math.random()<foe.trait.v){say(`💨 ${trMsg(foe.trait)} ${foe.n}이(가) ${nm}을 피했다!`);trPop(`💨 내 ${nm}을 피했다!`);return AF()}
+ if(cpg){BS.cp++;hud();say(`🔗 일반 공격 적중으로 연계점수 +1 (${BS.cp}/${CP_MAX})`)}
  if(sk&&sk.ex&&foe.hp<=foe.mhp*.3)m=sk.ex;
  const crit=(sk&&sk.crit)||Math.random()*100<CR()+(sk&&sk.cb||0),df=foe.def*(foe.trait&&foe.trait.k==="armor"?1+foe.trait.v*2:1)*(1+(BS.fb.def?BS.fb.def.v:0))*(BS.mc&&BS.mc.k==="rot"?.75:1)*(1-Math.min(100,E(22))/100)*(1-(sk&&sk.dp||0))*(PBg().exposed?0:1),st=Math.min(3,Math.max(0,BS.streak-1));if(PBg().exposed){if(--BS.pb.exposed<=0)delete BS.pb.exposed;say("🌑 방어 붕괴! 몬스터의 방어력이 0인 상태로 공격한다.")}let mult=m*(crit?CRX():1);
  if(BS.turn===1&&E(1)){mult*=1+E(1)/100;fxSay(`첫 턴 ${ATKN()} +${f(E(1))}% 적용!`);pops.s.push(`⚔ <b>첫 턴 ${ATKN()} +${f(E(1))}%</b>`)}
@@ -2038,7 +2039,7 @@ function hit(m,o){const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(B
  if(d>0&&BS.fb.shield>0){const ab=Math.min(BS.fb.shield,d);BS.fb.shield=r1(BS.fb.shield-ab);d=r1(d-ab);note+=` 🔰 보호막이 ${f(ab)} 흡수!${BS.fb.shield<=0?" (파괴)":""}`}
  foe.hp=r1(foe.hp-d);
  if(crit)critPop(d);
- if(!sk&&!amb&&!crit)quick(`${sp?"🔮 주문 ":"🗡 "}${m===2?"강타":"공격"}!`,"#7fe3a8",`<b>${f(d)}</b> 피해${Object.keys(por).length?brkTxt(BRK,d):""}${dsum<=0?(pgb?"<br><small>🛡 물리피해 확정 방어!</small>":"<br><small>🛡 면역!</small>"):""}`);
+ if(!sk&&!amb&&!crit)quick(`${sp?"🔮 주문 ":"🗡 "}${m===2?"강타":"공격"}!`,"#7fe3a8",`<b>${f(d)}</b>${dsum<=0?(pgb?"<br><small>🛡 물리피해 확정 방어!</small>":"<br><small>🛡 면역!</small>"):""}`);
  if(amb)ambushPop(d);
  say(`${crit?"💥 치명타! ":""}${amb?"🗡 기습! ":sk?`${sk.ap?"★":"✦"}${sk.n}! ${sk.hits>1?`(${sk.hits}회 타격) `:""}`:sp?(m===2?"주문 강타! ":"주문 공격! "):(m===2?"강타! ":"공격! ")}${foe.n}에게 <b>${f(d)}</b> 피해${Object.keys(por).length?brkTxt(BRK,d):""}.${note}`);
  trWatch();
@@ -2123,9 +2124,9 @@ function applyStatus(k,o){const ds=BS.ds,S=STS[k];if(Math.random()>=(o.p!=null?o
   case"chill":{if(ds.freeze)return null;if(ds.chill){delete ds.chill;ds.freeze={t:FREEZE_N};const I=stInfo("freeze");return `🧊 <b>빙결</b> (${I.t})<br><small style="opacity:.85">❄ 한기가 2중첩되어 얼어붙었다!<br>${I.d}</small>`}ds.chill={t:o.t||S.t,n:1};break}}
  const I=stInfo(k);return `${S.i} <b>${S.n}</b>${I.t?` (${I.t})`:""}<br><small style="opacity:.85">${I.d}</small>`}
 function enemyHit(o){const ds=BS.ds,sk=o.sk,asleep=!!(ds.sleep||BS.slp);BS.slp=0;
- if(Math.random()*100<EV()){say(`${o.label} 하지만 ${cG("💨 회피!")}${PBg().dodge?" <small>(그림자 걸음은 유지된다)</small>":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`${PBg().dodge?"🌑 그림자 걸음 유지":""}`,rollMenu,"d")}
- if(E(15)&&Math.random()*100<Math.min(100,E(15))){say(`${o.label} 하지만 빗나갔다.`);fxSay(`회피 발동!${PBg().dodge?" (그림자 걸음은 유지된다)":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`착용효과 회피`,rollMenu,"d")}
- if(PBg().dodge){if(--BS.pb.dodge<=0)delete BS.pb.dodge;BS.forceAct="shadow";say(`${o.label} 하지만 ${cG("🌑 그림자 걸음! 완전히 회피")}${BS.pb.dodge?` <small>(남은 회피 ${BS.pb.dodge}회)</small>`:""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`🌑 그림자 걸음 · 행동권 획득`,rollMenu,"d")}
+ if(Math.random()*100<EV()){say(`${o.label} 하지만 ${cG("💨 회피!")}${PBg().dodge?" <small>(그림자 걸음은 유지된다)</small>":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`${PBg().dodge?"🌑 그림자 걸음 유지":""}`,rollMenu,"d",1)}
+ if(E(15)&&Math.random()*100<Math.min(100,E(15))){say(`${o.label} 하지만 빗나갔다.`);fxSay(`회피 발동!${PBg().dodge?" (그림자 걸음은 유지된다)":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff","",rollMenu,"d",1)}
+ if(PBg().dodge){if(--BS.pb.dodge<=0)delete BS.pb.dodge;BS.forceAct="shadow";say(`${o.label} 하지만 ${cG("🌑 그림자 걸음! 완전히 회피")}${BS.pb.dodge?` <small>(남은 회피 ${BS.pb.dodge}회)</small>`:""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`🌑 그림자 걸음`,rollMenu,"d",1)}
  const dd=D()*(P.hp<=.3*MHP()?1+E(6)/100:1),mcrit=Math.random()<MON_CRIT,raw=(mcrit?MON_CRIT_X:1)*foe.atk*trAtk()*MS_ATK()*(BS.mc&&BS.mc.k==="weak"?.8:1)*(1+(BS.fb.atk?BS.fb.atk.v:0))*o.m*(.9+Math.random()*.2)*(1-Math.min(90,E(21))/100)*(P.job==="warrior"?.95:1)*(1-(PBg().taken?PBg().taken.v:0))*(1+(PBg().takenUp?PBg().takenUp.v:0))*(1-(PBg().foeatk?PBg().foeatk.v:0)),pa=(sk&&sk.parts)||(o.elem?{e:1}:{n:1}),els=sk?sk.ev:[],bn=ds.burn&&els.includes("불")?ds.burn.s.length:0,burnX=bn>0,dzX=!!(ds.dazzle&&els.includes("빛")),shX=!!(ds.shock&&els.includes("번개")),fzX=!!(ds.freeze&&els.includes("물")),cuX=!!(ds.curse&&els.includes("어둠")),lbX=!!(BS.fb.shield>0&&els.includes("빛")),sb=(asleep?1+SLEEP_BONUS:1)*(burnX?1+BURN_STK[bn]:1)*(dzX?1+DAZZLE_LIGHT:1)*(shX?1+SHOCK_WEAK:1)*(fzX?1+WEAK_P:1)*(cuX?1+WEAK_P:1)*(lbX?1+LIGHT_BURST:1)*(curseIs("brand")?1.15:1);
  const LVR=lvRed(foe.lv,P.lv),dn=raw*(pa.n||0)*(1-DEF_MAX*Math.min(1,dd/(DEF_LV*P.lv)))*sb*(1-LVR),du=raw*(pa.u||0)*sb;let de=0;const rn=[];
  if(pa.e&&els.length)els.forEach(e=>{const rd=resRed(e);de+=raw*pa.e/els.length*(1-rd)*sb*(1-LVR);if(rd>0)rn.push(`${eIcon(e)}${pc(rd)}%`)});
@@ -2529,7 +2530,7 @@ function stMenu(){const G=v=>v>0?cG(f(v)):f(v),sec=(t,b)=>`<div class="sc"><div 
   fm=fxSum(),fids=Object.keys(fm).map(Number).sort((a,b)=>a-b),
   dr=Math.min(1,D()/(DEF_LV*P.lv))*100;
  const rows=[
- [sec("🧙 기본 정보",`<div class="sg">`+cell("직업",P.job?`${JB().i} ${JB().n}`:"없음",P.job?JB().pas:`Lv ${JOB_LV}부터 전직 교관에게 전직할 수 있다`)+cell("레벨",`Lv ${P.lv}`,P.lv>=LV_CAP?`만렙 (EXP 획득 없음)`:`EXP ${f(P.exp)} / ${f(NEED(P.lv))}`+bar(P.exp/NEED(P.lv)*100,"#7fd4ff"))+cell("HP",`${f(P.hp)} / ${f(MHP())}`,`기본 ${f(20+P.lv*10)} + 체력 ${G(ST("vit")*10)}<br>턴당 재생 ${cG("+"+f(r1(ST("spi")/10)+E(29)))}`+bar(P.hp/MHP()*100,"var(--hp)"))+cell("연계점수",`최대 ${CP_MAX}칸`,`전투 시작 시 0 · 일반 공격 시 +1칸${E(4)?` · 턴당 진행 ${cG("+"+f(E(4)))}칸`:""}`)+`</div>`)],
+ [sec("🧙 기본 정보",`<div class="sg">`+cell("직업",P.job?`${JB().i} ${JB().n}`:"없음",P.job?JB().pas:`Lv ${JOB_LV}부터 전직 교관에게 전직할 수 있다`)+cell("레벨",`Lv ${P.lv}`,P.lv>=LV_CAP?`만렙 (EXP 획득 없음)`:`EXP ${f(P.exp)} / ${f(NEED(P.lv))}`+bar(P.exp/NEED(P.lv)*100,"#7fd4ff"))+cell("HP",`${f(P.hp)} / ${f(MHP())}`,`기본 ${f(20+P.lv*10)} + 체력 ${G(ST("vit")*10)}<br>턴당 재생 ${cG("+"+f(r1(ST("spi")/10)+E(29)))}`+bar(P.hp/MHP()*100,"var(--hp)"))+cell("연계점수",`최대 ${CP_MAX}칸`,`전투 시작 시 0 · 일반 공격이 적중하면 +1칸${E(4)?` · 턴당 진행 ${cG("+"+f(E(4)))}칸`:""}`)+`</div>`)],
  [sec("⚔ 공격",`<div class="sg">`+(WK()==="spell"?cell("⚡ 전투력",f(CPT()),`${STATN[MS()]} ${f(ST(MS()))} × ${f(CP_STAT)} = ${f(CPs())} + 장비 ${G(CPg())}<br>전투력 ${f(CP_ATK)} = ${ATKN()} 1.0 → ${ATKN()} +${f(CPA())}`)+cell("공격력",f(A()),`기본 ${f(P.atk)} + 전투력 환산 ${G(CPA())} + 장비 ${G(bonus("sa")+bonus("ca"))}${evSum("spell")>0?` + 속성 ${G(evSum("spell"))}`:""}${SPEC()>0?` + 특화 ${G(SPEC())}`:""}<br>주문 피해 = 공격력 × ${pc(SPELL_K)}%${P.job==="mage"?" × 1.1":""} · 방어력 무시`)+cell("주문치명타율",`${f(CRS())}%`,`치명타 피해 ${f(CRX()*100)}% · 정신 20.0당 +1.0% · 상한 ${f(CRIT_CAP)}%${CRSr()>CRIT_CAP?` (장비 포함 ${f(CRSr())}% — 초과 ${f(CRSr()-CRIT_CAP)}%는 <b>특화 +${f((CRSr()-CRIT_CAP)*SPEC_K)}</b>)`:" · 초과분은 특화로 전환"}`)+cell("속성 공격력",EAval(),EAsub())+cell("특화",f(SPEC()),SPsub()):cell("⚡ 전투력",f(CPT()),`${STATN[MS()]} ${f(ST(MS()))} × ${f(CP_STAT)} = ${f(CPs())} + 장비 ${G(CPg())}<br>전투력 ${f(CP_ATK)} = ${ATKN()} 1.0 → ${ATKN()} +${f(CPA())}`)+cell("공격력",f(A()),`기본 ${f(P.atk)} + 전투력 환산 ${G(CPA())} + 장비 ${G(bonus("atk")+bonus("ca"))}${evSum("phys")>0?` + 속성 ${G(evSum("phys"))}`:""}${SPEC()>0?` + 특화 ${G(SPEC())}`:""}`)+cell("물리치명타율",`${f(CRP())}%`,`치명타 피해 ${f(CRX()*100)}% · 민첩 10.0당 +1.0% · 상한 ${f(CRIT_CAP)}%${CRPr()>CRIT_CAP?` (장비 포함 ${f(CRPr())}% — 초과 ${f(CRPr()-CRIT_CAP)}%는 <b>특화 +${f((CRPr()-CRIT_CAP)*SPEC_K)}</b>)`:" · 초과분은 특화로 전환"}`)+cell("속성 공격력",EAval(),EAsub())+cell("특화",f(SPEC()),SPsub()))+`</div>`)],
  [sec("🛡 방어",`<div class="sg">`+cell("방어력",f(D()),`기본 ${f(P.def)} + 장비 ${G(bonus("def"))}`)+cell("적정 방어도",f(P.lv*DEF_LV),`내 레벨 × ${DEF_LV}`+bar(dr,"#9be85b"))+cell("평타 피해 감소",`${f(DEF_MAX*dr)}%`,`최대 ${pc(DEF_MAX)}%`)+cell("회피율",`${f(EV())}%`,`기본 ${f(EV_BASE)}% + 민첩 ${f(EV_AGI)}당 1.0%`)+`</div><div style="margin-top:6px;font-size:12px;opacity:.88">피해 감소율 = ${pc(DEF_MAX)}% × 방어력 ÷ (내 레벨 × ${DEF_LV}). 방어력이 적정 방어도에 도달하면 평타 피해가 최대 ${pc(DEF_MAX)}% 줄어든다(넘어도 상한). 방어력은 <b>일반 피해(평타)</b>에만 적용되고, 속성 피해는 저항력이, 고유 피해는 둘 다 통하지 않는다. 지속 피해·상태이상 피해도 방어력의 영향을 받지 않는다.</div>`)],
  [sec("✦ 속성 공격력",(()=>{const S=EAmap(),ks=Object.keys(ELEM).filter(e=>S[e]>0);return ks.length?`<div class="sg">`+ks.map(e=>{const g=EAg(),G=Object.values(g).reduce((x,y)=>x+y,0),sp=G>0?SPEC():0,gv=g[e]||0,sv=G>0?sp*gv/G:0;return cell(eTag(e),f(S[e]),`(장비 ${f(gv)} + 특화 ${f(sv)})<br>${EL_FX[e]}`)}).join("")+`</div><div style="margin-top:6px;font-size:12.5px;opacity:.85">장비에 붙은 <b>속성 공격력(보조효과)</b>이 그 속성의 공격력으로 합산됩니다(위 공격력에 이미 포함). 치명타율 상한을 넘은 만큼의 <b>특화</b>(초과 1.0%당 10.0, 특화 1.0당 +1.0)도 보유 속성에 비율대로 더해집니다. 모든 공격·스킬·착용효과·패시브의 피해는 <b>공격력 + 속성 공격력</b>으로 계산되며, 속성 부분만 몬스터 속성의 약점(+${pc(WEAK_P)}%)·면역(같은 속성: 50% 면역 / 50% 반감)이 적용됩니다. 속성 공격력이 있는 속성은 공격할 때마다 15% 확률로 효과가 발동합니다.</div>`:"<span style='opacity:.7'>속성이 붙은 공격 장비(무기·보조장비·목·손가락·장신구)를 착용하지 않았습니다. 몬스터가 드랍하는 장비에 그 몬스터의 속성이 붙을 수 있습니다.</span>"})())],
@@ -2604,7 +2605,7 @@ function dexWorld(nav){panel("📖 세계관 도감",[nav]);const root=$("panel"
  WORLD.forEach(([t,b],k)=>{const sp=/스포일러/.test(t),d=document.createElement("details");d.className="wd";d.open=!sp&&k<2;const s=document.createElement("summary");s.textContent="▾ 내용 보기 / 접기";s.style.opacity=".7";d.append(s);const c=document.createElement("div");c.innerHTML=b;d.append(c);const e=secEl(sp?"⚠ 스포일러":"📜",d);e.querySelector(".sh").textContent=sp?"⚠ 스포일러 — 펼치면 이야기의 뒷부분이 나옵니다":"📜 "+t.replace(/^\d+\.\s*/,"");root.append(e)});
  root.append(btnRow([["상태 창으로",stMenu],["닫기",closeP]]))}
 function dexJob(nav){panel("📖 직업 도감",[nav]);const root=$("panel");
- root.append(secEl("🎓 전직과 직업",`<div style="font-size:13px">Lv <b>${JOB_LV}</b>부터 마을의 <b>전직 교관</b>에게 전직 퀘스트를 받을 수 있다. 퀘스트를 한 번 완료한 직업은 언제든 선택할 수 있고, 첫 전직은 무료, 재전직은 골드(장비 레벨 기준 ×${JOB_FEE})가 든다.<br>직업은 <b>주능력치 1.0당 전투력 +${f(CP_STAT)}</b>(전투력 ${f(CP_ATK)} = 공격력 1.0)으로 전환하고, <b>무기 계열</b>이 정해진다. 물리 계열(전사·도적)은 주문 무기·보조장비를, 주문 계열(마법사·성직자)은 물리 무기·보조장비를 <b>장착할 수 없다.</b> 도적은 <b>양손 무기</b>도 낄 수 없다. 모든 직업은 일반 공격 시 연계점수 +1을 유지하고, 직업마다 연계점수를 얻는 방법이 추가된다. 액티브 스킬은 <b>Lv 20·30·40·50·60</b>에 하나씩 얻고(레벨 기준 누적), Lv 50 스킬은 <b>정점 스킬</b>이다. 스킬은 연계점수를 소모하며 침묵 저주에 걸리면 쓸 수 없다.</div>`));
+ root.append(secEl("🎓 전직과 직업",`<div style="font-size:13px">Lv <b>${JOB_LV}</b>부터 마을의 <b>전직 교관</b>에게 전직 퀘스트를 받을 수 있다. 퀘스트를 한 번 완료한 직업은 언제든 선택할 수 있고, 첫 전직은 무료, 재전직은 골드(장비 레벨 기준 ×${JOB_FEE})가 든다.<br>직업은 <b>주능력치 1.0당 전투력 +${f(CP_STAT)}</b>(전투력 ${f(CP_ATK)} = 공격력 1.0)으로 전환하고, <b>무기 계열</b>이 정해진다. 물리 계열(전사·도적)은 주문 무기·보조장비를, 주문 계열(마법사·성직자)은 물리 무기·보조장비를 <b>장착할 수 없다.</b> 도적은 <b>양손 무기</b>도 낄 수 없다. 모든 직업은 일반 공격이 적중하면 연계점수 +1을 유지하고, 직업마다 연계점수를 얻는 방법이 추가된다. 액티브 스킬은 <b>Lv 20·30·40·50·60</b>에 하나씩 얻고(레벨 기준 누적), Lv 50 스킬은 <b>정점 스킬</b>이다. 스킬은 연계점수를 소모하며 침묵 저주에 걸리면 쓸 수 없다.</div>`));
  root.append(secEl("⚔ 공격 방식",cardGrid([
   {col:"#ff8a5b",html:`<div style="font-size:15px">🗡 <b>물리 계열</b></div><small style="opacity:.9">공격력 = 기본 + 전투력÷${f(CP_ATK)} + 장비 공격력(무기·목·손가락·장신구) + 속성 공격력 + 특화<br>전투력 = 주능력치 × ${f(CP_STAT)} + 장비 전투력(보조효과)<br>일반 피해 · 몬스터 방어력의 영향을 받는다<br>치명타: 물리치명타율(민첩 10당 +1.0%)</small>`},
   {col:"#b08cff",html:`<div style="font-size:15px">🔮 <b>주문 계열</b></div><small style="opacity:.9">공격력 = 기본 + 전투력÷${f(CP_ATK)} + 장비 공격력(주문 무기·보조장비) + 속성 공격력 + 특화<br>전투력 = 주능력치 × ${f(CP_STAT)} + 장비 전투력(보조효과)<br>피해 ×${pc(SPELL_K)}% · 몬스터 방어력 무시<br>주문 무기에는 속성 공격력(보조효과, 속성 1~3개 균등 분배)이 항상 붙고, 속성 부분에 몬스터 속성의 약점·면역이 적용된다.<br>치명타: 주문치명타율(정신 20당 +1.0%)</small>`}])));
