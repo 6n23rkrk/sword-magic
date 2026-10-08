@@ -46,6 +46,7 @@ button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:de
 #fxt{position:fixed;left:50%;top:28%;width:0;height:0;z-index:9997;pointer-events:none}
 #fxi{position:fixed;left:50%;top:28%;width:0;height:0;z-index:9997;pointer-events:none}
 #fxd{position:fixed;left:50%;top:72%;width:0;height:0;z-index:9997;pointer-events:none}
+#fxl{position:fixed;left:max(8px,calc(50% - 480px));top:50%;transform:translate(0,-50%);z-index:9997;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px;max-width:190px}
 #fxr{position:fixed;left:min(calc(50% + 280px),calc(100vw - 200px));top:50%;transform:translate(0,-50%);z-index:9997;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px;max-width:190px}
 .fxq{text-align:center;background:#0d0d14d9;border:1px solid #889;border-radius:8px;padding:6px 14px;font-size:13px;line-height:1.5;color:#fff;text-shadow:0 1px 0 #000;opacity:0;transform:scale(.6);transition:transform .18s ease-out,opacity .18s ease-out}
 .fxq.qb .qt{font-size:30px;letter-spacing:.04em}.fxq .qt{font-size:20px;font-weight:900;line-height:1.2}
@@ -1375,23 +1376,23 @@ function enEA(S){for(const g of Object.values(P.eq||{})){const n=g&&g.en;if(n&&n
 /* ---- 착용효과 ---- */
 // [번호, 설명({0},{1}=수치), [[최소,최대],...], 희귀여부]  희귀(8,16,17,20): 보라색 장비의 5%만 / 합산 없이 1개만 적용
 const EFF=[
-[1,"전투 첫 턴 § +{0}%",[[10,25]]],[2,"강타·공격 스킬 피해 +{0}%",[[10,25]]],[3,"물약 회복량 +{0}%",[[10,30]]],[4,"매 턴 연계점수 +{0}칸 추가 진행",[[.1,.3]]],
-[5,"공격 시 {0}% 확률로 2턴 독 (턴당 대상 최대 체력의 {1*0.075}%, 최대 5중첩)",[[5,15],[15,25]]],[6,"HP 30% 이하일 때 방어력 +{0}%",[[15,35]]],[8,"주사위 동점 시 행동권 획득",[],1],[9,"피격 시 {0}% 확률로 받은 피해의 {1}% 반사",[[10,20],[20,40]]],[10,"강타·공격 스킬 사용 시 {0}% 확률로 피해 2배",[[10,20]]],
+[1,"전투 첫 턴 § +{0}%",[[10,25]]],[2,"강타·공격 스킬 피해 +{0}%",[[10,25]]],[3,"물약 회복량 +{0}%",[[10,30]]],
+[5,"공격 시 {0}% 확률로 2턴 독 (턴당 대상 최대 체력의 {1*0.075}%, 최대 5중첩)",[[5,15],[15,25]]],[6,"HP 30% 이하일 때 방어력 +{0}%",[[15,35]]],[9,"피격 시 {0}% 확률로 받은 피해의 {1}% 반사",[[10,20],[20,40]]],[10,"강타·공격 스킬 사용 시 {0}% 확률로 피해 2배",[[10,20]]],
 [11,"공격 시 {0}% 확률로 3턴 화상 (턴당 대상 최대 체력의 {1*0.2}%, 최대 3중첩 · 추가 시 지속시간 초기화)",[[10,25],[10,20]]],[12,"몬스터 처치 시 HP {0}% 회복",[[5,15]]],[13,"공격 피해의 {0}% 흡혈",[[3,10]]],
-[14,"적 HP 25% 이하일 때 피해 +{0}%",[[15,35]]],[15,"몬스터 공격 {0}% 회피",[[5,15]]],[16,"내 주사위 최소값 2 (1이 나오면 2로 처리)",[],1],
+[14,"적 HP 25% 이하일 때 피해 +{0}%",[[15,35]]],[15,"몬스터 공격 {0}% 회피",[[5,15]]],
 [17,"전투당 1회, HP가 0이 되면 HP {0}%로 부활",[[10,25]],1],[18,"치명타율 +{0}% (치명타율 상한 70% — 초과분은 특화로 전환)",[[1,5]]],[19,"공격 시 {0}% 확률로 기절 (몬스터 다음 행동권 1회 상실)",[[5,10]]],
-[20,"전투당 1회 주사위 재굴림 버튼 활성화",[],1],[21,"받는 피해 -{0}%",[[3,10]]],[22,"물리 공격 시 몬스터 방어력 {0}% 무시",[[10,25]],0,"phys"],[23,"골드 획득량 +{0}%",[[10,30]]],
-[24,"경험치 획득량 +{0}%",[[10,30]]],[25,"장비 드랍 확률 +{0}%p",[[2,5]]],[26,"정예·네임드 몬스터에게 피해 +{0}%",[[10,25]]],[27,"전투 시작 시 최대 HP의 {0}% 보호막",[[5,15]]],
-[28,"연속으로 행동권을 얻을 때마다 피해 +{0}% (2연속째부터, 최대 3중첩, 행동권을 잃으면 초기화)",[[5,5]]],[29,"매 턴 HP +{0} 추가 회복",[[3,10]]],[30,"치명타 시 HP {0}% 회복",[[3,8]]],
-[31,"휴식 후 다음 전투 § +{0}%",[[10,20]]],[32,"몬스터 주사위 굴림 시 {0}% 확률로 -1",[[10,20]]],
+[21,"받는 피해 -{0}%",[[3,10]]],[22,"물리 공격 시 몬스터 방어력 {0}% 무시",[[10,25]],0,"phys"],
+[26,"정예·네임드 몬스터에게 피해 +{0}%",[[10,25]]],[27,"전투 시작 시 최대 HP의 {0}% 보호막",[[5,15]]],
+[29,"매 턴 HP +{0} 추가 회복",[[3,10]]],[30,"치명타 시 HP {0}% 회복",[[3,8]]],
+
 // ---- 신규 착용효과 (마지막 칸: 'phys'/'spell' = 해당 계열 직업만, 직업 id = 그 직업만 · 직업이 없으면 phys/spell은 모두 가능)
 [33,"몬스터가 거는 상태이상의 적용 확률 -{0}% (상태이상 저항)",[[10,25]]],
 [34,"독·출혈·화상·저주 등 지속 피해 -{0}%",[[10,25]]],
 [35,"내가 거는 중독·화상·출혈·질병 피해 +{0}%",[[15,40]]],
 [36,"치명타 피해 +{0}%p (기본 150%)",[[10,30]]],
-[37,"전투 시작 시 연계점수 진행 +{0}칸",[[.5,1.5]]],
+
 [38,"약점 속성으로 공격할 때 피해 +{0}%",[[10,25]]],
-[39,"기습 발동 확률 +{0}%p",[[5,15]],0,"rogue"],
+
 [40,"물리 공격 피해 +{0}%",[[5,12]],0,"phys"],
 [41,"주문 공격 피해 +{0}%",[[5,12]],0,"spell"],
 [42,"회복·보호막 스킬 효과 +{0}%",[[10,25]],0,"cleric"],
@@ -1404,7 +1405,8 @@ const EFF=[
 [48,"공격 시 {0}% 확률로 2턴 공포 (몬스터 공격력 -25%)",[[6,14]]],
 [49,"공격 시 {0}% 확률로 3턴 침식 (몬스터가 받는 피해 +10% · 땅 속성 몬스터 면역)",[[8,18]]],
 [50,"공격 시 {0}% 확률로 3턴 상처 (몬스터 회복량 -60%, 몬스터가 받는 지속 피해 +25%)",[[8,18]]],
-[51,"공격 시 {0}% 확률로 3턴 한기 (몬스터 공격력 -15%, 스킬 사용 확률 절반 · 물 속성 몬스터 면역)",[[8,18]]]];
+[51,"공격 시 {0}% 확률로 3턴 한기 (몬스터 공격력 -15%, 스킬 사용 확률 절반 · 물 속성 몬스터 면역)",[[8,18]]],
+[52,"스킬 사용 시 {0}%의 확률로 연계점수가 소모되지 않음",[[5,5]]]];
 const FX_CHANCE={green:.03,blue:.15,purple:.4,purple2:.1,rarePick:.05}; // 녹색 3% / 파랑 15% / 보라 40%(그중 10%는 2개) / 보라 중 희귀효과 선택 5%
 const EFFM=Object.fromEntries(EFF.map(e=>[e[0],e]));
 EFFM[99]=[99,"[전설 고유효과] 착용하는 동안 화상의 최대 중첩 한도가 3배(3 → 9중첩)로 늘어난다. 화상이 3중첩 쌓일 때마다 중첩을 소모하지 않고 화상이 폭발해, 화상 3중첩의 3턴치 피해를 즉시 입힌다.",[[1,1]],1];
@@ -1412,7 +1414,7 @@ const fxDesc=(id,v)=>EFFM[id][1].replace(/\{(\d)(?:\*([\d.]+))?\}/g,(_,k,m)=>f(v
 const fxOk=e=>{const t=e[4];if(!t)return true;if(t==='phys'||t==='spell')return !P.job||!JOBS[P.job]||JOBS[P.job].kind===t;return P.job===t};
 function rollFx(r){let n=0;const x=Math.random();
  if(r===1)n=x<FX_CHANCE.green?1:0;else if(r===2)n=x<FX_CHANCE.blue?1:0;else if(r===3&&x<FX_CHANCE.purple)n=Math.random()<FX_CHANCE.purple2?2:1;
- const out=[];while(out.length<n){const rare=r===3&&Math.random()<FX_CHANCE.rarePick,pool=EFF.filter(e=>!!e[3]===rare&&!out.some(o=>o.i===e[0])&&fxOk(e)),e=pool[R(0,pool.length-1)];
+ const out=[];while(out.length<n){const rare=r===3&&Math.random()<FX_CHANCE.rarePick,pool0=EFF.filter(e=>!!e[3]===rare&&!out.some(o=>o.i===e[0])&&fxOk(e)),pool=pool0.length?pool0:EFF.filter(e=>!e[3]&&!out.some(o=>o.i===e[0])&&fxOk(e)),e=pool[R(0,pool.length-1)];
   out.push({i:e[0],v:e[2].map(([a,b])=>r1(a+Math.random()*(b-a)))})}
  return out}
 const fxHtml=fx=>fx&&fx.length?fx.map(x=>x.i===99?`<br><small style="color:#ff9a2e">🔥 ${fxDesc(99,x.v)}</small>`:`<br><small style="color:${x.b?"#ffd34d":EFFM[x.i][3]?"#ff7ac6":"#c9d8c0"}">${x.b?"★ 10강 효과 · ":"✨ "}착용효과${EFFM[x.i][3]?"(희귀)":""}: ${fxDesc(x.i,x.v)}</small>`).join(""):"";
@@ -2037,9 +2039,9 @@ const dsHtml=()=>{const ds=BS&&BS.ds;if(!ds)return"";const a=STS_ORDER.filter(k=
  return `<div class="dsr">${sb.map(([n,d])=>`<div class="ds" style="border-color:#7fe3a888"><b style="color:#7fe3a8">${ib(n)}</b><small>${d}</small></div>`).join("")}${pk.map(k=>`<div class="ds" style="border-color:#7fd4ff88"><b style="color:#7fd4ff">${ib("✦ "+PBN[k]+(k==="dodge"||k==="exposed"?(pb[k]>1?` ×${pb[k]}`:""):` · ${pb[k].t-1}턴`))}</b><small>${k==="dodge"?`몬스터의 다음 공격 ${pb.dodge}회 회피`:k==="exposed"?`몬스터 방어력 0 (내 다음 공격 ${pb.exposed}번까지)`:PBD[k](pb[k].v)}</small></div>`).join("")}${a.map(k=>{const I=stInfo(k),S=STS[k];return `<div class="ds"><b>${ib(`${S.i} ${S.n}${I.t?` · ${I.t}`:""}`)}</b><small>${I.d}</small></div>`}).join("")}</div>`};
 // 빠르게 사라지는 효과 알림(조작을 막지 않고 곧바로 다음 진행으로 넘어간다)
 // 빠르게 사라지는 팝업: 위쪽(#fxt)=내가 몬스터에게 일으키는 효과 · 아래쪽(#fxd)=몬스터가 나에게 일으키는 효과 · 오른쪽(#fxr)=몬스터 고유특성 발동 (클릭해서 닫는 팝업은 화면 정중앙)
-function quick(title,color,html,cb,dir,big){try{const cid=dir==="d"?"fxd":dir==="r"?"fxr":dir==="i"?"fxi":"fxt";let c=document.getElementById(cid);if(!c){c=document.createElement("div");c.id=cid;document.body.appendChild(c)}const e=document.createElement("div");e.className="fxq"+(big?" qb":"");e.style.borderColor=color+"aa";e.innerHTML=`<div class="qt" style="color:${color}">${title}</div>${html?`<div>${html}</div>`:""}`;
+function quick(title,color,html,cb,dir,big){try{const cid=dir==="l"?"fxl":dir==="d"?"fxd":dir==="r"?"fxr":dir==="i"?"fxi":"fxt";let c=document.getElementById(cid);if(!c){c=document.createElement("div");c.id=cid;document.body.appendChild(c)}const e=document.createElement("div");e.className="fxq"+(big?" qb":"");e.style.borderColor=color+"aa";e.innerHTML=`<div class="qt" style="color:${color}">${title}</div>${html?`<div>${html}</div>`:""}`;
  // 위(내가 일으키는 효과)·아래(몬스터가 일으키는 효과) 팝업이 겹쳐서 연속으로 뜨면 새 팝업이 해당 방향으로 조금씩 밀려난 자리에서 나온다
- let tr="scale(1)",t0="scale(.6)";if(dir!=="r"){const off=(dir==="d"?1:-1)*c.children.length*QSTEP,mb=innerWidth<=640,ix=dir==="i"?(mb?Math.max(60,innerWidth/2-58):240):0,b=`translate(calc(-50% + ${ix}px),calc(-50% + ${off}px)) `;Object.assign(e.style,{position:"absolute",left:"0",top:"0",width:"max-content",maxWidth:dir==="i"?(mb?"112px":"220px"):"86vw"});if(dir==="i"&&mb)e.style.fontSize="12px";tr=b+"scale(1)";t0=b+"scale(.6)"}
+ let tr="scale(1)",t0="scale(.6)";if(dir!=="r"&&dir!=="l"){const off=(dir==="d"?1:-1)*c.children.length*QSTEP,mb=innerWidth<=640,ix=dir==="i"?(mb?Math.max(60,innerWidth/2-58):240):0,b=`translate(calc(-50% + ${ix}px),calc(-50% + ${off}px)) `;Object.assign(e.style,{position:"absolute",left:"0",top:"0",width:"max-content",maxWidth:dir==="i"?(mb?"112px":"220px"):"86vw"});if(dir==="i"&&mb)e.style.fontSize="12px";tr=b+"scale(1)";t0=b+"scale(.6)"}
  e.style.transform=t0;c.appendChild(e);setTimeout(()=>{e.style.opacity="1";e.style.transform=tr},20);setTimeout(()=>{e.style.transition="opacity .35s";e.style.opacity="0"},1000);setTimeout(()=>{e.remove()},1400)}catch(x){}cb&&cb()}
 const QSTEP=46;
 function flash(title,color,html,cb,ms){const r=$("res");r.querySelector(".rt").textContent=title;r.querySelector(".rt").style.color=color;r.querySelector(".rb").innerHTML=html;r.querySelector(".rok").style.display="none";r.style.display="flex";setTimeout(()=>{r.style.display="none";cb&&cb()},ms||1800)}
@@ -2131,7 +2133,7 @@ function slashFx(cb){if(SLFX)return;SLFX=true;hideTip();const o=document.createE
  let done=false;const go=()=>{if(done)return;done=true;o.classList.add("out");setTimeout(()=>{o.remove();SLFX=false;cb()},260)};o.onclick=go;setTimeout(go,1750)}
 function skillUse(id){const k=JSK(P.job).find(x=>x.id===id);if(!k||k.t==="passive"||BS.cp<k.cp||curseIs("silence"))return;
  if(k.pre&&!k.pre()){say(`✦ ${k.n}: ${k.preMsg}`);return cmdMenu()}
- BS.cp-=k.cp;hud();
+ if(k.cp>0&&E(52)&&Math.random()*100<E(52)){quick("🔗 연계점수 보존!","#6aa9e6","",null,"l");fxSay(`연계점수가 소모되지 않았다! (${k.n})`)}else BS.cp-=k.cp;hud();
  if(k.t==="atk"){if(k.n==="죽음의 선고"&&P.job==="rogue")return slashFx(()=>hit(k.m,{sk:k}));if(k.n==="급소 찌르기"&&P.job==="rogue")return rogueFx("weak",()=>hit(k.m,{sk:k}));return hit(k.m,{sk:k})}
  if(P.job==="rogue"&&(k.n==="맹독 칼날"||k.n==="그림자 걸음")&&!k.fxd)return rogueFx(k.n==="맹독 칼날"?"venom":"shadow",()=>{k.fxd=1;try{skillUse2(k)}finally{k.fxd=0}});
  return skillUse2(k)}
@@ -2789,7 +2791,7 @@ const dxIv=()=>["<i class='dl'></i>",[[(DXS.iv!=="leg"&&DXS.iv!=="fx"?"▶ ":"")
 function dexLeg(nav){panel("📖 아이템 도감 · 전설등급",[nav,dxIv()]);const root=$("panel");
  {const D0=lqDagger();root.append(secEl("🟧 전설 등급 · 필살의 비수",`<div style="font-size:13px;line-height:1.6">등급: <b style="color:${RC[0]}">노멀</b> – <b style="color:${RC[1]}">고급</b> – <b style="color:${RC[2]}">희귀</b> – <b style="color:${RC[3]}">에픽</b> – <b style="color:${RC[4]}">전설</b>. 현재 전설 장비는 첫 전설 장비(가로나 - 필살의 비수)뿐이라 퀘스트로 얻는다. 앞으로 다른 경로(몬스터 드랍 등)로 얻을 수 있게 될 수도 있다. 전설 장비는 <b>스탯 재설정을 할 수 없다</b>. 강화는 가능하며, +10 강화에 성공하면 착용효과(★10강 효과)가 붙을 수 있고 그 착용효과는 재부여할 수 있다. <b>고유효과</b>는 전설 장비에만 붙는 별개의 효과라 착용효과·재부여와 상관없이 항상 유지된다.<br><br><b style="color:${RC[4]}">🗡 가로나 - 필살의 비수</b> <small style="opacity:.85">(한손 단검 · Lv ${D0.lv})</small><br>· 공격력 ${f(D0.atk)} · 민첩 ${f(D0.s.agi)} (5중첩) · 🔥 화염 속성 공격력 ${f(D0.ev)} · 화염 저항력 ${f(D0.res["불"])} · 전투력 ${f(D0.cp)}<br>· <b>고유효과</b>(확정): ${EFFM[99][1]}<br><br><b>📜 획득 퀘스트</b> (캐릭터당 1회)<br>· 시작: <b>영웅 난이도</b> 원소의 균열 신전의 모든 몬스터가 ${pc(LQ.drop)}% 확률로 <b>${ITEMS.q_leg0.n}</b> 드랍(일반 난이도에서는 드랍되지 않는다). 인벤토리에서 사용하면 수락.<br>· (1/2) 불의 시험: 불 속성 몬스터 ${LQ.k1}마리 처치. 완료하면 자동으로 (2/2)로 이어진다.<br>· (2/2) 비수의 재료: ${Object.keys(LQ.need).map(k=>`${ITEMS[k].n} ×${LQ.need[k]}`).join(" · ")} → 마을 <b>제작자</b>에게 전달하면 인벤토리에 지급.<br>· 재료(모두 <b>영웅 난이도 원소의 균열 신전</b>에서만, 퀘스트 2단계 중): 불 속성 일반 ${pc(LQ.pa)}% / 불 속성 정예 ${pc(LQ.pe)}% / 불 속성 간부·보스 ${pc(LQ.pb)}% 확률로 드랍. 열쇠는 원소 군주 에테르온만 100% 드랍.</div>`))}
  root.append(btnRow([["상태 창으로",stMenu],["닫기",closeP]]))}
-const FXG=[["⚔","공격 · 피해","#ff8a5b",[1,2,10,14,22,26,28,38,40,41,43]],["🎯","치명타","#ffd34d",[18,36]],["☣","상태이상 부여 · 지속 피해","#c58bff",[5,11,44,45,46,47,48,49,50,51,19,35]],["🛡","방어 · 생존","#7fd4ff",[6,9,15,17,21,27,33,34]],["💚","회복 · 흡수","#7fe3a8",[3,12,13,29,30,42]],["🔗","연계점수","#6aa9e6",[4,37,39]],["🎲","주사위 · 행동권","#ffb347",[8,16,20,32]],["💰","보상 · 획득","#e8d36a",[23,24,25,31]]];
+const FXG=[["⚔","공격 · 피해","#ff8a5b",[1,2,10,14,22,26,38,40,41,43]],["🎯","치명타","#ffd34d",[18,36]],["☣","상태이상 부여 · 지속 피해","#c58bff",[5,11,44,45,46,47,48,49,50,51,19,35]],["🛡","방어 · 생존","#7fd4ff",[6,9,15,17,21,27,33,34]],["💚","회복 · 흡수","#7fe3a8",[3,12,13,29,30,42]],["🔗","연계점수","#6aa9e6",[52]]];
 const fxRange=e=>e[1].replace(/\{(\d)(?:\*([\d.]+))?\}/g,(_,k,m)=>{const r=e[2][k]||[0,0],q=m?+m:1;return `<b>${f(r[0]*q)}~${f(r[1]*q)}</b>`}).replace(/§/g,ATKN());
 const fxTag=e=>{const t=e[4],a=[];if(e[3])a.push(`<span style="color:#ff7ac6">희귀 효과 · 합산 안 됨</span>`);if(t==="phys")a.push("물리 계열 직업 전용(전사·도적)");else if(t==="spell")a.push("주문 계열 직업 전용(마법사·성직자)");else if(t&&JOBS[t])a.push(`${JOBS[t].n} 전용`);return a.length?`<br><small style="opacity:.85">${a.join(" · ")}</small>`:""};
 function dexFx(nav){panel("📖 아이템 도감 · 착용효과",[nav,dxIv()]);const root=$("panel"),used=new Set();
