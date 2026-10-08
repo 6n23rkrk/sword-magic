@@ -43,7 +43,7 @@ button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:de
 #pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:44;pointer-events:none}
 .pcard{pointer-events:auto;background:var(--panel);border:3px solid var(--line);padding:16px 22px;min-width:240px;max-width:90vw;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;box-shadow:0 4px 18px #000b}
 .tilecard{max-width:96%;max-height:100%;overflow-y:auto}.tilerow{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 8px;width:100%}
-.lkt{margin-left:auto;padding:3px 10px;font-size:12.5px}.lkt.on{background:#ffd34d;color:#222;border-color:#ffd34d}.lkb{flex:none;white-space:nowrap;margin:0 0 0 6px;padding:2px 8px;font-size:11.5px}
+.lkt{margin-left:auto;padding:3px 10px;font-size:12.5px}.lkt.on{background:#ffd34d;color:#222;border-color:#ffd34d}.bs.lkm{position:relative;overflow:hidden}.bs.lkm>span{opacity:.28;filter:saturate(.5)}.lkb{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;border-radius:inherit;background:linear-gradient(180deg,#0000,#0006);color:#f4f6fa;font-size:21px;font-weight:800;letter-spacing:.32em;text-indent:.32em;text-shadow:0 1px 8px #000,0 0 14px #000a;cursor:pointer}.lkb.on{color:#ffd34d;text-shadow:0 1px 8px #000,0 0 16px #ffd34d88}.lkb:hover{background:linear-gradient(180deg,#fff1,#0004)}
 #chfx{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#0a2a4a99,#0008 70%);animation:chIn .15s ease-out}
 #chfx.out,#chest.out{opacity:0;transition:opacity .2s}
 #chfx .chb{text-align:center;color:#e6f6ff;text-shadow:0 0 14px #5fb8ff,0 2px 0 #000;animation:chShake .5s linear}
@@ -2496,11 +2496,11 @@ function invMenu(shop){const lk=!!foe&&!ALLOW,pv0=$("panel"),sc=pv0?pv0.scrollTo
  if(ISEL&&!((ISEL.k==="i"&&P.inv[ISEL.x]>0&&ITEMS[ISEL.x])||(ISEL.k==="g"&&P.gear[ISEL.x]&&ISEL.g===P.gear[ISEL.x])))ISEL=null;
  const re=()=>invMenu(shop),tipI=id=>itemTip(id);
  let selEl=null;
- const lkBtn=(d,get,tog)=>{if(!LKM)return d;const b=document.createElement("button");b.className="lkb";b.textContent=get()?"🔓 해제":"🔒 잠금";b.onclick=e=>{e.stopPropagation();tog();save();re()};d.append(b);return d};
+ const lkBtn=(d,get,tog)=>{if(!LKM)return d;const b=document.createElement("button");const on=get();d.classList.add("lkm");b.className="lkb"+(on?" on":"");b.textContent=on?"해제":"잠금";b.onclick=e=>{e.stopPropagation();tog();save();re()};d.append(b);return d};
  const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${iLk(id)?"🔒":""}${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;return lkBtn(d,()=>iLk(id),()=>{P.lk[id]=iLk(id)?0:1;if(!P.lk[id])delete P.lk[id]})};
  const mkG=({g,i})=>{const on=ISEL&&ISEL.k==="g"&&ISEL.g===g,d=boxSlot(`<span style="color:${RC[g.r]}">${g.lk?"🔒":""}<small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],eqTip(g),on,()=>{ISEL={k:"g",x:i,g};re()});if(on)selEl=d;
   d.onmouseenter=e=>{if(Date.now()-LT>1000)showTip2(gearBody(g),eqCur(g),e)};d.onmousemove=e=>{if(Date.now()-LT>1000)moveTip2(e)};return lkBtn(d,()=>g.lk,()=>{if(g.lk)delete g.lk;else g.lk=1})};
- {const th=root.firstChild;if(th&&!shop){th.style.cssText+=";display:flex;justify-content:space-between;align-items:center;gap:8px";const b=document.createElement("button");b.className="lkt"+(LKM?" on":"");b.textContent=LKM?"🔒 잠금 완료":"🔒 잠금";b.onclick=()=>{LKM=!LKM;ISEL=null;re()};th.append(b)}}
+ {const th=root.firstChild;if(th&&!shop){th.style.cssText+=";display:flex;justify-content:space-between;align-items:center;gap:8px";const b=document.createElement("button");b.className="lkt"+(LKM?" on":"");b.textContent=LKM?"잠금 완료":"잠금";b.onclick=()=>{LKM=!LKM;ISEL=null;re()};th.append(b)}}
  const ab=document.createElement("div");ab.className="ipop";const bt=(t,fn,dis)=>{const b=document.createElement("button");b.textContent=t;b.disabled=!!dis;b.onclick=fn;return b};
  if(ISEL){const sp=document.createElement("span");
   if(ISEL.k==="i"){const id=ISEL.x,it=ITEMS[id],n=P.inv[id];
