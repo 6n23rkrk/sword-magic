@@ -1361,7 +1361,7 @@ HN.forEach((h,f)=>{const key="hn"+f,lv=65,b0=2+lv*.8;ZONES[f].h=key;
 const LQ={bossA:[2,3],drop:.05,k1:20,need:{q_leg_a:15,q_leg_b:3,q_leg_c:1},pa:.15,pe:.3,pb:.25},LEG_EV=500; // pa: 불씨(불 속성 일반) / pe: 불씨(불 속성 정예) / pb: 파편(간부·보스) · LEG_EV: 필살의 비수 화염 속성 공격력
 ITEMS.q_leg0={n:"그을린 대장장이의 의뢰서",p:0,r:4,t:"qst",dsc:"영웅 난이도 원소의 균열 신전에서 흘러나온 불길에 그을린 의뢰서. 사용하면 퀘스트 '필살의 비수'를 받는다."};
 ITEMS.q_leg_a={n:"꺼지지 않는 불씨",p:0,r:3,t:"qst",dsc:"영웅 난이도 원소의 균열 신전의 불 속성 몬스터에게서 떨어진, 꺼지지 않는 불씨. 퀘스트 '필살의 비수'의 재료다."};
-ITEMS.q_leg_b={n:"군주의 불꽃 파편",p:0,r:3,t:"qst",dsc:"영웅 난이도 원소의 균열 신전의 불 속성 네임드(간부·보스)에게서 떨어진 불꽃의 파편. 퀘스트 '필살의 비수'의 재료다."};
+ITEMS.q_leg_b={n:"군주의 불꽃 파편",p:0,r:3,t:"qst",dsc:"영웅 난이도 원소의 균열 신전의 간부·보스 네임드에게서 떨어진 불꽃의 파편. 퀘스트 '필살의 비수'의 재료다."};
 ITEMS.q_leg_c={n:"원소 군주의 불꽃 열쇠",p:0,r:3,t:"qst",dsc:"영웅 난이도 원소의 균열 신전의 군주 에테르온이 쥐고 있던 불꽃 열쇠. 퀘스트 '필살의 비수'의 재료다."};
 
 // ===== 마법부여 · 분해 (데이터) =====
@@ -2746,13 +2746,14 @@ const lqDagger=()=>{const lv=60,B=GB(lv,4)*WM(1,false);return{n:"가로나 - 필
 function lqTrack(dl){const q=lqQ();let o="";const add=id=>{P.inv[id]=(P.inv[id]||0)+1;dl.push(`<div style="text-align:left;padding:2px 0">📜 ${inm(id)}</div>`)};
  if(foe.hero&&/^d55_/.test(foe.id)&&!q&&!(P.inv.q_leg0>0)&&Math.random()<LQ.drop){add("q_leg0");o+=`<br><b style="color:#ff9a2e">🔥 ${inm("q_leg0")} 획득!</b> <small style="opacity:.85">(인벤토리에서 사용하면 퀘스트를 받는다)</small>`}
  if(!q)return o;
- if(q.s===1){if(foe.elm==="불"){q.n=(q.n||0)+1;if(q.n>=LQ.k1){q.s=2;o+=`<br><b style="color:#ff9a2e">📜 필살의 비수 (1/2) 완료!</b><br>📜 <b>이어지는 퀘스트 (2/2) 비수의 재료</b> — 재료를 모아 마을의 제작자에게 가져가라.<br><small>꺼지지 않는 불씨 ×${LQ.need.q_leg_a} (불 속성 몬스터) · 군주의 불꽃 파편 ×${LQ.need.q_leg_b} (불 속성 네임드) · 원소 군주의 불꽃 열쇠 ×${LQ.need.q_leg_c} (원소 군주 에테르온)</small>`}else o+=`<br><small style="color:#ff9a2e">📜 필살의 비수 (1/2) 불의 시험 ${q.n}/${LQ.k1}</small>`}}
- else if(q.s===2){const nm=foe.rare||foe.lt||foe.nm,tp=foe.hero&&/^d55_/.test(foe.id); // 퀘스트 재료는 영웅 난이도 원소의 균열 신전에서만
+ if(q.s===1){if(foe.elm==="불"){q.n=(q.n||0)+1;if(q.n>=LQ.k1){q.s=2;o+=`<br><b style="color:#ff9a2e">📜 필살의 비수 (1/2) 완료!</b><br>📜 <b>이어지는 퀘스트 (2/2) 비수의 재료</b> — 재료를 모아 마을의 제작자에게 가져가라.<br><small>꺼지지 않는 불씨 ×${LQ.need.q_leg_a} (불 속성 몬스터) · 군주의 불꽃 파편 ×${LQ.need.q_leg_b} (간부·보스 네임드) · 원소 군주의 불꽃 열쇠 ×${LQ.need.q_leg_c} (원소 군주 에테르온)</small>`}else o+=`<br><small style="color:#ff9a2e">📜 필살의 비수 (1/2) 불의 시험 ${q.n}/${LQ.k1}</small>`}}
+ else if(q.s===2){const nm=foe.rare||foe.lt||foe.nm,tp=foe.hero&&/^d55_/.test(foe.id),allQ=()=>Object.keys(LQ.need).every(k=>lqHave(k)>=LQ.need[k]); // 퀘스트 재료는 영웅 난이도 원소의 균열 신전에서만
+  if(allQ())return o; // 재료를 다 모은 순간부터 더는 드랍되지 않는다
   if(tp&&foe.elm==="불"&&!nm&&lqHave("q_leg_a")<LQ.need.q_leg_a&&Math.random()<(foe.el?LQ.pe:LQ.pa)){add("q_leg_a");o+=`<br>📜 획득: ${inm("q_leg_a")} <small>(${lqHave("q_leg_a")}/${LQ.need.q_leg_a})</small>`}
   if(tp&&(foe.lt||foe.nm)&&lqHave("q_leg_a")<LQ.need.q_leg_a){const n=R(LQ.bossA[0],LQ.bossA[1]);for(let i=0;i<n;i++)add("q_leg_a");o+=`<br>📜 획득: ${inm("q_leg_a")} ×${n} <small>(${lqHave("q_leg_a")}/${LQ.need.q_leg_a})</small>`}
-  if(tp&&foe.elm==="불"&&nm&&lqHave("q_leg_b")<LQ.need.q_leg_b&&Math.random()<LQ.pb){add("q_leg_b");o+=`<br>📜 획득: ${inm("q_leg_b")} <small>(${lqHave("q_leg_b")}/${LQ.need.q_leg_b})</small>`}
+  if(tp&&(foe.lt||foe.nm)&&lqHave("q_leg_b")<LQ.need.q_leg_b&&Math.random()<LQ.pb){add("q_leg_b");o+=`<br>📜 획득: ${inm("q_leg_b")} <small>(${lqHave("q_leg_b")}/${LQ.need.q_leg_b})</small>`}
   if(tp&&foe.id==="d55_n"&&lqHave("q_leg_c")<LQ.need.q_leg_c){add("q_leg_c");o+=`<br>📜 획득: ${inm("q_leg_c")} <small>(${lqHave("q_leg_c")}/${LQ.need.q_leg_c})</small>`}
-  if(Object.keys(LQ.need).every(k=>lqHave(k)>=LQ.need[k]))o+=`<br><b style="color:#ff9a2e">📜 재료를 모두 모았다!</b> 마을의 제작자에게 가자.`}
+  if(allQ())o+=`<br><b style="color:#ff9a2e">📜 재료를 모두 모았다!</b> 마을의 제작자에게 가자.`}
  return o}
 function lqTurnIn(){const q=lqQ();if(foe||!q||q.s!==2||!Object.keys(LQ.need).every(k=>lqHave(k)>=LQ.need[k]))return;for(const k in LQ.need)P.inv[k]-=LQ.need[k];q.s=3;const g=lqDagger();P.gear.push(g);save();hud();
  say(`🔨 제작자가 재료를 받아 <b style="color:#ff9a2e">가로나 - 필살의 비수</b>를 완성했다! (인벤토리)`);craftMenu();
@@ -2923,7 +2924,7 @@ function dexJob(nav){panel("📖 직업 도감",[nav]);const root=$("panel");
 function nmCard(key,mult,drop,tag,hl){const b0=tnb(key,!!hl),b=hl?heroScale(b0,hl):b0,ex=(()=>{const o=[],M=MON[key];
   if(M.rare&&ITEMS[key+"_s"])o.push(`🌟 소환 재료: ${inm(key+"_s")} <b>100%</b> (처치 시 본인의 재료)`);
   const rm=/^r(\d+)_\d+$/.exec(key);if(hl&&rm&&+rm[1]<15)o.push(`👑 영웅 네임드 소환 재료: ${inm("hn"+rm[1]+"_s")} <b>${pc(HERO_SUM)}%</b> (영웅 난이도 · 한 번에 1개)`);
-  const dq=!!hl&&/^d55_/.test(key),fq=dq&&b.elm==="불";
+  const dq=!!hl&&/^d55_/.test(key),fq=dq&&(b.lt||b.nm||key==="d55_n");
   if(dq)o.push(`📜 퀘스트 시작 아이템: ${inm("q_leg0")} <b>${pc(LQ.drop)}%</b> (영웅 난이도 신전 전용 · 진행 중인 퀘스트·보유 의뢰서가 없을 때 · 신전 몬스터 공통)`);
   if(dq&&(b.lt||b.nm||/^d55_(m\d|n)$/.test(key)))o.push(`📜 퀘스트 재료(필살의 비수 2단계 중): ${inm("q_leg_a")} <b>확정 ${LQ.bossA[0]}~${LQ.bossA[1]}개</b> (간부·보스 · 속성 무관)`);
   if(fq)o.push(`📜 퀘스트 재료(필살의 비수 2단계 중): ${inm("q_leg_b")} <b>${pc(LQ.pb)}%</b>`+(key==="d55_n"?` · ${inm("q_leg_c")} <b>100%</b>`:""));
@@ -2995,7 +2996,7 @@ function dexDrop(nav,cat,idx){idx=idx||0;
   root.append(card("⚠ 정예 몬스터 <small style='opacity:.8'>(던전마다 3마리)</small>","#e0a040",big(DG_ELITE_DROP,"최대 1개")+bar(RAR_T.e)+`<div style="margin-top:6px;font-size:12.5px">부위: 14개 부위 균등 <b>${p1(1/14)}</b> <small style="opacity:.8">(처치 1회당 특정 부위 ${p1(DG_ELITE_DROP/14)})</small></div>`+tip));
   root.append(card(`🗡 간부 네임드 <small style='opacity:.8'>— ${x.n} (2마리)</small>`,"#5b9bff",big(LT_GEAR,"1개 확정")+bar(RAR_T.lt)+partRows([x.id+"_m0",x.id+"_m1"],LT_GEAR,0)));
   root.append(card(`👑 보스 네임드 <small style='opacity:.8'>— ${x.n}</small>`,"#ff7ac6",big(1,`1개 확정 + ${p1(NAMED_EXTRA)} 확률로 1개 추가`)+bar(RAR_T.b)+partRows([x.id+"_n"],1,NAMED_EXTRA)))}
- if(kind==="dg"&&x.id==="d55")root.append(card("📜 퀘스트 아이템 (필살의 비수)","#ff9a2e",`<div style="font-size:12.5px;line-height:1.65">· <b>필살의 비수 관련 아이템은 영웅 난이도의 이 던전에서만 나온다</b> (일반 난이도에서는 나오지 않는다)<br>· 시작 아이템 <b>${inm("q_leg0")}</b>: 이 던전의 <b>모든 몬스터</b>(정예·간부·보스)가 영웅 난이도에서 처치 시 각 <b>${p1(LQ.drop)}</b> (진행 중인 퀘스트나 보유한 의뢰서가 없을 때만)<br>· 퀘스트 2단계 재료: ${inm("q_leg_a")} — 불 속성 일반 ${p1(LQ.pa)} · 정예 ${p1(LQ.pe)} · <b>이 던전의 간부·보스는 속성 무관 확정 ${LQ.bossA[0]}~${LQ.bossA[1]}개</b> / ${inm("q_leg_b")} — 불 속성 네임드(희귀·간부·보스) ${p1(LQ.pb)} / ${inm("q_leg_c")} — 에테르온 <b>100%</b></div>`));
+ if(kind==="dg"&&x.id==="d55")root.append(card("📜 퀘스트 아이템 (필살의 비수)","#ff9a2e",`<div style="font-size:12.5px;line-height:1.65">· <b>필살의 비수 관련 아이템은 영웅 난이도의 이 던전에서만 나온다</b> (일반 난이도에서는 나오지 않는다)<br>· 시작 아이템 <b>${inm("q_leg0")}</b>: 이 던전의 <b>모든 몬스터</b>(정예·간부·보스)가 영웅 난이도에서 처치 시 각 <b>${p1(LQ.drop)}</b> (진행 중인 퀘스트나 보유한 의뢰서가 없을 때만)<br>· 퀘스트 2단계 재료: ${inm("q_leg_a")} — 불 속성 일반 ${p1(LQ.pa)} · 정예 ${p1(LQ.pe)} · <b>이 던전의 간부·보스는 속성 무관 확정 ${LQ.bossA[0]}~${LQ.bossA[1]}개</b> / ${inm("q_leg_b")} — 이 던전의 간부·보스 속성 무관 ${p1(LQ.pb)} / ${inm("q_leg_c")} — 에테르온 <b>100%</b></div>`));
  root.append(card("📦 장비 공통 규칙","#7fd4ff",rule));
  root.append(btnRow([["닫기",closeP]]))}
 function fxRows(){const m=fxSum(),ids=Object.keys(m).map(Number).sort((a,b)=>a-b);
