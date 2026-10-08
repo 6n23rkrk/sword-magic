@@ -1543,7 +1543,7 @@ warrior:{n:"전사",i:"⚔",c:"#ff8a5b",st:"str",kind:"phys",main:"힘 · 물리
  {id:"w3",n:"도발의 포효",lv:40,cp:2,t:"buff",d:"3턴간 몬스터 공격력 -20%",fx(){setPB("foeatk",3,.2);return"3턴간 몬스터 공격력 -20%"}},
  {id:"w4",n:"대지 가르기",lv:50,cp:5,ap:1,t:"atk",m:3.8,dp:.5,stun:1,pb:["taken",3,.3],d:"물리 ×3.8 · 방어력 50% 무시 · 확정 기절(기절 면역 속성 제외) · 이후 3턴간 받는 피해 -30%"},
  {id:"w5",n:"광폭화",lv:60,cp:3,t:"buff",d:"3턴간 내 피해 +50%, 받는 피해 +15% · 연계점수 +2",fx(){setPB("dealt",3,.5);setPB("takenUp",3,.15);gainCP(2,"🔥 광폭화!");return"3턴간 내 피해 +50% / 받는 피해 +15%"}}]},
-rogue:{n:"도적",i:"🗡",c:"#c9d86a",st:"agi",kind:"phys",main:"민첩 · 물리 무기",pas:"물리치명타율 +5.0%p · 회피율 +3.0%p · 몬스터가 주사위에서 이겨 행동권을 얻으면 30% 확률로 기습(공격력 30% 평타 1타 · 치명타·속성·피해 증가 효과·착용효과 확률 상태이상이 평타처럼 적용 · 연계점수 +1)",cps:"치명타를 터뜨리거나 몬스터의 공격을 회피하거나 기습이 발동할 때마다 연계점수 +1",desc:"빠르고 날카롭게, 급소를 노린다.",q:{t:"rare",n:2,d:"필드 희귀 네임드 2마리 처치",s:"교관: 도적은 큰 사냥감을 노리지. 필드에 숨은 희귀 네임드 둘을 잡아 오게."},
+rogue:{n:"도적",i:"🗡",c:"#c9d86a",st:"agi",kind:"phys",main:"민첩 · 물리 무기",pas:"물리치명타율 +5.0%p · 회피율 +3.0%p · 몬스터가 주사위에서 이겨 행동권을 얻으면 30% 확률로 기습(공격력 15% 평타를 2회 — 총 30% · 치명타·속성·피해 증가 효과·착용효과 확률 상태이상이 평타처럼 타수마다 적용 · 연계점수 +1)",cps:"치명타를 터뜨리거나 몬스터의 공격을 회피하거나 기습이 발동할 때마다 연계점수 +1",desc:"빠르고 날카롭게, 급소를 노린다.",q:{t:"rare",n:2,d:"필드 희귀 네임드 2마리 처치",s:"교관: 도적은 큰 사냥감을 노리지. 필드에 숨은 희귀 네임드 둘을 잡아 오게."},
  sk:[{id:"r1",n:"급소 찌르기",lv:20,cp:3,t:"atk",m:1.6,crit:1,hits:2,d:"물리 ×0.8 피해를 2회 입힙니다 · 확정 치명타"},
  {id:"r2",n:"맹독 칼날",lv:30,cp:2,t:"buff",d:"즉시 중독 1중첩 + 3턴간 내 모든 공격·스킬(평타·강타·직업 스킬)이 적중할 때마다 중독 부여 — 공격 또는 스킬의 타수만큼 적용된다 (예: 2회 찌르는 급소 찌르기는 중독 2회) (맹독 칼날의 중독은 5턴 지속)",fx(){const h=addDot("poison",5,fd("poison",1.5),"독");if(addDot.imm)IMQ=h;setPB("venom",3,1);return addDot.imm?"즉시 중독 실패(면역) · 3턴간 모든 공격·스킬마다 중독 시도":"즉시 중독 · 3턴간 모든 공격·스킬마다 중독"}},
  {id:"r3",n:"그림자 걸음",lv:40,cp:2,t:"buff",d:"몬스터의 다음 공격 1회를 완전히 회피하고 행동권을 강제로 가져온다 (회피 연계 +1) · 몬스터의 방어력이 0이 된다 (내 다음 공격까지 유지) · 파생되는 효과(회피·방어 붕괴)는 각각 최대 2번까지 누적된다",fx(){const P0=PBo();P0.dodge=Math.min(2,(P0.dodge||0)+1);P0.exposed=Math.min(2,(P0.exposed||0)+1);return`다음 몬스터 공격 ${P0.dodge}회 회피 후 행동권 강제 획득 · 몬스터 방어력 0 (내 다음 공격 ${P0.exposed}번까지) · 최대 2번 누적`}},
@@ -2341,7 +2341,7 @@ function hit(m,o){if(m===2&&BS.ds.chill&&Math.random()<CHILL_FAIL&&!(o&&o.amb)){
  if(sk||amb){}else if(m===2){BS.cp-=CP_NEED;hud()}else if(!mis&&!dz&&BS.cp<CP_MAX&&!curseIs("drain"))cpg=true;
   if(mis||dz){if(mis)say(`🌀 ${cR("현혹")}! 정신이 흐려져 ${nm}이(가) 빗나갔다.`);if(dz){say(`🔆 ${cR("눈부심")}! 눈이 부셔 ${nm}이(가) 빗나갔다.`);return flash("💨 빗나감!","#ffe680",`🔆 눈부심으로 <b>${foe.n}</b>을(를) 제대로 보지 못했다!<br>${nm}이(가) 빗나갔다.`,AF,1500)}return AF()}
  if(foe.trait&&foe.trait.k==="evade"&&Math.random()<foe.trait.v){say(`💨 ${trMsg(foe.trait)} ${foe.n}이(가) ${nm}을 피했다!`);trPop(`💨 내 ${nm}을 피했다!`);return AF()}
- const NH0=(sk&&sk.hits)||1;let blkd=false;{const bp=foeBlk();if(bp>0&&Math.random()*100<bp){blkd=true;if(NH0<=1){say(`🛡 ${foe.n}이(가) 내 ${nm}을(를) <b>막았다!</b> 피해를 입히지 못했다.`);blkPop(`${foe.n}이(가) 막았다`,"#ffb36b");return AF()}}}
+ const NH0=(sk&&sk.hits)||(amb?2:1);let blkd=false;{const bp=foeBlk();if(bp>0&&Math.random()*100<bp){blkd=true;if(NH0<=1){say(`🛡 ${foe.n}이(가) 내 ${nm}을(를) <b>막았다!</b> 피해를 입히지 못했다.`);blkPop(`${foe.n}이(가) 막았다`,"#ffb36b");return AF()}}}
  if(cpg){BS.cp++;hud();say(`🔗 일반 공격 적중으로 연계점수 +1 (${BS.cp}/${CP_MAX})`)}
  if(sk&&sk.ex&&foe.hp<=foe.mhp*.3)m=sk.ex;
  const crit=(sk&&sk.crit)||Math.random()*100<CR()+(sk&&sk.cb||0),df=foe.def*(foe.trait&&foe.trait.k==="armor"?1+foe.trait.v*2:1)*(1+(BS.fb.def?BS.fb.def.v:0))*(BS.mc&&BS.mc.k==="rot"?.75:1)*(1-Math.min(100,E(22))/100)*(1-(sk&&sk.dp||0))*(PBg().exposed?0:1),st=Math.min(3,Math.max(0,BS.streak-1));if(PBg().exposed){if(--BS.pb.exposed<=0)delete BS.pb.exposed;say("🌑 방어 붕괴! 몬스터의 방어력이 0인 상태로 공격한다.")}let mult=m*(crit?CRX():1);
@@ -2391,7 +2391,7 @@ function hit(m,o){if(m===2&&BS.ds.chill&&Math.random()<CHILL_FAIL&&!(o&&o.amb)){
  if(crit)critPop(d);
  if(!sk&&!amb&&!crit)quick(`${sp?"🔮 주문 ":"🗡 "}${m===2?"강타":"공격"}!`,"#7fe3a8",`<b>${f(d)}</b>${dsum<=0?(pgb?"<br><small>🛡 물리피해 확정 방어!</small>":"<br><small>🛡 면역!</small>"):""}`);
  if(amb)ambushPop(d);
- say(`${crit?"💥 치명타! ":""}${amb?"🗡 기습! ":sk?`${sk.ap?"★":"✦"}${sk.n}! ${sk.hits>1?`(${sk.hits}회 타격) `:""}`:sp?(m===2?"주문 강타! ":"주문 공격! "):(m===2?"강타! ":"공격! ")}${foe.n}에게 <b>${f(d)}</b> 피해${Object.keys(por).length?brkTxt(BRK,d):""}.${note}`);
+ say(`${crit?"💥 치명타! ":""}${amb?"🗡 기습! (2회 타격) ":sk?`${sk.ap?"★":"✦"}${sk.n}! ${sk.hits>1?`(${sk.hits}회 타격) `:""}`:sp?(m===2?"주문 강타! ":"주문 공격! "):(m===2?"강타! ":"공격! ")}${foe.n}에게 <b>${f(d)}</b> 피해${Object.keys(por).length?brkTxt(BRK,d):""}.${note}`);
  trWatch();
  if(amb)gainCP(1,"🗡 기습!");
  if(crit&&P.job==="rogue")gainCP(1,"🗡 치명타!");
