@@ -348,6 +348,44 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 #panel .cc:hover{border-color:var(--gold);box-shadow:0 4px 14px #000a}
 .bs{border-radius:6px;background:linear-gradient(#171b22,#0f1218);border:1px solid #3a4452;transition:border-color .12s,background .12s}
 .bs .cn{font-size:calc(.8333em + 2px)}
+/* 행동불가 상태이상 팝업(유저): 버튼 없음, 화면을 누를 때까지 유지 */
+#icfx{position:fixed;inset:0;z-index:9996;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;animation:icIn .25s ease-out both;--c:#ffd34d;--bg:#0a0c12e6}
+#icfx.out{animation:icOut .2s ease-in both}
+@keyframes icIn{from{opacity:0}to{opacity:1}}@keyframes icOut{to{opacity:0}}
+#icfx .bg{position:absolute;inset:0;background:var(--bg)}
+#icfx .card{position:relative;z-index:2;text-align:center;padding:22px 26px 16px;width:min(86vw,360px);border:3px solid var(--c);border-radius:16px;background:#0b0e16ee;box-shadow:0 0 34px var(--c),inset 0 0 22px #0008}
+#icfx .em{font-size:64px;line-height:1.1;filter:drop-shadow(0 0 14px var(--c))}
+#icfx .tt{font-size:32px;font-weight:900;color:var(--c);letter-spacing:.12em;margin:4px 0 8px;text-shadow:0 0 14px var(--c)}
+#icfx .ms{font-size:15px;line-height:1.55;color:#e8ecf4}
+#icfx .hn{margin-top:12px;font-size:12px;color:#9aa4b8;letter-spacing:.12em;animation:icBl 1.4s ease-in-out infinite}
+@keyframes icBl{50%{opacity:.35}}
+#icfx .pt{position:absolute;z-index:1;font-size:calc(var(--s,22)*1px);left:var(--x);top:var(--y);opacity:0;animation:var(--an) var(--d) var(--dl) infinite linear;pointer-events:none}
+@keyframes icFall{0%{opacity:0;transform:translateY(-12vh) rotate(0)}15%{opacity:.9}100%{opacity:0;transform:translateY(112vh) rotate(var(--r))}}
+@keyframes icRise{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:.85}100%{opacity:0;transform:translateY(-70vh) translateX(var(--dx)) scale(1.5)}}
+@keyframes icSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes icWob{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes icJit{0%{transform:translate(0,0)}20%{transform:translate(-4px,2px)}40%{transform:translate(3px,-3px)}60%{transform:translate(-3px,-2px)}80%{transform:translate(4px,3px)}100%{transform:translate(0,0)}}
+@keyframes icBeat{0%,100%{opacity:.55}15%{opacity:1}30%{opacity:.6}45%{opacity:.95}}
+@keyframes icStr{0%,100%{opacity:.15}8%{opacity:1}14%{opacity:.2}22%{opacity:.9}30%{opacity:.1}}
+@keyframes icBr{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+#icfx.ic-stun{--c:#ffd34d;--bg:radial-gradient(circle at 50% 50%,#3a2d0acc,#0a0a12ee 70%)}
+#icfx.ic-stun .card{animation:icWob .5s ease-in-out infinite}
+#icfx.ic-stun .ring{position:absolute;left:50%;top:50%;width:min(70vw,300px);height:min(70vw,300px);margin:calc(min(70vw,300px)/-2) 0 0 calc(min(70vw,300px)/-2);animation:icSpin 1.6s linear infinite;z-index:1;pointer-events:none}
+#icfx.ic-stun .ring i{position:absolute;left:50%;top:50%;font-style:normal;font-size:28px;margin:-14px;transform:rotate(calc(var(--k)*60deg)) translateY(calc(min(70vw,300px)/-2))}
+#icfx.ic-freeze{--c:#8fe0ff;--bg:radial-gradient(circle at 50% 50%,#0c2233cc,#04101cf2 75%)}
+#icfx.ic-freeze .bg{box-shadow:inset 0 0 90px 30px #bfefff88,inset 0 0 220px 60px #5fb8ff66}
+#icfx.ic-freeze .card{border-style:double;border-width:6px;background:#0a1a2aee}
+#icfx.ic-sleep{--c:#a9a0ff;--bg:radial-gradient(circle at 50% 40%,#171a44f0,#05061aef 75%)}
+#icfx.ic-sleep .card{animation:icBr 3s ease-in-out infinite}
+#icfx.ic-fear{--c:#ff4a5a;--bg:radial-gradient(circle at 50% 50%,#05050aee 20%,#3a0508f2 100%)}
+#icfx.ic-fear .bg{animation:icBeat 1.1s ease-in-out infinite}
+#icfx.ic-fear .card{animation:icJit .12s linear infinite;background:#0a0509f0}
+#icfx.ic-shock{--c:#ffe14d;--bg:#060608ee}
+#icfx.ic-shock .bg{animation:icStr .9s steps(1) infinite;background:radial-gradient(circle at 50% 50%,#6a5a0acc,#060608ee 70%)}
+#icfx.ic-shock .card{animation:icJit .18s linear infinite}
+#icfx.ic-shock svg{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;animation:icStr 1.1s steps(1) infinite}
+#icfx.ic-shock svg polyline{fill:none;stroke:#fff6a8;stroke-width:3;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 6px #ffe14d)}
+
 .mvg2{grid-template-columns:repeat(auto-fill,minmax(172px,1fr))}.bs.mvt2{min-height:36px;font-size:13px}.bs.mvt2.sel{border-color:#e0c060;background:linear-gradient(#3a3216,#241f0d);color:#ffe08a}.bs.mvt2.dis{opacity:.5;cursor:not-allowed}
 .bs:hover{border-color:var(--gold);background:linear-gradient(#202734,#141a22)}
 .tip{border-radius:9px;background:linear-gradient(#171a24,#0e1017);border:1px solid #8fa0c0;box-shadow:0 6px 20px #000c}
@@ -1322,6 +1360,22 @@ corrode:{n:"침식",i:"☣",p:.3,t:5,d:"5턴 동안 방어력이 중첩당 -12%�
 wound:{n:"상처",i:"🩹",p:.3,t:4,d:"4턴 동안 받는 모든 회복량이 60% 줄어든다. (물약·정신력·재생·흡혈·회복 스킬 모두) 정화 스킬로 해제할 수 있다. (중첩 불가)"},
 chill:{n:"한기",i:"❄",p:.3,t:3,d:"3턴 동안 몸이 얼어붙어 모든 스킬(강화·회복·공격 스킬 전부)의 시전 성공 확률이 절반이 된다. 실패하면 연계점수·행동권만 소모된다. 일반 공격은 영향이 없다. 정화 스킬로 해제할 수 있다. 한기가 한 번 더 걸리면(2중첩) 한기가 사라지고 빙결에 걸린다."},
 freeze:{n:"빙결",i:"🧊",p:0,t:2,d:"한기가 2중첩되면 걸린다. 몬스터가 행동권을 2번 사용하는 동안 행동할 수 없고(몬스터가 행동권을 자동으로 가져간다), 이 동안 몬스터의 물 속성 공격에 맞으면 피해가 30% 늘어난다(약점 피격). 몬스터가 행동권을 2번 쓰면 풀린다. 정화 스킬로 해제할 수 있다."}};
+const STS_MON_F=()=>({
+stun:["장비 '기절' 5~10% · 땅 속성 공격 "+Math.round(PROC_P*100)+"%","몬스터의 다음 행동권 1회 상실. 땅 속성 몬스터와 네임드(간부·보스·희귀·영웅)는 면역이다."],
+shock:["번개 속성 공격 "+Math.round(PROC_P*100)+"%","3턴 동안 몬스터가 행동권을 얻어도 마비되어 넘긴다(일반·정예 25% · 네임드 12.5%). 번개 속성 몬스터는 면역이다."],
+sleep:["장비 '수면' 3~8%","몬스터가 다음 행동권 1회를 잃는다. 내가 먼저 때리면 깨어나며 그 일격 피해 +50%. 땅 속성 몬스터와 네임드는 면역이다."],
+charm:["장비 '현혹' 8~18%","3회 동안 몬스터의 공격이 40% 확률로 빗나간다."],
+dazzle:["빛 속성 공격 "+Math.round(PROC_P*100)+"%","몬스터의 다음 2번 행동이 50% 확률로 빗나간다. 빛 속성 몬스터는 면역이다."],
+bleed:["장비 '출혈' 8~18%","3턴 동안 매 턴 출혈 피해. 최대 5중첩."],
+poison:["장비 '독' 5~15%(2턴) · 독 속성 공격 "+Math.round(PROC_P*100)+"%(5턴) · 맹독 칼날","매 턴 독 피해. 최대 5중첩. 독 속성 몬스터는 면역이다."],
+burn:["장비 '화상' 10~25% · 불 속성 공격 "+Math.round(PROC_P*100)+"%","3턴 동안 매 턴 화상 피해. 최대 3중첩(필살의 비수 착용 시 확률 2배 · 최대 9중첩). 불 속성 몬스터는 면역이다."],
+curse:["어둠 속성 공격 "+Math.round(PROC_P*100)+"%","랜덤 저주 1개를 4턴 건다(저주는 하나만 유지). 어둠 속성 몬스터는 면역이다."],
+disease:["장비 '질병' 4~10%","3턴 동안 매 턴 질병 피해. 최대 3중첩. 독 속성 몬스터는 면역이다."],
+fear:["장비 '공포' 6~14%","2턴 동안 몬스터 공격력 -25%. 몬스터가 피해를 입을 때마다 50% 확률로 풀린다. 땅 속성 몬스터와 네임드는 면역이다."],
+corrode:["장비 '침식' 8~18%","3턴 동안 몬스터가 받는 피해 +10%. 땅 속성 몬스터는 면역이다."],
+wound:["장비 '상처' 8~18%","3턴 동안 몬스터 회복량 -60%, 받는 지속 피해 +25%."],
+chill:["장비 '한기' 8~18%","3턴 동안 몬스터의 모든 스킬 시전 성공 확률이 절반. 물 속성 몬스터는 면역이다."],
+freeze:["해당 없음","몬스터에게는 빙결이 걸리지 않는다(나에게만 걸린다)."]});
 const STS_ORDER=["stun","shock","sleep","charm","dazzle","bleed","poison","burn","curse","disease","fear","corrode","wound","chill","freeze"];
 const DOT_F={bleed:.02,poison:.015,burn:.03,disease:.05},SLEEP_BONUS=.5,BURN_STK=[0,.3,.6,1],BURN_CAP_P=3,DAZZLE_MISS=.5,DAZZLE_LIGHT=.3,MON_CRIT=.05,MON_CRIT_X=1.5,CHARM_MISS=.4,SHOCK_FAIL=.25,FEAR_CLEAR=.5,FREEZE_N=2,EV_BASE=5,EV_AGI=100; // 출혈/중독 턴당 피해=몬스터 공격력×계수 · 질병 즉시 피해 / 수면 추가피해 / 현혹 빗나감 / 감전 행동불가 / 공포 해제 / 회피율 기본 5%, 민첩 100당 +1%
 const BURN_CAP=3; // 내가 거는 화상 최대 중첩 (추가로 걸리면 모든 중첩의 지속시간 초기화)
@@ -2170,6 +2224,17 @@ function quick(title,color,html,cb,dir,big){try{const cid=dir==="l"?"fxl":dir===
  let tr="scale(1)",t0="scale(.6)";if(dir!=="r"&&dir!=="l"){const off=(dir==="d"?1:-1)*c.children.length*QSTEP,mb=innerWidth<=640,ix=dir==="i"?(mb?Math.max(60,innerWidth/2-58):240):0,b=`translate(calc(-50% + ${ix}px),calc(-50% + ${off}px)) `;Object.assign(e.style,{position:"absolute",left:"0",top:"0",width:"max-content",maxWidth:dir==="i"?(mb?"112px":"220px"):"86vw"});if(dir==="i"&&mb)e.style.fontSize="12px";tr=b+"scale(1)";t0=b+"scale(.6)"}
  e.style.transform=t0;c.appendChild(e);setTimeout(()=>{e.style.opacity="1";e.style.transform=tr},20);setTimeout(()=>{e.style.transition="opacity .35s";e.style.opacity="0"},1000);setTimeout(()=>{e.remove()},1400)}catch(x){}cb&&cb()}
 const QSTEP=46;
+
+const IC_T={stun:["💫","기절!","⭐"],freeze:["🧊","빙결!","❄"],sleep:["😴","수면!","💤"],fear:["😱","공포!","👁"],shock:["⚡","감전!","⚡"]};
+let ICFX=false;
+function incapFx(kind,msg,cb){rmDice();hideTip();const old=document.getElementById("icfx");if(old)old.remove();const T=IC_T[kind]||IC_T.stun,o=document.createElement("div"),rnd=(a,b)=>a+Math.random()*(b-a);o.id="icfx";o.className="ic-"+kind;
+ let h='<div class="bg"></div>';
+ if(kind==="stun"){h+='<div class="ring">'+[0,1,2,3,4,5].map(k=>`<i style="--k:${k}">⭐</i>`).join("")+"</div>"}
+ else if(kind==="shock"){h+='<svg viewBox="0 0 100 100" preserveAspectRatio="none">'+[0,1,2,3].map(()=>{let x=rnd(8,92),pts=`${x.toFixed(1)},0`;for(let y=10;y<=100;y+=rnd(9,15)){x=Math.max(3,Math.min(97,x+rnd(-14,14)));pts+=` ${x.toFixed(1)},${y.toFixed(1)}`}return`<polyline points="${pts}"/>`}).join("")+"</svg>"}
+ else{const n=kind==="fear"?9:16,an=kind==="freeze"?"icFall":kind==="sleep"?"icRise":"icBeat";for(let i=0;i<n;i++)h+=`<i class="pt" style="--x:${rnd(4,92).toFixed(0)}%;--y:${kind==="sleep"?rnd(55,95).toFixed(0):kind==="fear"?rnd(5,85).toFixed(0):"0"}%;--s:${rnd(18,40).toFixed(0)};--d:${rnd(2.2,4.2).toFixed(1)}s;--dl:${rnd(0,2).toFixed(1)}s;--r:${rnd(-240,240).toFixed(0)}deg;--dx:${rnd(-60,60).toFixed(0)}px;--an:${an}">${T[2]}</i>`}
+ h+=`<div class="card"><div class="em">${T[0]}</div><div class="tt">${T[1]}</div><div class="ms">${msg}</div><div class="hn">화면을 눌러 계속</div></div>`;
+ o.innerHTML=h;document.body.append(o);const t0=Date.now();let done=false;
+ o.onclick=()=>{if(done||Date.now()-t0<400)return;done=true;o.classList.add("out");setTimeout(()=>{o.remove();cb&&cb()},200)}}
 function flash(title,color,html,cb,ms){const r=$("res");r.querySelector(".rt").textContent=title;r.querySelector(".rt").style.color=color;r.querySelector(".rb").innerHTML=html;r.querySelector(".rok").style.display="none";r.style.display="flex";setTimeout(()=>{r.style.display="none";cb&&cb()},ms||1800)}
 function dieCheck(){if(P.hp>0)return false;if(HAS(17)&&BS.revive>0){BS.revive--;P.hp=r1(MHP()*E(17)/100);fxSay(`부활 발동! ${cG(`HP ${f(P.hp)}`)}(으)로 되살아났다.`);BS.revPop=P.hp;return false}lose();return true}
 const pFearWake=()=>{const ds=BS&&BS.ds;if(ds&&ds.fear&&P.hp>0&&Math.random()<FEAR_CLEAR){delete ds.fear;say("😱 피해를 입자 정신이 번쩍 들었다! 공포가 풀렸다.")}};
@@ -2207,14 +2272,14 @@ function turnStart(){BS.turn++;const ds=BS.ds;
 function forcedRound(k){const ds=BS.ds,S=STS[k];let msg;
  if(k==="stun"){delete ds.stun;msg="기절해서 행동할 수 없다!"}else if(k==="freeze"){const n=--ds.freeze.t;msg=`꽁꽁 얼어붙어 움직일 수 없다! (몬스터 행동권 ${n>0?n+"회 더":"마지막"})`;if(n<=0){delete ds.freeze;msg+=" — 이번 행동이 끝나면 빙결이 풀린다."}}else if(k==="sleep")msg=`깊이 잠들어 있다… (수면 ${ds.sleep.t}턴 남음)`;else msg=`공포에 질려 몸이 얼어붙었다! (${ds.fear.t}턴 남음)`;
  $("panel").innerHTML="";hidePop();BS.streak=0;
- flash(`${S.i} ${S.n}!`,"#ffd34d",`${msg}<br>몬스터가 행동권을 자동으로 가져간다.`,()=>{say(`${S.i} ${S.n} 상태 — 몬스터가 행동권을 가져갔다.`);foeAct()},1700)}
+ incapFx(k,`${msg}<br>몬스터가 행동권을 자동으로 가져간다.`,()=>{say(`${S.i} ${S.n} 상태 — 몬스터가 행동권을 가져갔다.`);foeAct()})}
 const fateOn=()=>P.job==="rogue"&&JUNL().some(k=>k.id==="r5");
 function forceRound(title,msg,skipFx){if(/운명의 지배/.test(title)&&!skipFx){return rogueFx("fate",()=>forceRound(title,msg,1),msg.split("<br>")[0].replace(/!$/,"")+" · 행동권 강탈")}BS.chg&&0;$("panel").innerHTML="";hidePop();BS.tie=0;BS.lose=0;
- flash(title,"#7fd4ff",msg,()=>{say(`${title} — 행동권을 강제로 가져왔다!`);if(!turnStart())return;BS.streak++;if(BS.chg){const c=BS.chg;BS.chg=null;say(`⚡ 행동권을 빼앗아 ${foe.n}의 <b>${c.n}</b> 준비를 저지했다!`)}if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}cmdMenu()},1500)}
+ flash(title,"#7fd4ff",msg,()=>{say(`${title} — 행동권을 강제로 가져왔다!`);if(!turnStart())return;BS.streak++;if(BS.chg){const c=BS.chg;BS.chg=null;say(`⚡ 행동권을 빼앗아 ${foe.n}의 <b>${c.n}</b> 준비를 저지했다!`)}if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return incapFx("shock","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()})}cmdMenu()},1500)}
 function foeStunRound(){BS.stun=false;BS.mslp=false;BS.chg=null;$("panel").innerHTML="";hidePop();
- quick("💫 기절!","#ffd34d",`행동권 자동 획득`,()=>{say(`💫 ${foe.n}이(가) 기절 — 행동권을 자동으로 얻었다! 기절이 해제됐다.`);if(!monTurn())return;if(!turnStart())return;BS.streak++;if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}cmdMenu()},1700)}
+ quick("💫 기절!","#ffd34d",`행동권 자동 획득`,()=>{say(`💫 ${foe.n}이(가) 기절 — 행동권을 자동으로 얻었다! 기절이 해제됐다.`);if(!monTurn())return;if(!turnStart())return;BS.streak++;if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return incapFx("shock","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()})}cmdMenu()},1700)}
 function foeShockRound(){BS.chg=null;$("panel").innerHTML="";hidePop();
- quick("⚡ 감전!","#ffe14d",`행동권 강제 획득`,()=>{say(`⚡ ${foe.n}이(가) 감전으로 행동하지 못했다 — 행동권을 강제로 얻었다!`);if(!monTurn())return;if(!turnStart())return;BS.streak++;if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}cmdMenu()},1700)}
+ quick("⚡ 감전!","#ffe14d",`행동권 강제 획득`,()=>{say(`⚡ ${foe.n}이(가) 감전으로 행동하지 못했다 — 행동권을 강제로 얻었다!`);if(!monTurn())return;if(!turnStart())return;BS.streak++;if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return incapFx("shock","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()})}cmdMenu()},1700)}
 function roll(re){rmDice();const ds=BS.ds;
  if(!re&&(BS.stun||BS.mslp)&&!ds.stun&&!ds.sleep&&!ds.fear&&!ds.freeze)return foeStunRound();
  if(!re&&BS.forceAct&&!ds.stun&&!ds.sleep&&!ds.fear&&!ds.freeze){const w=BS.forceAct;BS.forceAct=0;return w==="fate"?forceRound("🎲 운명의 지배!","3번 연속 졌다!<br>다음 행동권을 강제로 가져온다."):forceRound("🌑 그림자 걸음!","공격을 완전히 피했다!<br>이어서 행동권을 강제로 가져온다.")}
@@ -2226,7 +2291,7 @@ function roll(re){rmDice();const ds=BS.ds;
   if(a===b){if(HAS(8)){fxSay("동점 행동권 획득!");won=true}else{BS.tie=(BS.tie||0)+1;BS.lose=0;if(fateOn()&&BS.tie>=2){say(`🎲 동점! (나 ${a} : 몬스터 ${b})`);return forceRound("🎲 운명의 지배!","동점이 2번 연속 나왔다!<br>다음 행동권을 강제로 가져온다.")}say(`🎲 동점! (나 ${a} : 몬스터 ${b}) 자동으로 다시 굴립니다.`);foebar();$("panel").innerHTML="";return setTimeout(()=>{if(foe)roll(re)},500)}}
   if(won){BS.tie=0;BS.lose=0;if(!turnStart())return;BS.streak++;say(`🎲 나 ${a} ${a===b?"=":">"} 몬스터 ${b} — 행동권을 얻었다! 몬스터는 공격하지 못한다.`);
    if(BS.chg){const c=BS.chg;BS.chg=null;say(`⚡ 행동권을 빼앗아 ${foe.n}의 <b>${c.n}</b> 준비를 저지했다!`)}
-   if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return flash("⚡ 감전!","#ffe14d","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()},1800)}
+   if(BS.pre.shock&&Math.random()<SHOCK_FAIL){BS.streak=0;return incapFx("shock","몸이 마비되어 행동하지 못했다!<br>행동권이 몬스터에게 넘어간다.",()=>{say("⚡ 감전으로 행동하지 못했다! 행동권이 몬스터에게 넘어갔다.");foeAct()})}
    return cmdMenu()}
   BS.streak=0;
   const lossFlow=()=>{if(ambush(lossRest))return;lossRest()},lossRest=()=>{BS.tie=0;BS.lose=(BS.lose||0)+1;if(fateOn()&&BS.lose>=3){BS.lose=0;BS.forceAct="fate"}if(BS.stun||BS.mslp){const sl=!BS.stun&&BS.mslp;BS.stun=false;BS.mslp=false;BS.chg=null;say(`🎲 나 ${a} < 몬스터 ${b}`);fxSay(sl?"수면! 몬스터가 잠들어 행동권을 잃었다 (깨어남).":"기절! 몬스터가 행동권을 잃었다.");return rollMenu()}if(BS.shk>0&&Math.random()<SHOCK_FAIL*(isNm()?.5:1)){say(`🎲 나 ${a} < 몬스터 ${b}`);return foeShockRound()}say(`🎲 나 ${a} < 몬스터 ${b} — ${foe.n}의 선공!`);foeAct()};
@@ -3148,7 +3213,7 @@ function dexMenu(tab,cat,idx){if(typeof tab!=="string")tab="el";
  root.append(secEl("🌍 원소의 세계",intro));
  root.append(secEl("🛡 같은 속성 상성",`<div style="font-size:12.5px;line-height:1.7">속성 몬스터에게 <b>같은 속성</b>으로 공격하면 그 힘이 통하지 않는다.<br>· <b>${pc(SAME_IMM)}% 확률 — 완전 면역</b>: 그 속성의 피해가 0이 된다.<br>· <b>${pc(1-SAME_IMM)}% 확률 — 피해 -${pc(SAME_RED)}%</b>: 피해는 들어가지만 ${pc(SAME_RED)}% 줄어든다. 이때 속성 효과는 발동할 수 있지만 같은 속성의 상태이상은 걸리지 않는다.<br>· <b>같은 속성의 상태이상은 항상 면역</b>이다. (확률 없음)<br>· 판정은 속성 공격력 부분마다 따로 한다. 예) 불+물 속성 무기로 불 몬스터를 치면 불 부분만 판정하고 물 부분은 그대로 들어간다. 완전 면역일 때는 속성 효과(15% 발동)도 일어나지 않는다.<br>· 속성이 없는 일반 공격(물리·주문)은 이 규칙과 무관하다.<br><div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:2px 10px">${Object.keys(ELEM).map(k=>`<div>${eTag(k)} 몬스터 — 면역 상태이상: <b>${OWN_ST[k]}</b>${IMM[k].length>1?` · ${IMM[k].filter(x=>x!==k).join("·")}속성 공격도 같은 규칙`:""}</div>`).join("")}</div><small style="opacity:.8">※ 상태이상 면역은 몬스터에게 거는 경우에 해당한다. 착용효과로 거는 독(중독·질병)·화상·한기·침식도 같은 규칙이 적용된다.</small></div>`));
  root.append(secEl("🔮 속성 <small style='opacity:.75'>(8종)</small>",cardGrid(Object.entries(ELEM).map(([k,e])=>({col:e.c,html:`<div style="font-size:15px">${eTag(k)}</div><div style="font-size:12.5px;margin-top:2px">${e.d}</div><div style="font-size:12px;opacity:.85;margin-top:3px">동반 상태이상: ${e.s}</div><div style="font-size:12px;opacity:.85">몬스터 특성: ${traitTxt(k)}</div><div style="font-size:12px;opacity:.85;color:#9be3a8">속성 공격력이 있을 때 효과: ${EL_FX[k]}</div>`})))));
- root.append(secEl("⚠ 상태이상 <small style='opacity:.75'>(확률은 스킬마다 다를 수 있다)</small>",cardGrid(STS_ORDER.map(k=>{const S=STS[k];return {col:"#e0a040",html:`<div>${S.i} <b>${S.n}</b> <small style="opacity:.8">(기본 ${pc(S.p)}%)</small></div><div style="font-size:12.5px;margin-top:2px;opacity:.9">${S.d}</div>`}}))));
+ root.append(secEl("⚠ 상태이상 <small style='opacity:.75'>(몬스터→나 / 나→몬스터는 확률 출처와 효과가 서로 다르다 · 확률은 스킬마다 다를 수 있다)</small>",cardGrid(STS_ORDER.map(k=>{const S=STS[k],M=STS_MON_F()[k];return {col:"#e0a040",html:`<div>${S.i} <b>${S.n}</b></div><div style="font-size:12.5px;margin-top:4px"><b style="color:#ff9a8a">👹→🧑 몬스터가 나에게</b> <small style="opacity:.85">(기본 ${S.p>0?pc(S.p)+"%":"한기 2중첩 시"} · 내 저항으로 감소)</small><div style="opacity:.9;margin-top:1px">${S.d}</div></div><div style="font-size:12.5px;margin-top:6px;padding-top:5px;border-top:1px dashed #8896"><b style="color:#8fd4ff">🧑→👹 내가 몬스터에게</b> <small style="opacity:.85">(${M[0]})</small><div style="opacity:.9;margin-top:1px">${M[1]}</div></div>`}}))));
  root.append(secEl("🛡 막기",`<div style="font-size:12.5px;line-height:1.65">· <b>막기</b>는 공격의 <b>타수마다 따로</b> 막기 확률을 굴린다. 1타짜리 공격은 막기가 뜨면 통째로 막히고, 급소 찌르기(2회)·기습(2회)·죽음의 선고(5회) 같은 <b>다단히트는 각 타가 독립적으로 판정</b>되어 막힌 타만 피해를 입지 않는다(전부 막히면 피해 없음). 막힌 타에는 상태이상·효과도 걸리지 않는다. 막기가 뜨면 화면에 <b>🛡 막기!</b> 팝업이 뜬다.<br>· <b>내 막기확률</b>: 기본 0% · 방어력이 적정 방어도(내 레벨 × ${DEF_LV})를 넘은 만큼 방어력 <b>${BLK_PER}당 1%</b> · 장비 착용효과 <b>막기 확률 +${fxRange(EFFM[53]).match(/<b>[^<]+<\/b>/)[0].replace(/<\/?b>/g,"")}%</b>. 상한 ${BLK_CAP}%.<br>· <b>몬스터의 막기확률</b>: <b>네임드</b>(필드 희귀·영웅 / 던전 간부·보스)만 가진다. 기본 <b>일반 난이도 0% · 영웅 난이도 ${BLK_HERO}%</b>에, 몬스터의 방어력이 물리 방어 한도를 넘은 만큼 방어력 ${BLK_PER}당 +1%가 더해진다. 방어 한도는 <b>일반 난이도 물리 피해 감소 ${DEF_MAX*100}%(방어력 ${f(MDEF_NORM)})</b> · <b>영웅 난이도 ${HPD_CAP*100}%(방어력 약 ${f(MDEF_HERO)})</b>다(방어력이 높은 탱커형 네임드나 방어력 강화 버프가 붙은 때 한도를 넘는다). 일반·정예 몬스터는 막지 못한다. 몬스터가 막으면 내 공격 1타가 무효가 된다.<br>· 막기는 직접 공격에만 적용된다(독·화상 같은 지속 피해는 막지 못한다).</div>`));
  root.append(secEl("🛡 영웅 네임드 물리 방어",`<div style="font-size:12.5px;line-height:1.6">영웅 난이도의 네임드(필드 희귀·영웅 / 던전 간부·보스)가 받는 물리 피해 감소는 최대 <b>${HPD_CAP*100}%</b>까지다. 방어력이 높거나 방어력 강화로 이 한도를 넘으면 몬스터가 <b>🛡 물리피해 확정 방어</b> 버프를 얻어, 내 <b>다음 물리 피해(속성 피해 제외)를 전부 막는다</b>. 버프는 몬스터 플레이트에 표시되고 한 번 막으면 사라지며, 이후 ${PG_CD}턴 동안은 다시 생기지 않는다. 주문 피해는 방어력을 무시하므로 영향이 없다.</div>`));
  root.append(secEl("📉 레벨 차 피해 감소",`<div style="font-size:12.5px;line-height:1.6">공격하는 쪽의 레벨이 맞는 쪽보다 <b>낮으면</b> 레벨 차 1당 피해가 <b>${pc(LVD_P)}%</b>씩 줄어든다(최대 ${pc(LVD_MAX)}%). 나와 몬스터에게 똑같이 적용된다.<br>· 적용 대상: <b>일반 피해</b>(방어력 쪽)와 <b>속성 피해</b>(저항력 쪽). <b>고유 피해</b>와 지속 피해는 줄지 않는다.<br>· 예) 만렙(Lv ${LV_CAP})인 내가 Lv 65 몬스터를 공격하면 ${pc(LVD_P*5)}% 감소. 반대로 Lv 55 몬스터가 Lv ${LV_CAP}인 나를 공격해도 같은 비율로 감소한다.</div>`));
