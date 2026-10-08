@@ -1635,7 +1635,8 @@ if(DUNGEONS.some(d=>d.id===P.loc)&&!P.dg)P.dg={id:P.loc,done:[],v:2};
 const HM=()=>BS&&BS.ds&&BS.ds.wound?.4:1;
 const clamp=()=>{P.hp=Math.min(P.hp,MHP())};
 const zone=id=>ZONES.find(z=>z.id===id),dgn=id=>DUNGEONS.find(d=>d.id===id);
-const locName=()=>{if(P.loc==="town")return TOWN;const d=dgn(P.loc);return d?`${d.n} (처치 ${P.dg?P.dg.done.length:0}/6)`:zone(P.loc).n};
+const dfTag=()=>P.hd?"(영웅) ":"(일반) ";
+const locName=()=>{if(P.loc==="town")return TOWN;const d=dgn(P.loc);return d?`${dfTag()}${d.n} (처치 ${P.dg?P.dg.done.length:0}/6)`:`${dfTag()}${zone(P.loc).n}`};
 const SN=Object.fromEntries(TYPES.map(t=>[t[0],t[1]]));
 const gtxt0=(g,ns)=>{const p=[];const el0=gEl(g).map(e=>eIcon(e)+e).join(""),eP=el0?el0+"속성 ":"";if(g.atk)p.push(`공격력+${f(g.atk*UPM(g))}`);if(g.ca)p.push(`공격력+${f(g.ca*UPM(g))}(공통)`);if(g.sa)p.push(`공격력+${f(g.sa*UPM(g))}`);if(g.def)p.push(`방어+${f(g.def*UPM(g))}`);for(const k in g.s)p.push(`${STATN[k]}+${f(g.s[k]*USM(g))}${g.sc&&g.sc[k]>1?`<small>(${g.sc[k]}중첩)</small>`:""}`);for(const e in (g.res||{}))p.push(`${rIcon(e)}${e} 저항+${f(g.res[e]*USM(g))}`);if(g.ev)p.push(`${el0}속성공격력+${f(g.ev*USM(g))}`);if(g.cp)p.push(`전투력+${f(g.cp*USM(g))}`);if(g.b10)p.push(`★10강 효과: ${b10Txt(g)}`);return `${ns&&g.t!=="weapon"&&g.t!=="offhand"?"":`<small style="opacity:.8">[${gTag(g)}]</small> `}<span style="color:${RC[g.r]}">${g.up?`+${g.up} `:""}${g.n}</span> Lv${g.lv} (${p.join(", ")})${fxHtml(g.fx)}`};
 const gtxt=(g,ns)=>gtxt0(g,ns)+(g.en&&enOpt(g.en.k)?` <span style="color:#c9a0ff">✨${enName(g)} ${enTxt(g)}</span>`:"");
@@ -1757,8 +1758,8 @@ function moveMenu(){if(inB())return;if(dgn(P.loc))return say(`던전 안에서�
   inner.append(colEl(`d${act}_${hd}`,`🏰 던전 <small style="opacity:.75">(${DUNGEONS.filter(d=>(d.act||1)===act).length}곳 · 한 번 들어가면 6마리를 모두 처치해야 나갈 수 있다)</small>`,(()=>{const g=document.createElement("div");g.className="bxg mvg2";dzOf(act).forEach(x=>g.append(x));return g})()));
   root.append(colEl(`act${act}_${hd}`,act===1?`📖 1막 — 마왕 <small style="opacity:.75">(초원 ~ 마왕성 · 최초의 모험가 파티원이었던 마왕)</small>`:`🌲 2막 — 대수림 <small style="opacity:.75">(최초의 모험가 파티원이었던 엘프 궁수를 찾아서)</small>`,inner))}
  root.append(btnRow([["닫기",closeP]]))}
-function enter(d,hero){if(hero&&P.lv<HERO_NEED_LV){say(`영웅 난이도는 Lv ${HERO_NEED_LV} 이상에서 입장할 수 있습니다.`);return}const fee=(hero?Math.max(d.lv,HERO_NEED_LV):d.lv)*DG_FEE;if(P.gold<fee){say(`입장료가 부족합니다. (필요 ${f(fee)}G)`);return}P.gold=r1(P.gold-fee);P.hd=hero?1:0;P.loc=d.id;P.dg={id:d.id,done:[],v:2};save();clear();say(`🏰 <b>${d.n}</b>${hero?" 🔥<b>[영웅 난이도]</b>":""} 입장! (입장료 ${f(fee)}G 지불) ${d.desc}<br>정예 몬스터 3마리 → 간부 네임드 2마리 → 보스 네임드 순으로 나타난다. <b>6마리를 모두 처치하기 전에는 나갈 수 없다.</b> 전투 버튼으로 진행하자.`)}
-function go(id,hero){P.hd=hero&&id!=="town"?1:0;P.loc=id;save();clear();if(id==="town"){const bl=$("blog");if(bl)bl.innerHTML=""}say(id==="town"?`${TOWN}에 도착했다.`:`<b>${zone(id).n}</b>에 도착했다. ${hero?"🔥<b>[영웅 난이도]</b> 몬스터 Lv 61~65 · 정예와 희귀 네임드만 나타난다.":`몬스터 Lv ${lvr(zone(id))}.`} 전투 버튼으로 몬스터를 찾으세요.`)}
+function enter(d,hero){if(hero&&P.lv<HERO_NEED_LV){say(`영웅 난이도는 Lv ${HERO_NEED_LV} 이상에서 입장할 수 있습니다.`);return}const fee=(hero?Math.max(d.lv,HERO_NEED_LV):d.lv)*DG_FEE;if(P.gold<fee){say(`입장료가 부족합니다. (필요 ${f(fee)}G)`);return}P.gold=r1(P.gold-fee);P.hd=hero?1:0;P.loc=d.id;P.dg={id:d.id,done:[],v:2};save();clear();say(`🏰 ${hero?"(영웅) ":"(일반) "}<b>${d.n}</b>${hero?" 🔥<b>[영웅 난이도]</b>":""} 입장! (입장료 ${f(fee)}G 지불) ${d.desc}<br>정예 몬스터 3마리 → 간부 네임드 2마리 → 보스 네임드 순으로 나타난다. <b>6마리를 모두 처치하기 전에는 나갈 수 없다.</b> 전투 버튼으로 진행하자.`)}
+function go(id,hero){P.hd=hero&&id!=="town"?1:0;P.loc=id;save();clear();if(id==="town"){const bl=$("blog");if(bl)bl.innerHTML=""}say(id==="town"?`${TOWN}에 도착했다.`:`${hero?"(영웅) ":"(일반) "}<b>${zone(id).n}</b>에 도착했다. ${hero?"🔥<b>[영웅 난이도]</b> 몬스터 Lv 61~65 · 정예와 희귀 네임드만 나타난다.":`몬스터 Lv ${lvr(zone(id))}.`} 전투 버튼으로 몬스터를 찾으세요.`)}
 /* ----- 전투 (주사위) ----- */
 function fightBtn(){if(inB())return;if(P.loc==="town")return say("마을에서는 전투할 수 없습니다. 이동에서 전투지역을 고르세요.");
  const d=dgn(P.loc);
