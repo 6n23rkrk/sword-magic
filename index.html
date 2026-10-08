@@ -2779,7 +2779,10 @@ function invMenu(shop){const lk=!!foe&&!ALLOW,pv0=$("panel"),sc=pv0?pv0.scrollTo
  let selEl=null;
  const lkBtn=(d,get,tog)=>{if(!LKM)return d;const b=document.createElement("button");const on=get();d.classList.add("lkm");b.className="lkb"+(on?" on":"");b.textContent=on?"해제":"잠금";b.onclick=e=>{e.stopPropagation();tog();save();re()};d.append(b);return d};
  const actBtn=(d,txt,fn,dis)=>{d.classList.add("lkm");const b=document.createElement("button");b.className="lkb act";b.textContent=txt;b.disabled=!!dis;b.onclick=e=>{e.stopPropagation();if(!dis)fn()};d.append(b);return d};
- const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${iLk(id)?"🔒":""}${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;if(!LKM&&!shop&&on&&ITEMS[id].t==='use'&&id!=='q_leg0')return actBtn(d,lk?'전투 중':'사용',()=>{P.inv[id]--;heal(ITEMS[id]);save();hud();re()},lk);
+ const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${iLk(id)?"🔒":""}${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;if(!LKM&&!shop&&on){const it=ITEMS[id],n=P.inv[id];
+   if(it.t==='sum')return actBtn(d,lk?'전투 중':n<SUM_NEED?'재료 부족':(P.loc==='town'||P.dg)?'소환 불가':'소환',()=>summon(id),lk||P.loc==='town'||!!P.dg||n<SUM_NEED);
+   if(id==='q_leg0')return actBtn(d,lk?'전투 중':lqQ()?'진행 중':'사용',()=>{lqStart();re()},lk||!!lqQ());
+   if(it.t==='use')return actBtn(d,lk?'전투 중':'사용',()=>{P.inv[id]--;heal(it);save();hud();re()},lk)}
   return lkBtn(d,()=>iLk(id),()=>{P.lk[id]=iLk(id)?0:1;if(!P.lk[id])delete P.lk[id]})};
  const mkG=({g,i})=>{const on=ISEL&&ISEL.k==="g"&&ISEL.g===g,d=boxSlot(`<span style="color:${RC[g.r]}">${g.lk?"🔒":""}<small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],eqTip(g),on,()=>{ISEL={k:"g",x:i,g};re()});if(on)selEl=d;
   d.onmouseenter=e=>{if(Date.now()-LT>1000)showTip2(gearBody(g),eqCur(g),e)};d.onmousemove=e=>{if(Date.now()-LT>1000)moveTip2(e)};if(!LKM&&!shop&&on){const ok=canEq(g);return actBtn(d,lk?'전투 중':ok?'장착':'장착 불가',()=>{const i=P.gear.indexOf(g);if(i<0)return;ISEL=null;equip(i)},lk||!ok)}
@@ -2789,8 +2792,6 @@ function invMenu(shop){const lk=!!foe&&!ALLOW,pv0=$("panel"),sc=pv0?pv0.scrollTo
  if(ISEL){const sp=document.createElement("span");
   if(ISEL.k==="i"){const id=ISEL.x,it=ITEMS[id],n=P.inv[id];
    if(shop){if(iLk(id)){const q=document.createElement("small");q.style.opacity=".75";q.textContent="🔒 잠금 — 판매 불가";ab.append(q)}else if(it.t!=="sum"&&it.t!=="qst"){ab.append(bt(`1개 판매 ${f(it.p)}G`,()=>{P.inv[id]--;P.gold=r1(P.gold+it.p);save();hud();re()}));ab.append(bt(`전부 판매 ${f(it.p*n)}G`,()=>{P.inv[id]=0;P.gold=r1(P.gold+it.p*n);save();hud();re()},n<2))}else{const q=document.createElement("small");q.style.opacity=".75";q.textContent="판매 불가";ab.append(q)}}
-   else if(it.t==="sum")ab.append(bt(`소환 (${SUM_NEED}개 소모)`,()=>summon(id),lk||P.loc==="town"||!!P.dg||n<SUM_NEED));
-   else if(id==="q_leg0")ab.append(bt("사용 (퀘스트 수락)",()=>{lqStart();re()},lk||!!lqQ()));
    }
   else{const g=ISEL.g;
    if(shop&&g.lk){const q=document.createElement("small");q.style.opacity=".75";q.textContent="🔒 잠금 — 판매 불가";ab.append(q)}else if(shop)ab.append(bt(`판매 ${f(g.p)}G`,()=>{const i=P.gear.indexOf(g);if(i<0)return;P.gold=r1(P.gold+g.p);P.gear.splice(i,1);ISEL=null;save();hud();re()}));
@@ -2805,6 +2806,7 @@ if(qs.length)root.append(boxPlate(`📜 퀘스트 아이템 <small style="opacit
  if(!sm.length&&!use.length&&!mat.length&&!emt.length&&!gl.length)root.append(secEl("🎒 비어 있음","<span style='opacity:.7'>가진 물건이 없습니다.</span>"));
  root.append(btnRow(shop?[["상점으로",shopMenu],["닫기",closeP]]:[["닫기",closeP]]));root.scrollTop=sc;
  if(IH){document.removeEventListener("click",IH,true);IH=null}
+ if(ISEL&&selEl&&!ab.children.length&&!LKM){IH=e=>{const t=e.target;if(t&&t.closest&&t.closest(".ipop"))return;if(selEl.contains(t))return;document.removeEventListener("click",IH,true);IH=null;ISEL=null;re()};setTimeout(()=>{if(IH)document.addEventListener("click",IH,true)},0)}
  if(ISEL&&selEl&&ab.children.length){if(!root.classList.contains("drop"))root.style.position="relative";root.append(ab);const rb=root.getBoundingClientRect(),eb=selEl.getBoundingClientRect(),w=ab.offsetWidth||180;let left=eb.left-rb.left+root.scrollLeft;left=Math.max(4,Math.min(left,root.clientWidth-w-8));ab.style.left=left+"px";ab.style.top=(eb.bottom-rb.top+root.scrollTop+4)+"px";
   IH=e=>{const t=e.target;if(t&&t.closest&&(t.closest(".ipop")||t.closest(".bs")))return;document.removeEventListener("click",IH,true);IH=null;ISEL=null;re()};setTimeout(()=>{if(IH)document.addEventListener("click",IH,true)},0)}}
 function shopMenu(){if(foe)return;
