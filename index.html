@@ -1671,8 +1671,17 @@ const wH=g=>g.h||wParse(g.n).h,wN=g=>g.wt||wParse(g.n).wt;
 const hashS=str=>{let h=2166136261;for(const c of str){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 const rngS=seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
 const splitParts=(id,n)=>{const rnd=rngS(hashS("parts:"+id)),a=TYPES.map((_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}const g=Array.from({length:n},()=>[]);a.forEach((q,k)=>g[k%n].push(q));return g.map(x=>x.sort((q,w)=>q-w))};
-const namedParts=key=>{let m=/^(d\d+)_(?:m(\d)|n)$/.exec(key);if(m)return splitParts(m[1],3)[m[2]!=null?+m[2]:2];m=/^r(\d+)_(\d+)$/.exec(key);if(m)return splitParts("z"+m[1],+m[1]>=15?3:5)[+m[2]];return null};
-const partNames=key=>{const a=namedParts(key);return a?a.map(i=>TYPES[i][1]).join(" · "):"전 부위 균등"};
+
+// 네임드 무기 드랍: 무기도 담당 부위처럼 표의 한 칸(부위 n개 + 무기 1칸 = n+1칸 균등)이고, 무기 칸의 확률은 그 네임드가 맡은 무기 종류 수로 나눈다. 무기 종류 13개는 던전(3마리)·필드(5마리)에서 네임드끼리 나눠 맡는다(시드 고정)
+const WKL=[];for(const sp of[0,1])for(const h of[1,2])WT[sp?"spell":"phys"][h].forEach(n=>WKL.push([!!sp,h,n]));
+const wkName=w=>`${w[0]?"주문 ":""}${w[2]}(${w[1]===2?"양손":"한손"})`;
+const namedWK=key=>{let m=/^(d\d+)_(?:m(\d)|n)$/.exec(key),id,n,i;if(m){id=m[1];n=3;i=m[2]!=null?+m[2]:2}else{m=/^r(\d+)_(\d+)$/.exec(key);if(m){id="z"+m[1];n=+m[1]>=15?3:5;i=+m[2]}else return WKL}
+ const rnd=rngS(hashS("wk:"+id)),a=WKL.map((_,q)=>q);for(let x=a.length-1;x>0;x--){const y=Math.floor(rnd()*(x+1));[a[x],a[y]]=[a[y],a[x]]}const g=Array.from({length:n},()=>[]);a.forEach((q,t)=>g[t%n].push(q));return g[i].sort((q,w)=>q-w).map(q=>WKL[q])};
+const namedWP=key=>{const a=namedParts(key);return 1/((a?a.length:TYPES.length-1)+1)};
+const nmw=key=>({wp:namedWP(key),wk:namedWK(key)});
+const namedParts0=key=>{let m=/^(d\d+)_(?:m(\d)|n)$/.exec(key);if(m)return splitParts(m[1],3)[m[2]!=null?+m[2]:2];m=/^r(\d+)_(\d+)$/.exec(key);if(m)return splitParts("z"+m[1],+m[1]>=15?3:5)[+m[2]];return null};
+const namedParts=key=>{const a=namedParts0(key);return a?a.filter(i=>i!==0):null};
+const partNames=key=>{const a=namedParts(key),w=namedWK(key);return `무기(${w.map(wkName).join("·")}) · `+(a?a.map(i=>TYPES[i][1]).join(" · "):"나머지 전 부위")};
 const gTag=g=>g.t==="weapon"?`${wN(g)}·${wH(g)===2?"양손":"한손"}`:g.t==="offhand"?`보조장비·${g.ot||"방패"}`:SN[g.t];
 // 장비 보너스 스탯 굴림: 칸마다 수치는 장비 레벨의 50~100%를 독립적으로 굴린다(무기·보조장비는 부위 배율 적용). 무기는 첫 칸이 확정 스탯, 나머지 칸 후보 제한 / 방어구는 5스탯 완전 랜덤 / 같은 스탯은 합산
 function rollStats(isW,kind,lv,n){const sp=kind==="spell",pick=[];
@@ -1693,9 +1702,9 @@ const _nc={};
 const gNouns=m=>{const k=m.n;if(_nc[k])return _nc[k];const a=[];(m.drops||[]).forEach(([id])=>{const it=ITEMS[id];if(!it||it.t!=="mat"||it.em)return;it.n.split(/\s+/).forEach(t=>{if(NOUN_OK.has(t)&&!a.includes(t))a.push(t)})});if(!a.length){const w=NOUN_NM.find(([re])=>re.test(k));return _nc[k]=w?w[1]:(NOUN_EL[m.elm]||["가죽"])}return _nc[k]=a};
 const gLabel=(m,o)=>o&&o.short&&m.gm?m.gm.replace(/의$/,""):m.n;
 const gName=(m,o,Ti,word)=>{const lb=gLabel(m,o),ns=gNouns(m),pk=ns.filter(x=>!lb.includes(x));const c=pk.length?pk:ns;return `${lb} ${c[hashS(m.n+"|"+Ti+"|"+word)%c.length]} ${word}`};
-function makeGear(m,el,rf,edp,dgid,o){o=o||{};const x=Math.random()*100,r=rf!=null?rf:el===2?(x<90?2:3):el?(x<50?0:x<89?1:x<99?2:3):(x<60?0:x<95?1:2),Ti=o.parts&&o.parts.length?o.parts[R(0,o.parts.length-1)]:R(0,TYPES.length-1),T=TYPES[Ti],lv=o.fixLv?Math.max(1,Math.round(m.lv)):Math.max(1,m.lv+R(-5,5)),z=Math.min(4,m.zi||0),isW=T[0]==="weapon",isO=T[0]==="offhand";
- const jk=P.job?JOBS[P.job].kind:null,sp=(isW||isO)&&Math.random()<(jk?(jk==="spell"?.7:.3):.5),B=GB(lv,r);let h=1,wt="",ot="",base;
- if(isW){if(m.gn&&/지팡이|마법봉|홀$/.test(m.gn[0])===sp){const w=wParse(m.gn[0]);h=w.h;wt=w.wt;base=wt}
+function makeGear(m,el,rf,edp,dgid,o){o=o||{};const x=Math.random()*100,r=rf!=null?rf:el===2?(x<90?2:3):el?(x<50?0:x<89?1:x<99?2:3):(x<60?0:x<95?1:2),wkd=o.wp&&o.wk&&o.wk.length&&Math.random()<o.wp?o.wk[R(0,o.wk.length-1)]:null,Ti=wkd?0:o.parts&&o.parts.length?o.parts[R(0,o.parts.length-1)]:R(0,TYPES.length-1),T=TYPES[Ti],lv=o.fixLv?Math.max(1,Math.round(m.lv)):Math.max(1,m.lv+R(-5,5)),z=Math.min(4,m.zi||0),isW=T[0]==="weapon",isO=T[0]==="offhand";
+ const jk=P.job?JOBS[P.job].kind:null,sp=wkd?wkd[0]:(isW||isO)&&Math.random()<(jk?(jk==="spell"?.7:.3):.5),B=GB(lv,r);let h=1,wt="",ot="",base;
+ if(isW){if(wkd){wt=wkd[2];h=wkd[1];base=wt}else if(m.gn&&/지팡이|마법봉|홀$/.test(m.gn[0])===sp){const w=wParse(m.gn[0]);h=w.h;wt=w.wt;base=wt}
   else{const pool=[];for(const hh of[1,2])WT[sp?"spell":"phys"][hh].forEach(n=>pool.push([n,hh]));[wt,h]=pool[R(0,pool.length-1)];base=wt}}
  else if(isO){if(sp){ot=OT.spell[R(0,OT.spell.length-1)];base=ot}else{ot="방패";base="방패"}}
  else base=GWORD[T[0]]||T[1];
@@ -2160,7 +2169,7 @@ function monTip(b,atk,live,nh,key){const H=t=>`<div style="margin-top:5px"><b>${
  if(b.skU)h+=one(b.skU,"고유 스킬");
  if(b.skU2)h+=one(b.skU2,"고유 스킬");if(b.skU3)h+=one(b.skU3,"고유 스킬");
  if(!b.skE&&!b.skB&&!b.skU)h+=`<div style="${sm};margin-top:5px">평타 외 스킬이 없다.</div>`;
- {const pn=namedParts(key||(live&&b.id)||""),all=TYPES.map(t=>t[1]).join(" · ");h+=H("🎁 드랍 장비 부위")+`<div style="${sm}">${pn?`<b>${partNames(key||b.id)}</b> <span style="opacity:.8">(이 몬스터가 떨어뜨리는 부위 ${pn.length}종 중 무작위)</span>`:`무작위 — ${all}`}</div>`}
+ {const pn=namedParts(key||(live&&b.id)||""),all=TYPES.map(t=>t[1]).join(" · ");h+=H("🎁 드랍 장비 부위")+`<div style="${sm}">${pn?`<b>${partNames(key||b.id)}</b> <span style="opacity:.8">(담당 부위 ${pn.length}종 + 무기 1칸 = ${pn.length+1}칸 균등 · 무기 칸은 이 몬스터의 무기 ${namedWK(key||b.id).length}종으로 나눔)</span>`:`무작위 — ${all}`}</div>`}
  return h}
 let trTipEl=null,trTimer=null;
 function trTipShow(x,y){const t=foe&&foe.trait;if(!t)return;trTipHide();const d=document.createElement("div");d.id="trtip";d.style.cssText="position:fixed;z-index:9999;max-width:min(300px,86vw);background:#1b1710f2;border:1px solid #c9b36a;color:#f3ecd2;padding:6px 9px;font-size:12.5px;line-height:1.45;pointer-events:none;box-shadow:0 2px 10px #000a";d.innerHTML=`<b style="color:#e8cf7a">✦ 고유특성 · ${t.n}</b> <small>(패시브)</small><br>${trDesc(t)}${t.fl?`<br><i style="opacity:.85">${t.fl}</i>`:""}`;document.body.appendChild(d);const w=d.offsetWidth,h=d.offsetHeight;d.style.left=Math.max(6,Math.min(innerWidth-w-6,x-w/2))+"px";d.style.top=(y+h+24>innerHeight?Math.max(6,y-h-14):y+18)+"px";trTipEl=d}
@@ -2790,10 +2799,10 @@ function winNow(){rmDice();const dl=[],dgs=[],gdrop=g=>`<div class="dgear" data-
  if(foe.hero&&foe.rare&&!foe.hn){const mm=/^r(\d+)_\d+$/.exec(foe.id);if(mm&&+mm[1]<15&&Math.random()<HERO_SUM){const hk="hn"+mm[1]+"_s";if((P.inv[hk]||0)>=SUM_CAP)t+=`<br><span style="opacity:.7">${inm(hk)} — 최대 ${SUM_CAP}개 보유 중이라 획득하지 못했다.</span>`;else{P.inv[hk]=(P.inv[hk]||0)+1;t+=`<br>👑 획득: ${inm(hk)} <span style="opacity:.8">(${P.inv[hk]}/${SUM_CAP})</span>`;dl.push(`<div style="text-align:left;padding:2px 0">👑 ${inm(hk)}</div>`)}}}
  const dgid=foe.di!=null&&P.dg?P.dg.id:null;
  if(foe.hero){const kd=foe.hn?"hn":foe.rare?"fr":dgid?(foe.nm?"dn":foe.lt?"dl":"de"):"fe",[lo,hi,pr]=HD_DROP[kd],n=R(lo,hi),pa=kd==="fe"||kd==="de"?null:namedParts(foe.id);
-  for(let i=0;i<n;i++){let x=Math.random(),r=0;for(let q=0;q<pr.length;q++){if(x<pr[q]){r=q;break}x-=pr[q];r=q}const g=makeGear(foe.base,2,r,null,dgid,pa?{parts:pa,short:1}:{});P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}}
- else if(foe.nm){const n=1+(Math.random()<NAMED_EXTRA?1:0);for(let i=0;i<n;i++){const g=makeGear(foe.base,2,null,ED_P.nm,dgid,{parts:namedParts(foe.id),short:1});P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}}
- else if(foe.rare){const n=1+(Math.random()<RARE_EXTRA?1:0);for(let i=0;i<n;i++){const g=makeGear(foe.base,2,null,null,null,{parts:namedParts(foe.id),short:1});P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}}
- else if(foe.lt){if(Math.random()<LT_GEAR){const lx=Math.random(),lr=lx<LT_R[1]?1:lx<LT_R[1]+LT_R[2]?2:3,g=makeGear(foe.base,2,lr,ED_P.lt,dgid,{parts:namedParts(foe.id),short:1});P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}}
+  for(let i=0;i<n;i++){let x=Math.random(),r=0;for(let q=0;q<pr.length;q++){if(x<pr[q]){r=q;break}x-=pr[q];r=q}const g=makeGear(foe.base,2,r,null,dgid,pa?{parts:pa,short:1,...nmw(foe.id)}:kd==="hn"?{...nmw(foe.id),parts:TYPES.map((_,i)=>i).filter(i=>i)}:{});P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}}
+ else if(foe.nm){const n=1+(Math.random()<NAMED_EXTRA?1:0);for(let i=0;i<n;i++){const g=makeGear(foe.base,2,null,ED_P.nm,dgid,{parts:namedParts(foe.id),short:1,...nmw(foe.id)});P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}}
+ else if(foe.rare){const n=1+(Math.random()<RARE_EXTRA?1:0);for(let i=0;i<n;i++){const g=makeGear(foe.base,2,null,null,null,{parts:namedParts(foe.id),short:1,...nmw(foe.id)});P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}}
+ else if(foe.lt){if(Math.random()<LT_GEAR){const lx=Math.random(),lr=lx<LT_R[1]?1:lx<LT_R[1]+LT_R[2]?2:3,g=makeGear(foe.base,2,lr,ED_P.lt,dgid,{parts:namedParts(foe.id),short:1,...nmw(foe.id)});P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}}
  else if(Math.random()<(foe.el&&dgid?DG_ELITE_DROP:EQ_DROP)+E(25)/100){const g=makeGear(foe.base,foe.el,null,ED_P.el,dgid);P.gear.push(g);t+=`<br>장비 획득: ${gtxt(g)}`;dl.push(gdrop(g))}
  let rr=null;if(!P.dg&&P.loc!=="town"&&!foe.rare&&!foe.nm&&!foe.lt&&!foe.hero){const z=zone(P.loc);if(z&&z.r&&Math.random()<(foe.el?RARE_E:RARE_N)){const c=z.r.filter(k=>MON[k].lv<=P.lv+ENC_CAP);if(c.length)rr=c[R(0,c.length-1)]}}
  while(P.lv<LV_CAP&&P.exp>=NEED(P.lv)){P.exp=r1(P.exp-NEED(P.lv));P.lv++;P.atk+=2;P.def+=1;for(const k in P.st)P.st[k]+=1;P.hp=MHP();t+=`<br>✨ 레벨 ${P.lv} 달성! ${ATKN()}+2.0 방어+1.0 힘/민첩/체력/정신/지능 +1.0`}
@@ -3335,19 +3344,19 @@ function dexDrop(nav,cat,idx){idx=idx||0;
  const card=(title,col,html)=>{const e=secEl(title,html);e.style.borderColor=col;return e};
  const all14=TYPES.map(t=>t[1]);
  // 한 처치에서 특정 부위가 1개 이상 나올 확률: 드랍 개수 1(+추가 e)·드랍률 r·부위 n개
- const kill=(r,e,n)=>r*((1-e)*(1/n)+e*(1-Math.pow(1-1/n,2)));
- const partRows=(keys,r,e)=>keys.map(k=>{const ps=namedParts(k),n=ps.length;return `<div style="margin-top:6px"><b>${MON[k].e} ${MON[k].n}</b> <small style="opacity:.8">Lv ${MON[k].lv} · 담당 ${n}부위</small><div>${chips(ps.map(i=>TYPES[i][1]),1/n)}</div><small style="opacity:.8">드랍 1개당 부위별 ${p1(1/n)} · 처치 1회당 특정 부위가 나올 확률 약 ${p1(kill(r,e,n))} (평균 ${f(1/kill(r,e,n))}번)</small></div>`}).join("");
+ const kill=(r,e,q)=>r*((1-e)*q+e*(1-Math.pow(1-q,2)));
+ const partRows=(keys,r,e)=>keys.map(k=>{const ps=namedParts(k),n=ps.length,w=namedWK(k),q=1/(n+1),qw=q/w.length;return `<div style="margin-top:6px"><b>${MON[k].e} ${MON[k].n}</b> <small style="opacity:.8">Lv ${MON[k].lv} · 담당 ${n}부위 + 무기 ${w.length}종 (표 ${n+1}칸 균등)</small><div>${chips(ps.map(i=>TYPES[i][1]),q)}${chips(w.map(wkName),qw)}</div><small style="opacity:.8">드랍 1개당 부위별 ${p1(q)} · 무기 전체 ${p1(q)} (무기 종류별 ${p1(qw)}) · 처치 1회당 특정 부위 약 ${p1(kill(r,e,q))} (평균 ${f(1/kill(r,e,q))}번) · 무기가 나올 확률 약 ${p1(kill(r,e,q))} · 특정 무기 종류 약 ${p1(kill(r,e,qw))} (평균 ${f(1/kill(r,e,qw))}번)</small></div>`}).join("");
  const rule=`<div style="font-size:12.5px;line-height:1.65">· 장비 레벨: 몬스터 Lv ±5 중 무작위<br>· 보조 스탯(힘·민첩 등): 노멀 0개 / 녹색 2개 / 파랑 3개 / 보라 4개. 수치 = 장비 Lv × <b>${f(STAT_K[0]*100)}~${f(STAT_K[1]*100)}%</b> (칸마다 독립, 무기·보조장비는 부위 배율)<br>· 착용효과: 노멀 0% / 녹색 ${p1(FX_CHANCE.green)} / 파랑 ${p1(FX_CHANCE.blue)} / 보라 ${p1(FX_CHANCE.purple)} (그중 ${p1(FX_CHANCE.purple2)}는 2개)<br>· 속성 저항력: 모든 장비 ${p1(RES_P)}<br>· 속성 공격력(보조효과, 몬스터 속성 부여 — 공격력이 붙는 장비. 수치 = 장비 Lv × ${f(EA_V[0])}~${f(EA_V[1])}): 녹색 ${p1(.25)} / 파랑 ${p1(.4)} / 보라 ${p1(.6)} (속성 몬스터일 때) · 주문 무기는 항상 속성 공격력<br>· 전투력(보조효과, 수치 = 장비 Lv × ${f(CPA_V[0])}~${f(CPA_V[1])}): 녹색 ${p1(CPA_P[1])} / 파랑 ${p1(CPA_P[2])} / 보라 ${p1(CPA_P[3])}</div>`;
  const tip=`<div style="font-size:12px;opacity:.85;margin-top:4px">${kind==="field"?`일반 몬스터는 모든 필드가 같은 확률이다. 희귀 네임드는 필드마다 담당 부위가 다르다.`:`정예는 던전마다 같은 확률이고, 간부·보스는 던전마다 담당 부위가 다르다.`}</div>`;
  const hcard=(k,title,col,extra)=>{const[lo,hi,pr]=HD_DROP[k];return card(title,col,big(1,`장비 ${lo}~${hi}개 랜덤 (최소 ${lo}개 확정)`)+bar(pr)+(extra||""))};
- const hparts=keys=>keys.map(k=>{const ps=namedParts(k)||TYPES.map((_,i)=>i);return `<div style="margin-top:6px"><b>${MON[k].e} ${MON[k].n}</b> <small style="opacity:.8">Lv ${hlv(k)||MON[k].lv} · 담당 ${ps.length}부위</small><div>${chips(ps.map(i=>TYPES[i][1]),1/ps.length)}</div></div>`}).join("");
+ const hparts=keys=>keys.map(k=>{const ps=namedParts(k)||TYPES.map((_,i)=>i).filter(i=>i),w=namedWK(k),q=1/(ps.length+1),qw=q/w.length;return `<div style="margin-top:6px"><b>${MON[k].e} ${MON[k].n}</b> <small style="opacity:.8">Lv ${hlv(k)||MON[k].lv} · 담당 ${ps.length}부위 + 무기 ${w.length}종 (표 ${ps.length+1}칸 균등)</small><div>${chips(ps.map(i=>TYPES[i][1]),q)}${chips(w.map(wkName),qw)}</div></div>`}).join("");
  const all14t=`<div style="margin-top:6px;font-size:12.5px">부위: 14개 부위 균등 <b>${p1(1/14)}</b></div>`;
  if(hero){
   if(kind==="field"){
    root.append(card("🔥 영웅 난이도 필드","#ff9a2e",`<div style="font-size:12.5px;line-height:1.6">일반 몬스터는 나타나지 않는다. 출현: 필드 정예 몬스터 <b>${p1(1-HERO_RARE_P)}</b> / 필드 희귀 네임드 <b>${p1(HERO_RARE_P)}</b><br>드랍은 장비 개수가 <b>랜덤</b>(최소 보장)이고, 보조 규칙은 일반 난이도와 같다.</div>`));
    root.append(hcard("fe","⚠ 필드 정예 몬스터","#e0a040",all14t));
    root.append(hcard("fr",`✨ 필드 희귀 네임드 — ${x.n}`,"#ff7ac6",hparts(x.r)));
-   if(x.h)root.append(hcard("hn",`🔥 필드 영웅 네임드 — ${x.n}`,"#ff9a2e",all14t+hparts([x.h])))}
+   if(x.h)root.append(hcard("hn",`🔥 필드 영웅 네임드 — ${x.n}`,"#ff9a2e",hparts([x.h])))}
   else{
    root.append(hcard("de","⚠ 정예 몬스터 (던전마다 3마리)","#e0a040",all14t));
    root.append(hcard("dl",`🗡 간부 네임드 — ${x.n} (2마리)`,"#5b9bff",hparts([x.id+"_m0",x.id+"_m1"])));
