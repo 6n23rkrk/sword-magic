@@ -43,7 +43,7 @@ button:focus-visible{outline:3px solid #fff}button:disabled{opacity:.4;cursor:de
 #pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:44;pointer-events:none}
 .pcard{pointer-events:auto;background:var(--panel);border:3px solid var(--line);padding:16px 22px;min-width:240px;max-width:90vw;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;box-shadow:0 4px 18px #000b}
 .tilecard{max-width:96%;max-height:100%;overflow-y:auto}.tilerow{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 8px;width:100%}
-.lkt{margin-left:auto;padding:3px 10px;font-size:12.5px}.lkt.on{background:#ffd34d;color:#222;border-color:#ffd34d}.bs.lkm{position:relative;overflow:hidden}.bs.lkm>span{opacity:1}.lkb{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;border-radius:inherit;background:transparent;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:1px #f4f6fa;font-size:21px;font-weight:800;letter-spacing:.32em;text-indent:.32em;text-shadow:none;cursor:pointer;opacity:.6}.lkb.on{-webkit-text-stroke:1px #ffd34d}.lkb:hover{background:transparent;opacity:1}
+.lkt{margin-left:auto;padding:3px 10px;font-size:12.5px}.lkt.on{background:#ffd34d;color:#222;border-color:#ffd34d}.bs.lkm{position:relative;overflow:hidden}.bs.lkm>span{opacity:1}.lkb{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;border:0;border-radius:inherit;background:transparent;color:transparent;-webkit-text-fill-color:transparent;-webkit-text-stroke:1px #f4f6fa;font-size:21px;font-weight:800;letter-spacing:.32em;text-indent:.32em;text-shadow:none;cursor:pointer;opacity:.6}.lkb.on{-webkit-text-stroke:1px #ffd34d}.lkb.act{-webkit-text-stroke:1px #7fe0a0;opacity:.8}.lkb.act:disabled{-webkit-text-stroke:1px #8a93a3;opacity:.45;cursor:default;font-size:16px}.lkb:hover{background:transparent;opacity:1}
 #chfx{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#0a2a4a99,#0008 70%);animation:chIn .15s ease-out}
 #chfx.out,#chest.out{opacity:0;transition:opacity .2s}
 #chfx .chb{text-align:center;color:#e6f6ff;text-shadow:0 0 14px #5fb8ff,0 2px 0 #000;animation:chShake .5s linear}
@@ -1544,10 +1544,10 @@ warrior:{n:"전사",i:"⚔",c:"#ff8a5b",st:"str",kind:"phys",main:"힘 · 물리
  {id:"w4",n:"대지 가르기",lv:50,cp:5,ap:1,t:"atk",m:3.8,dp:.5,stun:1,pb:["taken",3,.3],d:"물리 ×3.8 · 방어력 50% 무시 · 확정 기절(기절 면역 속성 제외) · 이후 3턴간 받는 피해 -30%"},
  {id:"w5",n:"광폭화",lv:60,cp:3,t:"buff",d:"3턴간 내 피해 +50%, 받는 피해 +15% · 연계점수 +2",fx(){setPB("dealt",3,.5);setPB("takenUp",3,.15);gainCP(2,"🔥 광폭화!");return"3턴간 내 피해 +50% / 받는 피해 +15%"}}]},
 rogue:{n:"도적",i:"🗡",c:"#c9d86a",st:"agi",kind:"phys",main:"민첩 · 물리 무기",pas:"물리치명타율 +5.0%p · 회피율 +3.0%p · 몬스터가 주사위에서 이겨 행동권을 얻으면 30% 확률로 기습(공격력 30% 평타 1타 · 치명타·속성·피해 증가 효과·착용효과 확률 상태이상이 평타처럼 적용 · 연계점수 +1)",cps:"치명타를 터뜨리거나 몬스터의 공격을 회피하거나 기습이 발동할 때마다 연계점수 +1",desc:"빠르고 날카롭게, 급소를 노린다.",q:{t:"rare",n:2,d:"필드 희귀 네임드 2마리 처치",s:"교관: 도적은 큰 사냥감을 노리지. 필드에 숨은 희귀 네임드 둘을 잡아 오게."},
- sk:[{id:"r1",n:"급소 찌르기",lv:20,cp:3,t:"atk",m:1.6,crit:1,hits:2,d:"물리 ×0.8 피해를 2회 입힙니다"},
+ sk:[{id:"r1",n:"급소 찌르기",lv:20,cp:3,t:"atk",m:1.6,crit:1,hits:2,d:"물리 ×0.8 피해를 2회 입힙니다 · 확정 치명타"},
  {id:"r2",n:"맹독 칼날",lv:30,cp:2,t:"buff",d:"즉시 중독 1중첩 + 3턴간 내 모든 공격·스킬(평타·강타·직업 스킬)이 적중할 때마다 중독 부여 — 공격 또는 스킬의 타수만큼 적용된다 (예: 2회 찌르는 급소 찌르기는 중독 2회) (맹독 칼날의 중독은 5턴 지속)",fx(){const h=addDot("poison",5,fd("poison",1.5),"독");if(addDot.imm)IMQ=h;setPB("venom",3,1);return addDot.imm?"즉시 중독 실패(면역) · 3턴간 모든 공격·스킬마다 중독 시도":"즉시 중독 · 3턴간 모든 공격·스킬마다 중독"}},
  {id:"r3",n:"그림자 걸음",lv:40,cp:2,t:"buff",d:"몬스터의 다음 공격 1회를 완전히 회피하고 행동권을 강제로 가져온다 (회피 연계 +1) · 몬스터의 방어력이 0이 된다 (내 다음 공격까지 유지) · 파생되는 효과(회피·방어 붕괴)는 각각 최대 2번까지 누적된다",fx(){const P0=PBo();P0.dodge=Math.min(2,(P0.dodge||0)+1);P0.exposed=Math.min(2,(P0.exposed||0)+1);return`다음 몬스터 공격 ${P0.dodge}회 회피 후 행동권 강제 획득 · 몬스터 방어력 0 (내 다음 공격 ${P0.exposed}번까지) · 최대 2번 누적`}},
- {id:"r4",n:"죽음의 선고",lv:50,cp:5,ap:1,t:"atk",m:4.5,dp:.6,crit:1,ex:7,hits:5,d:"물리 ×0.9 피해를 5회 입힙니다"},
+ {id:"r4",n:"죽음의 선고",lv:50,cp:5,ap:1,t:"atk",m:4.5,dp:.6,crit:1,ex:7,hits:5,d:"물리 ×0.9 피해를 5회 입힙니다 · 방어력 60% 무시 · 확정 치명타 · 몬스터 HP 30% 이하면 ×7.0"},
  {id:"r5",n:"운명의 지배",lv:60,cp:0,t:"passive",d:"(패시브) 몬스터와 주사위 결과가 동점이 2번 연속 나오거나, 3번 연속 졌을 경우 다음 행동권을 강제로 가져온다"}]},
 mage:{n:"마법사",i:"🔮",c:"#b08cff",st:"int",kind:"spell",main:"지능 · 주문 무기",pas:"주문 피해 +10.0% · 주문치명타율 +3.0%p",cps:"몬스터의 약점 속성으로 피해를 줄 때마다 연계점수 +1",desc:"원소의 힘을 다뤄 방어력을 꿰뚫는 주문을 쏜다.",q:{t:"elem",n:6,d:"서로 다른 속성의 몬스터 6종 처치",s:"교관: 마법사는 원소를 알아야 한다. 서로 다른 속성의 몬스터를 여섯 종 쓰러뜨려 보게."},
  sk:[{id:"m1",n:"마력 폭발",lv:20,cp:3,t:"atk",m:2.4,d:"주문 ×2.4 (무기 속성 적용)"},
@@ -2778,9 +2778,12 @@ function invMenu(shop){const lk=!!foe&&!ALLOW,pv0=$("panel"),sc=pv0?pv0.scrollTo
  const re=()=>invMenu(shop),tipI=id=>itemTip(id);
  let selEl=null;
  const lkBtn=(d,get,tog)=>{if(!LKM)return d;const b=document.createElement("button");const on=get();d.classList.add("lkm");b.className="lkb"+(on?" on":"");b.textContent=on?"해제":"잠금";b.onclick=e=>{e.stopPropagation();tog();save();re()};d.append(b);return d};
- const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${iLk(id)?"🔒":""}${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;return lkBtn(d,()=>iLk(id),()=>{P.lk[id]=iLk(id)?0:1;if(!P.lk[id])delete P.lk[id]})};
+ const actBtn=(d,txt,fn,dis)=>{d.classList.add("lkm");const b=document.createElement("button");b.className="lkb act";b.textContent=txt;b.disabled=!!dis;b.onclick=e=>{e.stopPropagation();if(!dis)fn()};d.append(b);return d};
+ const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${iLk(id)?"🔒":""}${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;if(!LKM&&!shop&&on&&ITEMS[id].t==='use'&&id!=='q_leg0')return actBtn(d,lk?'전투 중':'사용',()=>{P.inv[id]--;heal(ITEMS[id]);save();hud();re()},lk);
+  return lkBtn(d,()=>iLk(id),()=>{P.lk[id]=iLk(id)?0:1;if(!P.lk[id])delete P.lk[id]})};
  const mkG=({g,i})=>{const on=ISEL&&ISEL.k==="g"&&ISEL.g===g,d=boxSlot(`<span style="color:${RC[g.r]}">${g.lk?"🔒":""}<small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],eqTip(g),on,()=>{ISEL={k:"g",x:i,g};re()});if(on)selEl=d;
-  d.onmouseenter=e=>{if(Date.now()-LT>1000)showTip2(gearBody(g),eqCur(g),e)};d.onmousemove=e=>{if(Date.now()-LT>1000)moveTip2(e)};return lkBtn(d,()=>g.lk,()=>{if(g.lk)delete g.lk;else g.lk=1})};
+  d.onmouseenter=e=>{if(Date.now()-LT>1000)showTip2(gearBody(g),eqCur(g),e)};d.onmousemove=e=>{if(Date.now()-LT>1000)moveTip2(e)};if(!LKM&&!shop&&on){const ok=canEq(g);return actBtn(d,lk?'전투 중':ok?'장착':'장착 불가',()=>{const i=P.gear.indexOf(g);if(i<0)return;ISEL=null;equip(i)},lk||!ok)}
+  return lkBtn(d,()=>g.lk,()=>{if(g.lk)delete g.lk;else g.lk=1})};
  {const th=root.firstChild;if(th&&!shop){th.style.cssText+=";display:flex;justify-content:space-between;align-items:center;gap:8px";const b=document.createElement("button");b.className="lkt"+(LKM?" on":"");b.textContent=LKM?"잠금 완료":"잠금";b.onclick=()=>{LKM=!LKM;ISEL=null;re()};th.append(b)}}
  const ab=document.createElement("div");ab.className="ipop";const bt=(t,fn,dis)=>{const b=document.createElement("button");b.textContent=t;b.disabled=!!dis;b.onclick=fn;return b};
  if(ISEL){const sp=document.createElement("span");
@@ -2788,10 +2791,10 @@ function invMenu(shop){const lk=!!foe&&!ALLOW,pv0=$("panel"),sc=pv0?pv0.scrollTo
    if(shop){if(iLk(id)){const q=document.createElement("small");q.style.opacity=".75";q.textContent="🔒 잠금 — 판매 불가";ab.append(q)}else if(it.t!=="sum"&&it.t!=="qst"){ab.append(bt(`1개 판매 ${f(it.p)}G`,()=>{P.inv[id]--;P.gold=r1(P.gold+it.p);save();hud();re()}));ab.append(bt(`전부 판매 ${f(it.p*n)}G`,()=>{P.inv[id]=0;P.gold=r1(P.gold+it.p*n);save();hud();re()},n<2))}else{const q=document.createElement("small");q.style.opacity=".75";q.textContent="판매 불가";ab.append(q)}}
    else if(it.t==="sum")ab.append(bt(`소환 (${SUM_NEED}개 소모)`,()=>summon(id),lk||P.loc==="town"||!!P.dg||n<SUM_NEED));
    else if(id==="q_leg0")ab.append(bt("사용 (퀘스트 수락)",()=>{lqStart();re()},lk||!!lqQ()));
-   else if(it.t==="use")ab.append(bt("사용",()=>{P.inv[id]--;heal(it);save();hud();re()},lk))}
+   }
   else{const g=ISEL.g;
    if(shop&&g.lk){const q=document.createElement("small");q.style.opacity=".75";q.textContent="🔒 잠금 — 판매 불가";ab.append(q)}else if(shop)ab.append(bt(`판매 ${f(g.p)}G`,()=>{const i=P.gear.indexOf(g);if(i<0)return;P.gold=r1(P.gold+g.p);P.gear.splice(i,1);ISEL=null;save();hud();re()}));
-   else ab.append(bt(canEq(g)?"장착":"장착 불가 (직업)",()=>{const i=P.gear.indexOf(g);if(i<0)return;ISEL=null;equip(i)},lk||!canEq(g)))}}
+   }}
 
  if(sm.length)root.append(boxPlate(`🌟 네임드 소환 재료 <small style="opacity:.75">(${SUM_NEED}개로 소환 · 최대 ${SUM_CAP}개)</small>`,sm.map(mkI),sm.length,""));
 if(qs.length)root.append(boxPlate(`📜 퀘스트 아이템 <small style="opacity:.75">(${qs.length}종 · 판매 불가)</small>`,qs.map(mkI),qs.length,""));
