@@ -327,6 +327,17 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 #dbtn:active{transform:translate(-50%,-48%) scale(.95)}
 @keyframes dbFloat{50%{margin-top:-6px}}@keyframes dbRing{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.55)}}@keyframes dbWob{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(10deg)}}
 @media(max-width:640px){#dbtn{width:80px;height:80px}#dbtn .di{font-size:38px}}
+@media(max-width:640px){
+#slfx .ti,#rfx .ti{padding:0 10px;box-sizing:border-box}
+#slfx .ti b,#rfx .ti b{letter-spacing:.06em;white-space:normal;word-break:keep-all;font-size:clamp(26px,8vw,44px)}
+#slfx .ti small,#rfx .ti small{letter-spacing:.12em;white-space:normal;font-size:12px}
+#ambfx .sb,#sumfx .sb,#ukfx .sb{max-width:100vw;box-sizing:border-box;padding:0 8px}
+#ambfx .sb *,#sumfx .sb *,#ukfx .sb *{max-width:100%;word-break:keep-all;overflow-wrap:anywhere}
+.rcard{padding:16px 14px;min-width:0;width:min(92vw,520px);box-sizing:border-box;max-height:90vh}
+.rcard .rt{font-size:21px}.rcard .rb{font-size:14px;max-height:56vh}
+.rcard button{padding:10px 24px}
+.pcard{max-width:94vw;box-sizing:border-box;max-height:88vh;overflow:auto}
+}
 </style></head><body>
 <div id="app">
  <div id="bar"><button id="b-ham" type="button" aria-label="메뉴" aria-expanded="false">☰</button><button id="b-move">이동</button><button id="b-fight">전투</button><button id="b-rest">휴식</button><button id="b-save">저장</button><button id="b-inv" style="margin-left:auto">인벤토리</button><button id="b-eq">장비</button><button id="b-st">상태</button><button id="b-dex">도감</button><button id="b-set" title="설정">⚙</button><div id="setm"><button id="m-title">🏠 시작화면</button><button id="m-cloud">☁ 클라우드 동기화</button></div></div>
