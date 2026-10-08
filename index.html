@@ -347,6 +347,7 @@ button:active:not(:disabled){transform:translateY(1px);filter:brightness(.96)}
 #panel .cc{background:linear-gradient(#ffffff0a,#00000030);border:1px solid #5d6a62;transition:border-color .12s,transform .12s,box-shadow .12s}
 #panel .cc:hover{border-color:var(--gold);box-shadow:0 4px 14px #000a}
 .bs{border-radius:6px;background:linear-gradient(#171b22,#0f1218);border:1px solid #3a4452;transition:border-color .12s,background .12s}
+.bs .cn{font-size:calc(.8333em + 2px)}
 .mvg2{grid-template-columns:repeat(auto-fill,minmax(172px,1fr))}.bs.mvt2{min-height:36px;font-size:13px}.bs.mvt2.sel{border-color:#e0c060;background:linear-gradient(#3a3216,#241f0d);color:#ffe08a}.bs.mvt2.dis{opacity:.5;cursor:not-allowed}
 .bs:hover{border-color:var(--gold);background:linear-gradient(#202734,#141a22)}
 .tip{border-radius:9px;background:linear-gradient(#171a24,#0e1017);border:1px solid #8fa0c0;box-shadow:0 6px 20px #000c}
@@ -2781,7 +2782,7 @@ function invMenu(shop){const lk=!!foe&&!ALLOW,pv0=$("panel"),sc=pv0?pv0.scrollTo
  let selEl=null;
  const lkBtn=(d,get,tog)=>{if(!LKM)return d;const b=document.createElement("button");const on=get();d.classList.add("lkm");b.className="lkb"+(on?" on":"");b.textContent=on?"해제":"잠금";b.onclick=e=>{e.stopPropagation();tog();save();re()};d.append(b);return d};
  const actBtn=(d,txt,fn,dis)=>{d.classList.add("lkm");const b=document.createElement("button");b.className="lkb act";b.textContent=txt;b.disabled=!!dis;b.onclick=e=>{e.stopPropagation();if(!dis)fn()};d.append(b);return d};
- const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${iLk(id)?"🔒":""}${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;if(!LKM&&!shop&&on){const it=ITEMS[id],n=P.inv[id];
+ const mkI=id=>{const on=ISEL&&ISEL.k==="i"&&ISEL.x===id,d=boxSlot(`${iLk(id)?"🔒":""}${inm(id)}<small class="cn">×${P.inv[id]}</small>`,RC[ITEMS[id].r],tipI(id),on,()=>{ISEL={k:"i",x:id};re()});if(on)selEl=d;if(!LKM&&!shop&&on){const it=ITEMS[id],n=P.inv[id];
    if(it.t==='sum')return actBtn(d,lk?'전투 중':n<SUM_NEED?'재료 부족':(P.loc==='town'||P.dg)?'소환 불가':'소환',()=>summon(id),lk||P.loc==='town'||!!P.dg||n<SUM_NEED);
    if(id==='q_leg0')return actBtn(d,lk?'전투 중':lqQ()?'진행 중':'사용',()=>{lqStart();re()},lk||!!lqQ());
    if(it.t==='use')return actBtn(d,lk?'전투 중':'사용',()=>{P.inv[id]--;heal(it);save();hud();re()},lk)}
@@ -2808,9 +2809,9 @@ if(qs.length)root.append(boxPlate(`📜 퀘스트 아이템 <small style="opacit
  if(!sm.length&&!use.length&&!mat.length&&!emt.length&&!gl.length)root.append(secEl("🎒 비어 있음","<span style='opacity:.7'>가진 물건이 없습니다.</span>"));
  root.append(btnRow(shop?[["상점으로",shopMenu],["닫기",closeP]]:[["닫기",closeP]]));root.scrollTop=sc;
  if(IH){document.removeEventListener("click",IH,true);IH=null}
- if(ISEL&&selEl&&!ab.children.length&&!LKM){IH=e=>{const t=e.target;if(t&&t.closest&&t.closest(".ipop"))return;if(selEl.contains(t))return;document.removeEventListener("click",IH,true);IH=null;ISEL=null;re()};setTimeout(()=>{if(IH)document.addEventListener("click",IH,true)},0)}
+ if(ISEL&&selEl&&!ab.children.length&&!LKM){IH=e=>{const t=e.target;if(!selEl.isConnected||!$("panel").contains(selEl)){document.removeEventListener("click",IH,true);IH=null;ISEL=null;return}if(t&&t.closest&&t.closest(".ipop"))return;if(selEl.contains(t))return;document.removeEventListener("click",IH,true);IH=null;ISEL=null;re()};setTimeout(()=>{if(IH)document.addEventListener("click",IH,true)},0)}
  if(ISEL&&selEl&&ab.children.length){if(!root.classList.contains("drop"))root.style.position="relative";root.append(ab);const rb=root.getBoundingClientRect(),eb=selEl.getBoundingClientRect(),w=ab.offsetWidth||180;let left=eb.left-rb.left+root.scrollLeft;left=Math.max(4,Math.min(left,root.clientWidth-w-8));ab.style.left=left+"px";ab.style.top=(eb.bottom-rb.top+root.scrollTop+4)+"px";
-  IH=e=>{const t=e.target;if(t&&t.closest&&(t.closest(".ipop")||t.closest(".bs")))return;document.removeEventListener("click",IH,true);IH=null;ISEL=null;re()};setTimeout(()=>{if(IH)document.addEventListener("click",IH,true)},0)}}
+  IH=e=>{const t=e.target;if(!selEl.isConnected||!$("panel").contains(selEl)){document.removeEventListener("click",IH,true);IH=null;ISEL=null;return}if(t&&t.closest&&(t.closest(".ipop")||t.closest(".bs")))return;document.removeEventListener("click",IH,true);IH=null;ISEL=null;re()};setTimeout(()=>{if(IH)document.addEventListener("click",IH,true)},0)}}
 function shopMenu(){if(foe)return;
  const rows=Object.keys(BUY).map(id=>{const c=BUY[id];return [`${inm(id)} — ${f(c)}G (보유 ${P.inv[id]||0}개, ${ITEMS[id].pct?`최대 HP의 ${Math.round(ITEMS[id].pct*100)}% 회복`:ITEMS[id].dsc})`,[["1개 구매",()=>buy(id,1),P.gold<c],["5개 구매",()=>buy(id,5),P.gold<c*5]],itemTip(id)]});
  rows.push(["",[["아이템 판매",()=>invMenu(true)],["닫기",closeP]]]);panel(`🛒 상인 (보유 ${f(P.gold)}G)`,rows)}
@@ -2892,7 +2893,7 @@ function boxMenu(){if(foe||P.loc!=="town")return;const B=P.box,sm=B.sort||"rar",
  else{const sp=document.createElement("span");sp.style.opacity=".7";sp.style.fontSize="12.5px";sp.textContent="슬롯을 눌러 선택한 뒤 맡깁니다.";la.append(sp)}
  L.append(la);
  const lg=document.createElement("div");lg.className="bxg b4";
- const mkLI=id=>boxSlot(`${inm(id)}<small>×${P.inv[id]}</small>`,RC[ITEMS[id].r],itemTip(id),LSEL&&LSEL.k==="i"&&LSEL.x===id,()=>{LSEL={k:"i",x:id};boxMenu()});
+ const mkLI=id=>boxSlot(`${inm(id)}<small class="cn">×${P.inv[id]}</small>`,RC[ITEMS[id].r],itemTip(id),LSEL&&LSEL.k==="i"&&LSEL.x===id,()=>{LSEL={k:"i",x:id};boxMenu()});
  const mkLG=({g,i})=>boxSlot(`<span style="color:${RC[g.r]}"><small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],eqTip(g),LSEL&&LSEL.k==="g"&&LSEL.x===i,()=>{LSEL={k:"g",x:i};boxMenu()});
  const sl=LCAT==="use"?iu.map(mkLI):LCAT==="mat"?im.map(mkLI):ig.map(mkLG);
  sl.forEach(x=>lg.append(x));
@@ -2906,7 +2907,7 @@ function boxMenu(){if(foe||P.loc!=="town")return;const B=P.box,sm=B.sort||"rar",
  const gl=B.gear.map((g,i)=>({g,i})).sort(boxSortG(sm));
  if(BSEL&&!((BSEL.k==="i"&&B.inv[BSEL.x]>0)||(BSEL.k==="g"&&B.gear[BSEL.x])))BSEL=null;
  const ck=key=>BMULTI?`<i class="bck">${BMS.has(key)?"☑":"☐"}</i>`:"",tg=key=>()=>{BMS.has(key)?BMS.delete(key):BMS.add(key);boxMenu()};
- const mkI=id=>boxSlot(`${ck("i:"+id)}${inm(id)}<small>×${B.inv[id]}</small>`,RC[ITEMS[id].r],boxTipI(id),BMULTI?BMS.has("i:"+id):BSEL&&BSEL.k==="i"&&BSEL.x===id,BMULTI?tg("i:"+id):()=>{BSEL={k:"i",x:id};boxMenu()});
+ const mkI=id=>boxSlot(`${ck("i:"+id)}${inm(id)}<small class="cn">×${B.inv[id]}</small>`,RC[ITEMS[id].r],boxTipI(id),BMULTI?BMS.has("i:"+id):BSEL&&BSEL.k==="i"&&BSEL.x===id,BMULTI?tg("i:"+id):()=>{BSEL={k:"i",x:id};boxMenu()});
  const mkG=({g,i})=>boxSlot(`${ck("g:"+i)}<span style="color:${RC[g.r]}"><small style="opacity:.75;font-weight:400;margin:0 2px 0 0">(${SN[g.t]})</small>${g.up?`+${g.up} `:""}${g.n}</span>`,RC[g.r],boxTipG(g),BMULTI?BMS.has("g:"+i):BSEL&&BSEL.k==="g"&&BSEL.x===i,BMULTI?tg("g:"+i):()=>{BSEL={k:"g",x:i};boxMenu()});
  const ab=document.createElement("div");ab.className="row";
  const mb=document.createElement("button");mb.type="button";mb.textContent="☑ 선택";mb.className=BMULTI?"on":"";mb.title="여러 개를 골라 한 번에 꺼내기 (다시 누르면 해제)";mb.onclick=()=>{BMULTI=!BMULTI;BMS.clear();BSEL=null;boxMenu()};ab.append(mb);
