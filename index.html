@@ -1206,14 +1206,14 @@ sleep:{n:"수면",i:"💤",p:.25,t:5,d:"5턴 동안 몬스터가 행동권을 �
 charm:{n:"현혹",i:"🌀",p:.25,t:5,d:"5턴 동안 정신이 흐려져 내 공격·강타 및 모든 스킬이 40% 확률로 빗나간다. 공격당해도 풀리지 않는다. (중첩 불가)"},
 bleed:{n:"출혈",i:"🩸",p:.8,t:5,d:"5턴 동안 매 턴 출혈 피해를 입는다. 해제할 수 없다. 최대 5중첩, 중첩될 때마다 지속시간이 초기화된다."},
 poison:{n:"중독",i:"☠",p:.5,t:5,d:"5턴 동안 매 턴 독 피해를 입는다. 해독 물약으로 해제할 수 있다. 최대 5중첩, 중첩될 때마다 지속시간이 초기화된다."},
-curse:{n:"저주",i:"🕯",p:.3,t:4,d:"4턴 동안 매 턴 저주 피해와 함께 저주 종류별 추가 효과가 따른다. 정화의 성수로 해제할 수 있다. (중첩 불가)"},
+curse:{n:"저주",i:"🕯",p:.3,t:4,d:"4턴 동안 매 턴 어둠 속성 피해(어둠 저항으로 감소)와 함께 저주 종류별 효과가 따른다. 나와 몬스터에게 똑같이 적용된다. 정화의 성수로 해제할 수 있다. (중첩 불가)"},
 disease:{n:"질병",i:"🤢",p:.3,d:"즉시 질병 피해를 입고, 무작위 스탯 하나가 전투가 끝날 때까지 감소한다. (이미 걸린 스탯과 다른 스탯이면 추가로 걸린다 · 최대 4종)"},
 burn:{n:"화상",i:"🔥",p:.5,t:3,d:"3턴 동안 매 턴 화상 피해를 입는다. 최대 3중첩, 추가로 걸리면 지속시간이 초기화된다. 화상 상태에서 불 속성 공격에 맞으면 추가 약점 피해를 입는다. (1중첩 +30% · 2중첩 +60% · 3중첩 +100%)"},
 dazzle:{n:"눈부심",i:"🔆",p:.3,t:2,d:"빛 속성 전용. 내가 행동권을 2번 사용하는 동안 내 공격(평타·강타 및 모든 스킬)이 50% 확률로 빗나간다. 이 동안 몬스터의 빛 속성 공격에 맞으면 피해가 30% 늘어난다(약점 피격). (중첩 불가)"},
 fear:{n:"공포",i:"😱",p:.3,d:"1~3턴 동안 몸이 얼어붙어 매 턴 몬스터가 행동권을 자동으로 가진다. 몬스터에게 공격(평타·스킬)당하면 50% 확률로 공포가 풀린다."},
 corrode:{n:"침식",i:"☣",p:.3,t:5,d:"5턴 동안 방어력이 중첩당 -12%씩 줄어든다. 최대 4중첩, 추가로 걸리면 지속시간 초기화. 정화 스킬로 해제할 수 있다."},
 wound:{n:"상처",i:"🩹",p:.3,t:4,d:"4턴 동안 받는 모든 회복량이 60% 줄어든다. (물약·정신력·재생·흡혈·회복 스킬 모두) 정화 스킬로 해제할 수 있다. (중첩 불가)"},
-chill:{n:"한기",i:"❄",p:.3,t:3,d:"3턴 동안 몸이 얼어붙어 연계점수를 얻을 수 없다. (평타·착용효과·패시브 모두) 정화 스킬로 해제할 수 있다. 한기가 한 번 더 걸리면(2중첩) 한기가 사라지고 빙결에 걸린다."},
+chill:{n:"한기",i:"❄",p:.3,t:3,d:"3턴 동안 몸이 얼어붙어 모든 스킬(강화·회복·공격 스킬 전부)의 시전 성공 확률이 절반이 된다. 실패하면 연계점수·행동권만 소모된다. 일반 공격은 영향이 없다. 정화 스킬로 해제할 수 있다. 한기가 한 번 더 걸리면(2중첩) 한기가 사라지고 빙결에 걸린다."},
 freeze:{n:"빙결",i:"🧊",p:0,t:2,d:"한기가 2중첩되면 걸린다. 몬스터가 행동권을 2번 사용하는 동안 행동할 수 없고(몬스터가 행동권을 자동으로 가져간다), 이 동안 몬스터의 물 속성 공격에 맞으면 피해가 30% 늘어난다(약점 피격). 몬스터가 행동권을 2번 쓰면 풀린다. 정화 스킬로 해제할 수 있다."}};
 const STS_ORDER=["stun","shock","sleep","charm","dazzle","bleed","poison","burn","curse","disease","fear","corrode","wound","chill","freeze"];
 const DOT_F={bleed:.02,poison:.015,burn:.03,disease:.05},SLEEP_BONUS=.5,BURN_STK=[0,.3,.6,1],BURN_CAP_P=3,DAZZLE_MISS=.5,DAZZLE_LIGHT=.3,MON_CRIT=.05,MON_CRIT_X=1.5,CHARM_MISS=.4,SHOCK_FAIL=.25,FEAR_CLEAR=.5,FREEZE_N=2,EV_BASE=5,EV_AGI=100; // 출혈/중독 턴당 피해=몬스터 공격력×계수 · 질병 즉시 피해 / 수면 추가피해 / 현혹 빗나감 / 감전 행동불가 / 공포 해제 / 회피율 기본 5%, 민첩 100당 +1%
@@ -1224,10 +1224,12 @@ const NM_HARD=["stun","sleep","fear"],hardBlock=()=>STUN_IMM[foe.elm]?`🛡 ${eT
 const NDOT_R=.5; // 네임드(간부·보스·희귀)가 받는 지속 피해 배율 (줄 때는 NDOT_M배)
 const fd=(k,m)=>r1((foe?foe.mhp:0)*DOT_F[k]*(m==null?1:m)*(isNm()?NDOT_R:1));
 const isNm=()=>!!(foe&&(foe.nm||foe.lt||(foe.n||"").startsWith("[희귀 네임드]"))),dotM=k=>(k==="bleed"||k==="poison"||k==="burn"||k==="curse")&&isNm()?NDOT_M:1;
+// 저주 (나와 몬스터 공통): 모두 4턴 · 매 턴 어둠 속성 피해(대상 최대 HP 비율, 어둠 저항으로 감소) + 고유 효과. 파멸만 최초 큰 피해 후 점점 강해진다
+const CHILL_FAIL=.5,CURSE_T=4,WEAK_C=.4,ROT_C=.25,BRAND_C=.15,DOOM_B=.08,DOOM_TK=[.25,.5,.75,1];
 const CURSE={
-weak:{n:"쇠약의 저주",f:.015,d:"내 공격력 -20%"},rot:{n:"부식의 저주",f:.015,d:"내 방어력 -25%"},
-drain:{n:"고갈의 저주",f:.015,d:"정신력 효과(턴당 HP 재생·연계점수 진행)가 멈춘다"},silence:{n:"침묵의 저주",f:.015,d:"강타 및 모든 스킬을 사용할 수 없다"},
-brand:{n:"낙인의 저주",f:.015,d:"몬스터에게서 받는 모든 피해 +15%"},leech:{n:"흡혈의 저주",f:.02,d:"지속 동안 몬스터가 나에게 입힌 피해의 20.0%를 회복한다"},doom:{n:"파멸의 저주",f:.04,d:"매우 큰 저주 피해를 입는다"}};
+weak:{n:"쇠약의 저주",f:.010,d:"공격력 -40%"},rot:{n:"부식의 저주",f:.012,d:"방어력 -25%"},
+drain:{n:"고갈의 저주",f:.012,d:"정신력 효과(턴당 HP 재생·연계점수 진행)가 멈춘다"},silence:{n:"침묵의 저주",f:.010,d:"모든 스킬 사용 불가 (일반 공격만 가능)"},
+brand:{n:"낙인의 저주",f:.012,d:"받는 피해 +15% (시전자가 치명타를 입히면 지속 +1턴)"},leech:{n:"흡혈의 저주",f:.015,d:"시전자가 입힌 피해의 20.0%를 회복한다"},doom:{n:"파멸의 저주",f:DOOM_B,d:"최초 매우 큰 어둠 속성 피해를 입고, 이후 4턴 동안 매 턴 최초 피해의 25%→50%→75%→100%만큼 어둠 속성 피해를 입는다"}};
 // 속성 스킬(전 몬스터 중 속성에 어울리는 몬스터만): 이름 → [속성, 스킬명, 상태이상, 피해배율(생략 1.4), {p:확률 t:턴수 f:지속피해 계수 k:저주 종류}]
 const SKD={
 "슬라임":["독","산성 점액","poison",1.3],"말벌":["독","독침 쏘기","poison",1.3],"풀뱀":["독","맹독 송곳니","poison",1.4,{p:.6}],"초원 늑대":["바람","질풍 할퀴기","bleed",1.4],
@@ -1406,7 +1408,7 @@ const EFF=[
 [48,"공격 시 {0}% 확률로 2턴 공포 (몬스터 공격력 -25%)",[[6,14]]],
 [49,"공격 시 {0}% 확률로 3턴 침식 (몬스터가 받는 피해 +10% · 땅 속성 몬스터 면역)",[[8,18]]],
 [50,"공격 시 {0}% 확률로 3턴 상처 (몬스터 회복량 -60%, 몬스터가 받는 지속 피해 +25%)",[[8,18]]],
-[51,"공격 시 {0}% 확률로 3턴 한기 (몬스터 공격력 -15%, 스킬 사용 확률 절반 · 물 속성 몬스터 면역)",[[8,18]]],
+[51,"공격 시 {0}% 확률로 3턴 한기 (몬스터의 모든 스킬 시전 성공 확률 절반 · 물 속성 몬스터 면역)",[[8,18]]],
 [52,"스킬 사용 시 {0}%의 확률로 연계점수가 소모되지 않음",[[5,5]]]];
 const FX_CHANCE={green:.03,blue:.15,purple:.4,purple2:.1,rarePick:.05}; // 녹색 3% / 파랑 15% / 보라 40%(그중 10%는 2개) / 보라 중 희귀효과 선택 5%
 const EFFM=Object.fromEntries(EFF.map(e=>[e[0],e]));
@@ -1424,7 +1426,7 @@ const GM0=NGM;const GM={"슬라임": "끈적이는", "들쥐": "들쥐가죽", "
 const JOB_LV=20,JOB_FEE=30,SPELL_K=.85; // 전직 가능 레벨 / 재전직 비용(g × 30, 현재 직업이 있을 때) / 주문 피해 계수(몬스터 방어력 무시의 대가)
 const PBN={taken:"철벽 방어",takenUp:"광폭화(받는 피해 증가)",dealt:"광폭화",foeatk:"도발의 포효",venom:"맹독 칼날",swap:"원소 전환",regen2:"신성한 가호",dodge:"그림자 걸음",exposed:"방어 붕괴"};
 const PBo=()=>BS.pb||(BS.pb={}),setPB=(k,t,v)=>{PBo()[k]={t:t+1,v}};
-const gainCP=(n,why)=>{if(!BS||BS.cp>=CP_MAX||BS.ds.chill)return;BS.cp=Math.min(CP_MAX,BS.cp+n);hud();say(`🔗 ${why} 연계점수 +${n} (${BS.cp}/${CP_MAX})`)};
+const gainCP=(n,why)=>{if(!BS||BS.cp>=CP_MAX)return;BS.cp=Math.min(CP_MAX,BS.cp+n);hud();say(`🔗 ${why} 연계점수 +${n} (${BS.cp}/${CP_MAX})`)};
 const shieldP=fr=>{const v=r1(MHP()*fr*(1+E(42)/100));BS.shield=r1((BS.shield||0)+v);return v},healP=fr=>{const h=r1(Math.min(MHP()-P.hp,MHP()*fr*(1+E(42)/100)*HM()));P.hp=r1(P.hp+h);return h},cleanseP=()=>{const n=Object.keys(BS.ds).length;for(const k of Object.keys(BS.ds))delete BS.ds[k];return n};
 // 직업 스킬: t atk=공격(hit 사용) / buff=즉시 효과, cp=연계점수 소모, ap=정점 스킬(Lv50). self=자신에게 회복/보호막(성직자 연계 +1)
 const JOBS={
@@ -1558,7 +1560,7 @@ function fxSum(){const m={};Object.values(P.eq).forEach(it=>(it.fx||[]).forEach(
 const E=(id,k=0)=>{const m=fxSum()[id];return m?(m[k]||0):0},HAS=id=>!!fxSum()[id];
 const gEl=g=>g.se&&g.se.length?g.se:g.ele?[g.ele]:[],evOf=(g,k)=>g&&g.ev&&(!g.kind||g.kind===k)?g.ev*USM(g):0,evSum=k=>Object.values(P.eq).reduce((s,i)=>s+evOf(i,k),0),gEA=(g,k)=>{const es=gEl(g);if(!es.length)return null;const v=evOf(g,k);return v>0?{es,v}:null},
 EAg=()=>{const S={};Object.values(P.eq).forEach(g=>{if(!g)return;const a=gEA(g,WK());if(a)a.es.forEach(e=>S[e]=(S[e]||0)+a.v/a.es.length)});enEA(S);return S},
-EAmap=()=>{const S=EAg(),G=Object.values(S).reduce((x,y)=>x+y,0),sp=SPEC();if(G>0&&sp>0)for(const e in S)S[e]+=sp*S[e]/G;const k=curseIs("weak")?.8:1;for(const e in S)S[e]*=k;return S},
+EAmap=()=>{const S=EAg(),G=Object.values(S).reduce((x,y)=>x+y,0),sp=SPEC();if(G>0&&sp>0)for(const e in S)S[e]+=sp*S[e]/G;const k=curseIs("weak")?1-WEAK_C:1;for(const e in S)S[e]*=k;return S},
 HERO_RES=.10,TYPE_RES={tank:.15,sustain:.10},foeRes=()=>{if(!foe||!foe.hero)return MON_RES;const t=foe.nty&&foe.nty.m;return HERO_RES+(TYPE_RES[t]||0)},
 SAME_IMM=.75,SAME_RED=.75,OWN_ST={"불":"화상","물":"한기","땅":"기절·침식","바람":"없음","빛":"눈부심","어둠":"저주","번개":"감전","독":"중독·질병"},
 emR=(me,pe)=>{const m=elemMult(me,pe);return m===0?(Math.random()<SAME_IMM?0:1-SAME_RED):m};
@@ -1573,7 +1575,7 @@ const CRX=()=>CRIT_X+E(36)/100+enSum("cdmg")/100;
 // 특화: 치명타율이 상한(70%)을 넘은 만큼 전환 — 초과 1%당 특화 10 · 특화 1당 속성 공격력 +1 (속성 공격력이 없으면 공격력 +1)
 const SPEC_K=10,CRR=()=>WK()==="spell"?CRSr():CRPr(),CREX=()=>Math.max(0,CRR()-CRIT_CAP),SPEC=()=>CREX()*SPEC_K;
 const CPs=()=>ST(MS())*CP_STAT,CPg=()=>Object.values(P.eq).reduce((s,i)=>s+(i&&i.cp||0)*(i?USM(i):1),0),CPT=()=>CPs()+CPg(),CPA=()=>CPT()/CP_ATK,ATKN=()=>"공격력";
-const A=()=>(P.atk+CPA()+(WK()==="spell"?bonus("sa"):bonus("atk"))+bonus("ca")+evSum(WK())+enSum("atk")+enSum("eatk")+SPEC())*(curseIs("weak")?.8:1),D=()=>(P.def+bonus("def")+enSum("def"))*(curseIs("rot")?.75:1)*(1-.12*(BS&&BS.ds&&BS.ds.corrode?BS.ds.corrode.n:0)),CRPr=()=>5+ST("agi")/10+E(18)+enSum("crit")+(P.job==="rogue"?5:0),CRSr=()=>5+ST("spi")/20+E(18)+enSum("crit")+(P.job==="mage"?3:0),CRP=()=>Math.min(CRIT_CAP,CRPr()),CRS=()=>Math.min(CRIT_CAP,CRSr()),CR=()=>WK()==="spell"?CRS():CRP(),EV=()=>EV_BASE+ST("agi")/EV_AGI+enSum("eva")+(P.job==="rogue"?3:0),NEED=lv=>Math.round(8*EXP_K*Math.pow(lv,1.7));
+const A=()=>(P.atk+CPA()+(WK()==="spell"?bonus("sa"):bonus("atk"))+bonus("ca")+evSum(WK())+enSum("atk")+enSum("eatk")+SPEC())*(curseIs("weak")?1-WEAK_C:1),D=()=>(P.def+bonus("def")+enSum("def"))*(curseIs("rot")?.75:1)*(1-.12*(BS&&BS.ds&&BS.ds.corrode?BS.ds.corrode.n:0)),CRPr=()=>5+ST("agi")/10+E(18)+enSum("crit")+(P.job==="rogue"?5:0),CRSr=()=>5+ST("spi")/20+E(18)+enSum("crit")+(P.job==="mage"?3:0),CRP=()=>Math.min(CRIT_CAP,CRPr()),CRS=()=>Math.min(CRIT_CAP,CRSr()),CR=()=>WK()==="spell"?CRS():CRP(),EV=()=>EV_BASE+ST("agi")/EV_AGI+enSum("eva")+(P.job==="rogue"?3:0),NEED=lv=>Math.round(8*EXP_K*Math.pow(lv,1.7));
 if(fresh){P.hp=MHP()}
 if(P.st.int==null)P.st.int=P.lv+4;
 {const al=[...(P.gear||[]),...Object.values(P.eq||{})];al.forEach(g=>{if(g&&g.t==="weapon"){if(/보주$/.test(g.n)){g.t="offhand";g.kind="spell";g.ot="수정구";delete g.h;delete g.wt}else if(!g.h){const w=wParse(g.n);g.h=w.h;g.wt=w.wt}}});
@@ -1868,13 +1870,13 @@ const trDesc=t=>{const v=t.v,P1=pf(v);switch(t.k){
  case"immune":return `${t.x.split(",").map(k=>k==="poison"?"독":"화상").join("·")} 상태이상(내가 거는 효과) 면역`}return""};
 const trPop=(html,col)=>{const t=foe&&foe.trait;if(t)quick(`✦ ${t.n}`,col||"#ffb347",html,null,"r")};
 const trHealMon=(h,why,pop,pure)=>{if(!pure&&BS&&BS.ms&&BS.ms.wound>0)h*=.4;h=r1(Math.min(foe.mhp-foe.hp,h));if(h<=0){if(pop)trPop(pop);return 0}foe.hp=r1(foe.hp+h);healFx(h,"foe");say(`${why} <span style="color:#ffb347">HP ${f(h)} 회복</span>`);trPop(`${pop?pop+"<br>":""}<span style="color:#7fe3a8">HP +${f(h)} 회복</span>`);return h};
-const MSI={sleep:{i:"😴",n:"수면"},charm:{i:"🌀",n:"현혹"},fear:{i:"😨",n:"공포"},corrode:{i:"🧪",n:"침식"},wound:{i:"🩹",n:"상처"},chill:{i:"❄️",n:"한기"}},MS_IMM={chill:"물",corrode:"땅"},MS_T={charm:3,fear:2,corrode:3,wound:3,chill:3},MS_ATK=(()=>BS&&BS.ms?(BS.ms.fear>0?.75:1)*(BS.ms.chill>0?.85:1):1);
+const MSI={sleep:{i:"😴",n:"수면"},charm:{i:"🌀",n:"현혹"},fear:{i:"😨",n:"공포"},corrode:{i:"🧪",n:"침식"},wound:{i:"🩹",n:"상처"},chill:{i:"❄️",n:"한기"}},MS_IMM={chill:"물",corrode:"땅"},MS_T={charm:3,fear:2,corrode:3,wound:3,chill:3},MS_ATK=(()=>BS&&BS.ms?(BS.ms.fear>0?.75:1):1);
 function foeStatus(k){const n=MSI[k].n,i=MSI[k].i;
  if((k==="sleep"||k==="fear")&&hardBlock()){fxSay(`${n} 발동! 하지만 면역!`);return `${i} <b>${n}</b><br><small>${hardBlock()}<br>${n}이(가) 걸리지 않는다.</small>`}
  if(MS_IMM[k]&&foe.elm===MS_IMM[k]){fxSay(`${n} 발동 실패 — 같은 속성 면역!`);return `${i} <b>${n}</b><br><small>🛡 ${eTag(foe.elm)} 속성 <b>${foe.n}</b>은(는) ${n}에 면역입니다!<br>${n}이(가) 걸리지 않는다.</small>`}
  if(k==="sleep"){BS.mslp=true;BS.chg=null;fxSay("수면 발동! 몬스터가 잠들었다");return `😴 <b>수면</b><br><small>몬스터가 다음 행동권 1회를 잃는다. 내가 먼저 때리면 깨어나며 그 일격 피해 +50%</small>`}
  BS.ms[k]=MS_T[k];fxSay(`${n} 발동!`);
- const d={charm:"몬스터의 공격이 40% 확률로 빗나간다 (3회)",fear:"몬스터 공격력 -25% (2턴)",corrode:"몬스터가 받는 피해 +10% (3턴)",wound:"몬스터 회복량 -60% · 받는 지속 피해 +25% (3턴)",chill:"몬스터 공격력 -15% · 스킬 사용 확률 절반 (3턴)"}[k];
+ const d={charm:"몬스터의 공격이 40% 확률로 빗나간다 (3회)",fear:"몬스터 공격력 -25% (2턴)",corrode:"몬스터가 받는 피해 +10% (3턴)",wound:"몬스터 회복량 -60% · 받는 지속 피해 +25% (3턴)",chill:"몬스터의 모든 스킬 시전 성공 확률 절반 (3턴)"}[k];
  return `${i} <b>${n}</b><br><small>${d}</small>`}
 const trImm=k=>{const t=foe&&foe.trait;return !!(t&&t.k==="immune"&&t.x.split(",").includes(k))};
 const trAtk=()=>{const t=foe.trait;if(!t)return 1;if(t.k==="enrage")return 1+t.v*(1-Math.max(0,foe.hp)/foe.mhp);if(t.k==="grow")return 1+t.v*BS.tr.g;return 1};
@@ -1883,11 +1885,11 @@ function trWatch(){const t=foe.trait;if(!t||!BS.tr)return;
  if(t.k==="undying"&&foe.hp<=0&&!BS.tr.u){BS.tr.u=1;BS.poison=[];BS.burn=[];BS.bleed=[];BS.disease=[];foe.hp=0;const h=trHealMon(foe.mhp*t.v,`${trMsg(t)} 쓰러지지 않고 다시 일어선다!`,"쓰러졌지만 다시 일어선다!",1);if(foe.hp<=0)foe.hp=h||.1}
  else if(t.k==="awaken"&&!BS.tr.a&&foe.hp<=foe.mhp*(+t.x)){BS.tr.a=1;const dead=foe.hp<=0;if(dead){foe.hp=1;say(`${trMsg(t)} 쓰러질 피해를 견뎌 <b>HP 1</b>로 버텼다!`)}const h=trHealMon(foe.mhp*t.v,`${trMsg(t)} 위기에서 힘을 끌어낸다!`,dead?"쓰러질 피해에도 HP 1로 버텼다!":"위기에서 힘을 끌어낸다!",1);if(foe.hp<=0)foe.hp=1}}
 function trTurn(){const t=foe.trait;if(!t)return;
- if(t.k==="regen")trHealMon(foe.mhp*t.v,`${trMsg(t)}`,"생명력이 차오른다");
+ if(t.k==="regen"){if(BS.mc&&BS.mc.k==="drain")say(`🕯 고갈의 저주로 ${foe.n}의 재생이 멈췄다.`);else trHealMon(foe.mhp*t.v,`${trMsg(t)}`,"생명력이 차오른다")}
  else if(t.k==="grow"&&BS.tr.g<+t.x){BS.tr.g++;say(`${trMsg(t)} <span style="color:#ffb347">공격력 +${pf(t.v)}% (${BS.tr.g}/${t.x}중첩)</span>`);trPop(`공격력 +${pf(t.v)}% (${BS.tr.g}/${t.x}중첩)`,"#ff8f8f")}
  else if(t.k==="aura"){const ad=r1(MHP()*t.v*NDOT_M*(1-Math.min(75,E(34))/100));pDot(`${trMsg(t)}`,MHP()*t.v*NDOT_M);trPop(`내 HP -${f(ad)} (방어 무시)`,"#ff8f8f")}}
 const LEECH_P=.2; // 몬스터에게 건 흡혈의 저주: 지속시간 동안 내가 입힌 피해의 20.0%만큼 HP 회복
-const EL_FX={"불":"15% 확률로 몬스터에게 화상 (최대 3중첩 · 화상 중인 몬스터에게 불 공격 시 약점)","물":"15% 확률로 최대 HP 8.0% 회복","땅":"15% 확률로 몬스터 기절","바람":"15% 확률로 연계점수 +1","빛":"15% 확률로 보호막 (최대 HP 8.0%) · 보호막이 있을 때 빛 공격은 폭발해 피해 +20%","어둠":"15% 확률로 몬스터에게 랜덤 저주 1개 (저주 중인 몬스터에게 어둠 공격 시 약점)","번개":"15% 확률로 몬스터 감전 (3턴 · 행동권을 얻어도 25% 확률로 마비 · 감전 중 번개 공격 시 약점)","독":"15% 확률로 몬스터에게 중독 (5턴)"},MCURSE={weak:"공격력 -20%",rot:"방어력 -25%",drain:"버프 스킬 사용 불가",silence:"스킬 사용 불가 (일반 공격만)",brand:"받는 피해 +15% (내 치명타 시 지속 +1턴)",leech:"지속 동안 내가 입힌 피해의 20.0% 회복",doom:"매우 큰 저주 피해"},LIGHT_BURST=.2,SHOCK_WEAK=.3,MC_T=4,PROC_P=.15;
+const EL_FX={"불":"15% 확률로 몬스터에게 화상 (최대 3중첩 · 화상 중인 몬스터에게 불 공격 시 약점)","물":"15% 확률로 최대 HP 8.0% 회복","땅":"15% 확률로 몬스터 기절","바람":"15% 확률로 연계점수 +1","빛":"15% 확률로 보호막 (최대 HP 8.0%) · 보호막이 있을 때 빛 공격은 폭발해 피해 +20%","어둠":"15% 확률로 몬스터에게 랜덤 저주 1개 (4턴 · 매 턴 어둠 속성 피해 · 저주 중인 몬스터에게 어둠 공격 시 약점)","번개":"15% 확률로 몬스터 감전 (3턴 · 행동권을 얻어도 25% 확률로 마비 · 감전 중 번개 공격 시 약점)","독":"15% 확률로 몬스터에게 중독 (5턴)"},MCURSE=Object.fromEntries(Object.entries(CURSE).map(([k,c])=>[k,c.d])),LIGHT_BURST=.2,SHOCK_WEAK=.3,MC_T=4,PROC_P=.15;
 function elemProc(e,pops,d,imm){if(!e||imm||d<=0||Math.random()>=PROC_P*(1-foeRes()))return;
  const im=ek=>`${ek==="stun"?"💫":"⚡"} <b>${ek==="stun"?"기절":"감전"}</b> 🛡 면역`;
  switch(e){
@@ -1897,7 +1899,7 @@ function elemProc(e,pops,d,imm){if(!e||imm||d<=0||Math.random()>=PROC_P*(1-foeRe
   case"땅":if(hardBlock())pops.push(`💫 <b>기절</b> 🛡 면역`);else{BS.stun=true;fxSay("⛰ 땅 속성 발동! 몬스터의 다음 행동권 1회 상실");pops.push(`💫 <b>기절</b> 행동권 1회 상실`)}break;
   case"바람":gainCP(1,"🌪 바람 속성 발동!");pops.s&&pops.s.push(`🌪 <b>바람 속성</b><br><small>연계점수 +1</small>`);break;
   case"빛":{const v=shieldP(.08);hud();fxSay(`✨ 빛 속성 발동! 보호막 ${f(v)} 생성`);pops.s&&pops.s.push(`✨ <b>빛 속성</b><br><small>보호막 ${f(v)} 생성</small>`);if(IMM[foe.elm]&&IMM[foe.elm].includes("빛"))pops.push(`🔆 <b>눈부심</b> 🛡 면역`);else{BS.mdz=2;fxSay("✨ 빛 속성 발동! 몬스터가 눈부심 — 다음 2번의 행동이 50% 확률로 빗나간다");pops.push(`🔆 <b>눈부심</b> 2회 · 50% 빗나감`)}break}
-  case"어둠":if(IMM[foe.elm]&&IMM[foe.elm].includes("어둠"))pops.push(`🕯 <b>저주</b> 🛡 면역`);else{const ks=Object.keys(CURSE),k=ks[R(0,ks.length-1)];BS.mc={k,t:MC_T};fxSay(`🌑 어둠 속성 발동! 몬스터에게 ${CURSE[k].n} (${MCURSE[k]}) ${MC_T}턴`);pops.push(`🕯 <b>${CURSE[k].n}</b> ${MCURSE[k]} · ${MC_T}턴`)}break;
+  case"어둠":if(IMM[foe.elm]&&IMM[foe.elm].includes("어둠"))pops.push(`🕯 <b>저주</b> 🛡 면역`);else if(BS.mc)pops.push(`🕯 <b>저주</b> 이미 저주에 걸려 있다`);else{const ks=Object.keys(CURSE),k=ks[R(0,ks.length-1)],B=k==="doom"?r1(foe.mhp*DOOM_B*(isNm()?NDOT_R:1)):0;BS.mc={k,t:MC_T,n:0,B};let x="";if(k==="doom"){const dm=r1(B*(1-foeRes()));foe.hp=r1(foe.hp-dm);x=` · 최초 어둠 피해 ${f(dm)}`}fxSay(`🌑 어둠 속성 발동! 몬스터에게 ${CURSE[k].n} (${MCURSE[k]}) ${MC_T}턴${x}`);pops.push(`🕯 <b>${CURSE[k].n}</b>${x?`<br><small>${x.slice(3)}</small>`:""}<br><small>${MCURSE[k]} · ${MC_T}턴</small>`)}break;
   case"번개":if(IMM[foe.elm]&&IMM[foe.elm].includes("번개"))pops.push(im("shock"));else{BS.shk=3;fxSay("⚡ 번개 속성 발동! 몬스터가 감전 — 3턴 동안 행동권을 얻어도 25% 확률로 마비");pops.push(`⚡ <b>감전</b> 3턴 · 25% 마비`)}break}}
 // 네임드(Lv45+ 던전 간부·보스 / 필드 희귀) 상향 계수: [공격,체력,방어,스킬(배율·상태이상 확률),패시브(강화스킬·고유특성 수치)] — 직업별 최고장비 시뮬레이션으로 맞춘 값
 const NT={"d5_m0":[1.81,2.34,1.67,3.69,3.25],"d5_m1":[1.61,1.98,1.51,2.76,2.46],"d5_n":[1.59,1.94,1.49,2.66,2.38],"d6_m0":[1.87,2.44,1.71,3.98,3.48],"d6_m1":[1.54,1.86,1.45,2.48,2.23],"d6_n":[1.58,1.92,1.48,2.62,2.35],"d45_m0":[1.87,2.44,1.71,3.98,3.48],"d45_m1":[1.73,2.19,1.6,3.27,2.9],"d45_n":[1.49,1.77,1.41,2.29,2.08],"d55_m0":[1.85,2.41,1.69,3.88,3.4],"d55_m1":[1.69,2.12,1.57,3.09,2.74],"d55_n":[1.77,2.26,1.63,3.46,3.05],"r10_0":[1.64,2.02,1.53,2.85,2.54],"r10_1":[1.68,2.1,1.56,3.04,2.7],"r10_2":[1.67,2.08,1.55,2.99,2.66],"r10_3":[1.53,1.84,1.44,2.43,2.19],"r10_4":[1.54,1.86,1.45,2.48,2.23],"r11_0":[1.71,2.15,1.58,3.18,2.81],"r11_1":[1.44,1.69,1.37,2.1,1.92],"r11_2":[1.61,1.98,1.51,2.76,2.46],"r11_3":[1.79,2.29,1.65,3.56,3.13],"r11_4":[1.74,2.21,1.61,3.32,2.94],"r12_0":[1.7,2.13,1.58,3.13,2.77],"r12_1":[1.54,1.86,1.45,2.48,2.23],"r12_2":[1.81,2.33,1.66,3.65,3.21],"r12_3":[1.44,1.69,1.37,2.1,1.92],"r12_4":[1.63,2.0,1.52,2.81,2.5],"r13_0":[1.73,2.19,1.6,3.27,2.9],"r13_1":[1.74,2.21,1.61,3.32,2.94],"r13_2":[1.7,2.13,1.58,3.13,2.77],"r13_3":[1.29,1.43,1.24,1.63,1.52],"r13_4":[1.69,2.12,1.57,3.09,2.74],"r14_0":[1.54,1.86,1.45,2.48,2.23],"r14_1":[1.54,1.86,1.45,2.48,2.23],"r14_2":[1.7,2.13,1.58,3.13,2.77],"r14_3":[1.64,2.02,1.53,2.85,2.54],"r14_4":[1.32,1.49,1.27,1.73,1.6]};
@@ -1960,7 +1962,7 @@ const fdChips=()=>{if(!BS||!foe)return"";const a=[];
  for(const[k,n,i,e]of[["poison","독","☠","독"],["burn","화상","🔥","불"],["bleed","출혈","🩸",null],["disease","질병","🤢","독"]]){const v=BS[k];if(v&&v.length){const em=e?elemMult(foe.elm,e):1,imm=trImm(k)||em===0,tot=r1(v.reduce((q,x)=>q+x.d,0)*(trImm(k)?0:em)*(e&&em>0?1-foeRes():1)),t=Math.max(...v.map(x=>x.t));a.push(`${i}${n}${v.length>1?" ×"+v.length:""} · ${imm?"면역":`턴당 ${f(tot)}`} · ${t}턴`)}}
  if(BS.stun)a.push("💫기절 · 다음 행동권 1회 상실");
  if(BS.mslp)a.push("😴수면 · 행동권 1회 상실 · 맞으면 깨어남(첫 피해 +50%)");
- for(const[k,x]of[["charm","현혹 · 공격 40% 빗나감"],["fear","공포 · 공격력 -25%"],["corrode","침식 · 받는 피해 +10%"],["wound","상처 · 회복 -60% · 지속피해 +25%"],["chill","한기 · 공격력 -15% · 스킬 확률 절반"]])if(BS.ms[k]>0)a.push(`${MSI[k].i}${x} · ${BS.ms[k]}${k==="charm"?"회":"턴"}`);
+ for(const[k,x]of[["charm","현혹 · 공격 40% 빗나감"],["fear","공포 · 공격력 -25%"],["corrode","침식 · 받는 피해 +10%"],["wound","상처 · 회복 -60% · 지속피해 +25%"],["chill","한기 · 스킬 성공 확률 절반"]])if(BS.ms[k]>0)a.push(`${MSI[k].i}${x} · ${BS.ms[k]}${k==="charm"?"회":"턴"}`);
  if(BS.shk>0)a.push(`⚡감전 · ${BS.shk}턴 · 행동권 ${isNm()?12.5:25}% 마비`);
  if(BS.mdz>0)a.push(`🔆눈부심 · ${BS.mdz}회 · 공격 50% 빗나감`);
  if(BS.mc)a.push(`🕯${CURSE[BS.mc.k].n} · ${MCURSE[BS.mc.k]} · ${BS.mc.t}턴`);
@@ -1970,7 +1972,7 @@ const fbChips=()=>{const b=BS&&BS.fb;if(!b)return"";const a=[];if(b.atk)a.push(`
 function foeTip(){if(!foe||!BS)return"";return monTip(foe,foe.atk,true)}
 function monTip(b,atk,live,nh,key){const H=t=>`<div style="margin-top:5px"><b>${t}</b></div>`,sm="font-size:12px;opacity:.85";
  const stl=st=>st.map(([k,o])=>{const S=STS[k],p=o.p!=null?o.p:S.p,F=(o.f||1)*((live?isNm():nh)&&(k==="bleed"||k==="poison"||k==="burn"||k==="curse")?NDOT_M:1);let x=`${S.i}${S.n} ${pc(p)}%`;
-  if(k==="bleed"||k==="poison"||k==="burn")x+=` (턴당 약 ${f(MHP()*DOT_F[k]*F)} · ${o.t||S.t}턴)`;else if(k==="curse"){const c=CURSE[o.k||"weak"];x+=` (${c.n}: ${c.d} · 턴당 약 ${f(MHP()*c.f*F)} · ${o.t||S.t}턴)`}
+  if(k==="bleed"||k==="poison"||k==="burn")x+=` (턴당 약 ${f(MHP()*DOT_F[k]*F)} · ${o.t||S.t}턴)`;else if(k==="curse"){const c=CURSE[o.k||"weak"];x+=` (${c.n}: ${c.d} · ${(o.k||"weak")==="doom"?`최초 약 ${f(MHP()*c.f*(o.f||1))} 어둠 피해`:`턴당 약 ${f(MHP()*c.f*F)} 어둠 피해`} · ${o.t||S.t}턴)`}
   else if(k==="disease")x+=` (즉시 약 ${f(MHP()*DOT_F.disease*F)} 피해 + 스탯 -15%)`;else if(k==="fear")x+=` (${o.t?o.t+"턴":"1~3턴"})`;else if(k==="dazzle")x+=` (행동권 ${S.t}회 · 빛 속성 전용)`;else if(S.t)x+=` (${o.t||S.t}턴)`;return x}).join("<br>");
  let h=nh?"":`<div><b>${b.e} ${b.n}</b> <span style="${sm}">Lv ${b.lv}</span></div>`;{const ty=ntype(key||b.id);if(ty&&!nh)h+=`<div style="margin-top:3px">${ntyChip(ty)} <span style="${sm}">${NTYPES[ty.m][3]}</span></div>`}
  h+=b.elm?`<div style="${sm}">${eTag(b.elm)} 속성 — ${traitTxt(b.elm)}</div>`:`<div style="${sm}">속성 없음</div>`;if(foe&&(b===foe||b===foe.base)&&foe.hero)h+=`<div style="${sm}">🛡 모든 속성 저항력 ${pc(foeRes())}%</div>`;
@@ -2018,12 +2020,12 @@ const stInfo=k=>{const ds=BS.ds,v=ds[k==="disease"?"dis":k],T=n=>`${n}턴`;switc
  case"dazzle":return{t:`행동권 ${v.t}회`,d:`내 공격이 ${pc(DAZZLE_MISS)}% 확률로 빗나간다. 이 동안 몬스터의 빛 속성 공격에 맞으면 피해 +${pc(DAZZLE_LIGHT)}%.`};
  case"bleed":case"poison":{const tot=r1(v.s.reduce((a,b)=>a+b,0));return{t:`${v.s.length}중첩 · ${T(v.t)}`,d:`매 턴 ${f(tot)} ${k==="bleed"?"출혈":"독"} 피해. ${k==="bleed"?"해제 불가":"해독 물약으로 해제 가능"} · 최대 5중첩 · 중첩 시 지속시간 초기화`}}
  case"burn":{const tot=r1(v.s.reduce((a,b)=>a+b,0));return{t:`${v.s.length}중첩 · ${T(v.t)}`,d:`매 턴 ${f(tot)} 화상 피해 · 최대 ${BURN_CAP_P}중첩 · 추가 시 지속시간 초기화. 불 속성 피격 시 추가 피해 +${pc(BURN_STK[v.s.length])}%.`}}
- case"curse":{const c=CURSE[v.k];return{t:`${c.n} · ${T(v.t)}`,d:`매 턴 ${f(v.d)} 저주 피해 + ${c.d}. 정화의 성수로 해제 가능.`}}
+ case"curse":{const c=CURSE[v.k];return{t:`${c.n} · ${T(v.t)}`,d:`${v.k==="doom"?`최초 큰 어둠 피해 후 매 턴 최초 피해의 25→50→75→100%`:`매 턴 ${f(v.d)} 어둠 속성 피해`} + ${c.d}. 정화의 성수로 해제 가능.`}}
  case"disease":return{t:"전투 종료까지",d:`${Object.keys(v).map(x=>`${STATN[x]} -${f(v[x])}`).join(", ")}. 이미 감소한 스탯이 아닌 다른 스탯에 질병이 추가로 걸릴 수 있다.`};
  case"fear":return{t:T(v.t),d:`몬스터가 행동권을 자동으로 가진다. 몬스터에게 공격당하면 ${pc(FEAR_CLEAR)}% 확률로 해제.`};
  case"corrode":return{t:`${v.n}중첩 · ${T(v.t)}`,d:`방어력 -${f(v.n*12)}% · 최대 4중첩 · 중첩 시 지속시간 초기화`};
  case"wound":return{t:T(v.t),d:"받는 모든 회복량 -60%"};
- case"chill":return{t:T(v.t),d:"연계점수를 얻을 수 없다. 한기가 한 번 더 걸리면 빙결."};
+ case"chill":return{t:T(v.t),d:"모든 스킬의 시전 성공 확률이 절반. 한기가 한 번 더 걸리면 빙결."};
  case"freeze":return{t:`몬스터 행동권 ${v.t}회`,d:`행동할 수 없다 — 몬스터가 행동권을 자동으로 가져간다. 이 동안 몬스터의 물 속성 공격에 맞으면 피해 +${pc(WEAK_P)}%.`}}};
 const PBD={taken:v=>`받는 피해 -${pc(v)}%`,takenUp:v=>`받는 피해 +${pc(v)}%`,dealt:v=>`내 피해 +${pc(v)}%`,foeatk:v=>`몬스터 공격력 -${pc(v)}%`,venom:()=>"모든 공격·스킬 적중 시 중독 부여 (타수만큼 적용)",swap:v=>`주문 속성 → ${v}`,regen2:()=>"턴당 회복 2배"};
 // 전투 중 내게 걸린 버프성 효과(착용효과·휴식 등)를 플레이트에 표시: [이름, 설명]
@@ -2057,14 +2059,14 @@ function monTurn(){
  for(const k in BS.cd)if(BS.cd[k]>0)BS.cd[k]--;
  if(BS.shk>0)BS.shk--;
  for(const k of["fear","corrode","wound","chill"])if(BS.ms[k]>0&&--BS.ms[k]<=0)say(`${MSI[k].i} ${foe.n}의 ${MSI[k].n} 상태가 끝났다.`);
- if(BS.mc){const c=BS.mc,dm=fd2(c.k);foe.hp=r1(foe.hp-dm);let t="";fxSay(`🕯 ${CURSE[c.k].n} 피해 ${f(dm)}!`);c.t--;if(c.t<=0){BS.mc=null;fxSay("🕯 몬스터의 저주가 풀렸다.")}trWatch()}
+ if(BS.mc){const c=BS.mc,dm=r1((c.k==="doom"?c.B*DOOM_TK[Math.min(3,c.n||0)]:fd2(c.k))*(1-foeRes()));c.n=(c.n||0)+1;foe.hp=r1(foe.hp-dm);let t="";fxSay(`🕯 ${CURSE[c.k].n} 어둠 피해 ${f(dm)}!${c.k==="doom"?` (${pc(DOOM_TK[Math.min(3,c.n-1)])}%)`:""}`);c.t--;if(c.t<=0){BS.mc=null;fxSay("🕯 몬스터의 저주가 풀렸다.")}trWatch()}
  for(const k of["atk","def"]){const v=BS.fb[k];if(v&&--v.t<=0){delete BS.fb[k];say(`✨ ${foe.n}의 ${k==="atk"?"공격력":"방어력"} 강화가 끝났다.`)}}
  if(BS.pgcd>0)BS.pgcd--;pgCheck();
  trTurn();
  const ds=BS.ds;
  for(const k of["bleed","poison"]){const v=ds[k];if(!v)continue;const tot=v.s.reduce((a,b)=>a+b,0);pDot(`${STS[k].i} ${STS[k].n} 피해${v.s.length>1?` (${v.s.length}중첩)`:""}!`,tot);v.t--;if(v.t<=0){delete ds[k];say(`${STS[k].i} ${STS[k].n}이(가) 멎었다.`)}}
  if(ds.burn){const b=ds.burn;pDot(`🔥 화상 피해${b.s.length>1?` (${b.s.length}중첩)`:""}!`,b.s.reduce((a,x)=>a+x,0));b.t--;if(b.t<=0){delete ds.burn;say("🔥 화상이 가라앉았다.")}}
- if(ds.curse){const c=ds.curse;pDot(`🕯 ${CURSE[c.k].n} 피해!`,c.d);c.t--;if(c.t<=0){delete ds.curse;say("🕯 저주가 풀렸다.")}}
+ if(ds.curse){const c=ds.curse,bd=c.k==="doom"?c.d*DOOM_TK[Math.min(3,c.n||0)]:c.d;c.n=(c.n||0)+1;pDot(`🕯 ${CURSE[c.k].n} 어둠 피해!`,bd*(1-resRed("어둠")));c.t--;if(c.t<=0){delete ds.curse;say("🕯 저주가 풀렸다.")}}
  for(const k of["shock","charm","sleep","fear","corrode","wound","chill"]){const v=ds[k];if(v){v.t--;if(v.t<=0){delete ds[k];say(`${STS[k].i} ${STS[k].n} 상태가 끝났다.`)}}}
  hud();if(dieCheck())return false;return true}
 // 내 1턴(내가 행동권을 사용할 때)이 시작될 때(주사위 결과가 정해진 직후)의 처리: 정신력 회복, 쿨타임, 지속 피해, 상태이상 지속시간. 전투가 끝나면 false
@@ -2075,7 +2077,7 @@ function turnStart(){BS.turn++;const ds=BS.ds;
  else{const rh=r1((ST("spi")/10+(P.job==="cleric"?MHP()*.01:0))*(PBg().regen2?2:1)*HM()),h0=P.hp;P.hp=Math.min(MHP(),P.hp+rh);
   say(`🧠 정신력 효과: ${cG(`HP +${f(P.hp-h0)}`)}`);
   if(E(29)){const h1=P.hp;P.hp=Math.min(MHP(),P.hp+E(29)*HM());fxSay(`매 턴 추가 회복 ${cG(`HP +${f(P.hp-h1)}`)}`)}
-  {const c0=BS.cp;if(!BS.ds.chill)BS.cpf+=E(4);while(BS.cpf>=.999999&&BS.cp<CP_MAX){BS.cp++;BS.cpf-=1}if(BS.cp>=CP_MAX)BS.cpf=0;if(BS.cp>c0)say(`🔗 연계점수 +${BS.cp-c0} (${BS.cp}/${CP_MAX})`)}}
+  {const c0=BS.cp;BS.cpf+=E(4);while(BS.cpf>=.999999&&BS.cp<CP_MAX){BS.cp++;BS.cpf-=1}if(BS.cp>=CP_MAX)BS.cpf=0;if(BS.cp>c0)say(`🔗 연계점수 +${BS.cp-c0} (${BS.cp}/${CP_MAX})`)}}
  hud();
  for(const[k,nx]of[["poison","독"],["burn","화상"],["bleed","출혈"],["disease","질병"]]){const a=BS[k];if(a.length){const em0={poison:"독",burn:"불",disease:"독"}[k],em=trImm(k)?0:em0?elemMult(foe.elm,em0):1;let nc=0;const tot=r1(a.reduce((q,x)=>{const c=Math.random()*100<CR();if(c)nc++;return q+x.d*(c?CRX():1)},0)*em*(em0&&em>0?1-foeRes():1)*(BS.ms.wound>0?1.25:1));foe.hp=r1(foe.hp-tot);if(nc>0&&tot>0){const r=brandExt();if(r==="ext")fxSay(`🕯 치명타 ${nx} 피해! 낙인 +1턴 (남은 ${BS.mc.t}턴)`);else if(r==="max")fxSay("🕯 낙인은 최대치까지 연장됨")}a.forEach(x=>x.t--);BS[k]=a.filter(x=>x.t>0);fxSay(em===0?trImm(k)?`${nx} — ${foe.trait.n} 특성으로 면역!`:`${nx} — ${eTag(foe.elm)} 속성은 ${k==="poison"?"독":"불"} 피해에 면역!`:`${nc?"💥 치명타! ":""}${nx} 피해 ${f(tot)}!${em0&&em>0&&foeRes()>MON_RES?` (저항 -${pc(foeRes())}%)`:""}${a.length>1?` (${a.length}중첩${nc?` 중 ${nc}회 치명타`:""})`:""}${em>1?` ⚠ 약점 +${pc(WEAK_P)}%`:""}${BS.ms.wound>0?" 🩹 상처 +25%":""}`);if(nc&&em>0)critPop(tot)}}
   trWatch();if(foe.hp<=0){foebar();win();return false}
@@ -2138,6 +2140,7 @@ function slashFx(cb){if(SLFX)return;SLFX=true;hideTip();const o=document.createE
 function skillUse(id){const k=JSK(P.job).find(x=>x.id===id);if(!k||k.t==="passive"||BS.cp<k.cp||curseIs("silence"))return;
  if(k.pre&&!k.pre()){say(`✦ ${k.n}: ${k.preMsg}`);return cmdMenu()}
  if(k.cp>0&&E(52)&&Math.random()*100<E(52)){quick("🔗 연계점수 보존!","#6aa9e6","",null,"l");fxSay(`연계점수가 소모되지 않았다! (${k.n})`)}else BS.cp-=k.cp;hud();
+ if(BS.ds.chill&&Math.random()<CHILL_FAIL){say(`❄ 한기! <b>${k.n}</b> 시전에 실패했다.`);quick("❄ 시전 실패!","#bfe9ff",`${k.n}이(가) 불발되었다`,null,"d");return after()}
  if(k.t==="atk"){if(k.n==="죽음의 선고"&&P.job==="rogue")return slashFx(()=>hit(k.m,{sk:k}));if(k.n==="급소 찌르기"&&P.job==="rogue")return rogueFx("weak",()=>hit(k.m,{sk:k}));return hit(k.m,{sk:k})}
  if(P.job==="rogue"&&(k.n==="맹독 칼날"||k.n==="그림자 걸음")&&!k.fxd)return rogueFx(k.n==="맹독 칼날"?"venom":"shadow",()=>{k.fxd=1;try{skillUse2(k)}finally{k.fxd=0}});
  return skillUse2(k)}
@@ -2176,8 +2179,8 @@ const hcap=()=>!!foe&&!!foe.hero&&!!(foe.rare||foe.nm||foe.lt||foe.hn);
 const pgRaw=()=>{const d0=foe.def*(foe.trait&&foe.trait.k==="armor"?1+foe.trait.v*2:1)*(1+(BS.fb.def?BS.fb.def.v:0))*(BS.mc&&BS.mc.k==="rot"?.75:1)*(1-Math.min(100,E(22))/100)*(PBg().exposed?0:1);return d0/(100+d0)};
 const pgPop=blocked=>quick("🛡 물리피해 확정 방어",blocked?"#9bb8ff":"#ffb347",`${blocked?"물리 피해 차단":"다음 물리 피해 확정 방어"}`,null,"r");
 function pgCheck(){if(!hcap()||!BS||BS.fb.pg||BS.pgcd>0)return;if(pgRaw()>HPD_CAP){BS.fb.pg=1;say(`🛡 ${foe.n}의 방어가 한도(${HPD_CAP*100}%)를 넘었다! <b>물리피해 확정 방어</b> — 내 다음 물리 피해(속성 피해 제외)는 모두 막힌다.`);pgPop(false);foebar()}}
-function hit(m,o){const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(BS.pre&&BS.pre.charm)&&Math.random()<CHARM_MISS,dz=!!BS.ds.dazzle&&Math.random()<DAZZLE_MISS;let wkh=false,cpg=false;const pops=[];pops.s=[];const nm=amb?"기습":m===2?"강타":"공격";
- if(sk||amb){}else if(m===2){BS.cp-=CP_NEED;hud()}else if(!mis&&!dz&&BS.cp<CP_MAX&&!BS.ds.chill)cpg=true;
+function hit(m,o){if(m===2&&BS.ds.chill&&Math.random()<CHILL_FAIL&&!(o&&o.amb)){BS.cp-=CP_NEED;hud();say("❄ 한기! <b>강타</b> 시전에 실패했다.");quick("❄ 시전 실패!","#bfe9ff","강타가 불발되었다",null,"d");return after()}const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(BS.pre&&BS.pre.charm)&&Math.random()<CHARM_MISS,dz=!!BS.ds.dazzle&&Math.random()<DAZZLE_MISS;let wkh=false,cpg=false;const pops=[];pops.s=[];const nm=amb?"기습":m===2?"강타":"공격";
+ if(sk||amb){}else if(m===2){BS.cp-=CP_NEED;hud()}else if(!mis&&!dz&&BS.cp<CP_MAX)cpg=true;
   if(mis||dz){if(mis)say(`🌀 ${cR("현혹")}! 정신이 흐려져 ${nm}이(가) 빗나갔다.`);if(dz){say(`🔆 ${cR("눈부심")}! 눈이 부셔 ${nm}이(가) 빗나갔다.`);return flash("💨 빗나감!","#ffe680",`🔆 눈부심으로 <b>${foe.n}</b>을(를) 제대로 보지 못했다!<br>${nm}이(가) 빗나갔다.`,AF,1500)}return AF()}
  if(foe.trait&&foe.trait.k==="evade"&&Math.random()<foe.trait.v){say(`💨 ${trMsg(foe.trait)} ${foe.n}이(가) ${nm}을 피했다!`);trPop(`💨 내 ${nm}을 피했다!`);return AF()}
  if(cpg){BS.cp++;hud();say(`🔗 일반 공격 적중으로 연계점수 +1 (${BS.cp}/${CP_MAX})`)}
@@ -2219,7 +2222,7 @@ function hit(m,o){const amb=!!(o&&o.amb),AF=amb?o.done:after,sk=o&&o.sk,mis=!!(B
  note=nt.length?` ✦${nt.join(" · ")}${sp?" (방어력 무시)":""}`:(sp&&BRK.length?" (방어력 무시)":"");
  if(BRK.length&&dsum<=0)note=` 🛡 같은 속성이라 면역! (${pc(SAME_IMM)}% 확률)`+note;
  if((wkh||bx)&&E(38)&&d>0){d=r1(d*(1+E(38)/100));note+=` ✦약점 공략 피해 +${f(E(38))}%`}
- if(d>0&&BS.mc&&BS.mc.k==="brand"){d=r1(d*1.15);note+=` 🕯 낙인 피해 +15%`}
+ if(d>0&&BS.mc&&BS.mc.k==="brand"){d=r1(d*(1+BRAND_C));note+=` 🕯 낙인 피해 +15%`}
  if(crit&&d>0){const r=brandExt();if(r==="ext"){note+=` 🕯 치명타! 낙인 +1턴 (남은 ${BS.mc.t}턴)`;pops.s.push(`🕯 <b>낙인 연장</b><br><small>치명타! 낙인의 저주 +1턴 (남은 ${BS.mc.t}턴)</small>`)}else if(r==="max")note+=` 🕯 (낙인은 최대치까지 연장됨)`}
  if(d>0&&foe.trait&&foe.trait.k==="tough"){d=r1(Math.max(.1,d*(1-foe.trait.v)));note+=` ✦${foe.trait.n} 피해 -${pf(foe.trait.v)}%`;trPop(`받는 피해 -${pf(foe.trait.v)}%`)}
  if(d>0&&!sp&&foe.trait&&foe.trait.k==="armor")trPop(`방어력 +${pf(foe.trait.v*2)}%`);
@@ -2272,9 +2275,11 @@ function foeAct0(){
  if(BS.chg&&BS.mc&&BS.mc.k==="silence"){const c=BS.chg;BS.chg=null;say(`🕯 침묵의 저주! ${foe.n}의 <b>${c.n}</b> 준비가 취소되었다.`)}
  if(BS.chg){const c=BS.chg;BS.chg=null;return cast(c)}
  let sk=null;
- if(foe.skU&&BS.cd.u<=0&&Math.random()<SK_U*(BS.ms.chill>0?.5:1))sk=foe.skU;else if(foe.skU2&&BS.cd.u2<=0&&Math.random()<SK_U2*(BS.ms.chill>0?.5:1))sk=foe.skU2;else if(foe.skU3&&BS.cd.u3<=0&&Math.random()<SK_U2*(BS.ms.chill>0?.5:1))sk=foe.skU3;else for(const q of[foe.skE,foe.skE2,foe.skE3])if(q&&BS.cd[ck(q)]<=0&&Math.random()<SK_E*(BS.ms.chill>0?.5:1)){sk=q;break}
+ if(foe.skU&&BS.cd.u<=0&&Math.random()<SK_U)sk=foe.skU;else if(foe.skU2&&BS.cd.u2<=0&&Math.random()<SK_U2)sk=foe.skU2;else if(foe.skU3&&BS.cd.u3<=0&&Math.random()<SK_U2)sk=foe.skU3;else for(const q of[foe.skE,foe.skE2,foe.skE3])if(q&&BS.cd[ck(q)]<=0&&Math.random()<SK_E){sk=q;break}
  if(BS.mc&&BS.mc.k==="silence")sk=null;
- if(!sk&&foe.skB&&BS.cd.b<=0&&buffOk(foe.skB)&&Math.random()<SK_B&&!(BS.mc&&(BS.mc.k==="silence"||BS.mc.k==="drain")))return useBuff(foe.skB);
+ let bf=!sk&&foe.skB&&BS.cd.b<=0&&buffOk(foe.skB)&&Math.random()<SK_B&&!(BS.mc&&BS.mc.k==="silence");
+ if((sk||bf)&&BS.ms.chill>0&&Math.random()<CHILL_FAIL){const u=sk||foe.skB;if(sk)BS.cd[ck(sk)]=SKILL_CD;else BS.cd.b=SKILL_CD;say(`❄ 한기! ${foe.n}의 <b>${u.n}</b> 시전이 실패했다.`);return quick("❄ 시전 실패!","#bfe9ff",`${foe.n}의 ${u.n}`,rollMenu,"d")}
+ if(bf)return useBuff(foe.skB);
  if(!sk)return enemyHit({label:`${foe.n}의 공격!`,m:1,elem:false});
  if(sk.chg){BS.chg=sk;say(`⚠ ${foe.n}이(가) ${sk.ev.map(eIcon).join("")}<b>${sk.n}</b>을(를) 준비한다! <small>(힘을 모으는 중 — 다음 행동권을 내가 빼앗으면 저지할 수 있다)</small>`);return skillPop(sk,"⚠ 힘을 모으는 중! 다음 행동권을 빼앗으면 저지할 수 있다.",rollMenu)}
  cast(sk)}
@@ -2314,7 +2319,7 @@ function applyStatus(k,o){const ds=BS.ds,S=STS[k];if(Math.random()>=(o.p!=null?o
   case"bleed":case"poison":{const d=r1(MHP()*DOT_F[k]*F),v=ds[k]||(ds[k]={t:S.t,s:[]});if(v.s.length<5)v.s.push(d);else{let i=0;v.s.forEach((x,j)=>{if(x<v.s[i])i=j});if(d>v.s[i])v.s[i]=d}v.t=o.t||S.t;break}
   case"burn":{const d=r1(MHP()*DOT_F.burn*F),v=ds.burn||(ds.burn={t:0,s:[]});if(v.s.length<BURN_CAP_P)v.s.push(d);else{let i=0;v.s.forEach((x,j)=>{if(x<v.s[i])i=j});if(d>v.s[i])v.s[i]=d}v.t=o.t||S.t;break}
   case"dazzle":if(ds.dazzle)return null;ds.dazzle={t:S.t};break;
-  case"curse":{if(ds.curse)return null;const kd=o.k||"weak";ds.curse={t:o.t||S.t,k:kd,d:r1(MHP()*CURSE[kd].f*F)};break}
+  case"curse":{if(ds.curse)return null;const kd=o.k||"weak";ds.curse={t:o.t||S.t,k:kd,d:r1(MHP()*CURSE[kd].f*(kd==="doom"?(o.f||1):F)),n:0};if(kd==="doom"){const b=r1(ds.curse.d*(1-resRed("어둠")));pDot("🕯 파멸의 저주 — 최초 어둠 피해!",b);clamp()}break}
   case"disease":{const fr=STK.filter(x=>!(ds.dis&&ds.dis[x]));if(!fr.length)return null;const st=fr[R(0,fr.length-1)],amt=Math.max(1,r1(ST(st)*.15));ds.dis=ds.dis||{};ds.dis[st]=amt;const d=r1(MHP()*DOT_F.disease*F);P.hp=r1(P.hp-d);clamp();say(`🤢 질병! ${cR(`${f(d)} 피해`)} · ${STATN[st]} -${f(amt)}`);break}
   case"fear":if(ds.fear)return null;ds.fear={t:o.t||R(1,3)};break;
   case"corrode":{const v=ds.corrode||(ds.corrode={t:0,n:0});v.n=Math.min(4,v.n+1);v.t=o.t||S.t;break}
@@ -2325,12 +2330,13 @@ function enemyHit(o){const ds=BS.ds,sk=o.sk,asleep=!!(ds.sleep||BS.slp);BS.slp=0
  if(Math.random()*100<EV()){say(`${o.label} 하지만 ${cG("💨 회피!")}${PBg().dodge?" <small>(그림자 걸음은 유지된다)</small>":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`${PBg().dodge?"🌑 그림자 걸음 유지":""}`,rollMenu,"d",1)}
  if(E(15)&&Math.random()*100<Math.min(100,E(15))){say(`${o.label} 하지만 빗나갔다.`);fxSay(`회피 발동!${PBg().dodge?" (그림자 걸음은 유지된다)":""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff","",rollMenu,"d",1)}
  if(PBg().dodge){if(--BS.pb.dodge<=0)delete BS.pb.dodge;BS.forceAct="shadow";say(`${o.label} 하지만 ${cG("🌑 그림자 걸음! 완전히 회피")}${BS.pb.dodge?` <small>(남은 회피 ${BS.pb.dodge}회)</small>`:""}`);if(P.job==="rogue")gainCP(1,"🗡 회피!");return quick("💨 회피!","#7fd4ff",`🌑 그림자 걸음`,rollMenu,"d",1)}
- const dd=D()*(P.hp<=.3*MHP()?1+E(6)/100:1),mcrit=Math.random()<MON_CRIT,raw=(mcrit?MON_CRIT_X:1)*foe.atk*trAtk()*MS_ATK()*(BS.mc&&BS.mc.k==="weak"?.8:1)*(1+(BS.fb.atk?BS.fb.atk.v:0))*o.m*(.9+Math.random()*.2)*(1-Math.min(90,E(21))/100)*(P.job==="warrior"?.95:1)*(1-(PBg().taken?PBg().taken.v:0))*(1+(PBg().takenUp?PBg().takenUp.v:0))*(1-(PBg().foeatk?PBg().foeatk.v:0)),pa=(sk&&sk.parts)||(o.elem?{e:1}:{n:1}),els=sk?sk.ev:[],bn=ds.burn&&els.includes("불")?ds.burn.s.length:0,burnX=bn>0,dzX=!!(ds.dazzle&&els.includes("빛")),shX=!!(ds.shock&&els.includes("번개")),fzX=!!(ds.freeze&&els.includes("물")),cuX=!!(ds.curse&&els.includes("어둠")),lbX=!!(BS.fb.shield>0&&els.includes("빛")),sb=(asleep?1+SLEEP_BONUS:1)*(burnX?1+BURN_STK[bn]:1)*(dzX?1+DAZZLE_LIGHT:1)*(shX?1+SHOCK_WEAK:1)*(fzX?1+WEAK_P:1)*(cuX?1+WEAK_P:1)*(lbX?1+LIGHT_BURST:1)*(curseIs("brand")?1.15:1);
+ const dd=D()*(P.hp<=.3*MHP()?1+E(6)/100:1),mcrit=Math.random()<MON_CRIT,raw=(mcrit?MON_CRIT_X:1)*foe.atk*trAtk()*MS_ATK()*(BS.mc&&BS.mc.k==="weak"?1-WEAK_C:1)*(1+(BS.fb.atk?BS.fb.atk.v:0))*o.m*(.9+Math.random()*.2)*(1-Math.min(90,E(21))/100)*(P.job==="warrior"?.95:1)*(1-(PBg().taken?PBg().taken.v:0))*(1+(PBg().takenUp?PBg().takenUp.v:0))*(1-(PBg().foeatk?PBg().foeatk.v:0)),pa=(sk&&sk.parts)||(o.elem?{e:1}:{n:1}),els=sk?sk.ev:[],bn=ds.burn&&els.includes("불")?ds.burn.s.length:0,burnX=bn>0,dzX=!!(ds.dazzle&&els.includes("빛")),shX=!!(ds.shock&&els.includes("번개")),fzX=!!(ds.freeze&&els.includes("물")),cuX=!!(ds.curse&&els.includes("어둠")),lbX=!!(BS.fb.shield>0&&els.includes("빛")),sb=(asleep?1+SLEEP_BONUS:1)*(burnX?1+BURN_STK[bn]:1)*(dzX?1+DAZZLE_LIGHT:1)*(shX?1+SHOCK_WEAK:1)*(fzX?1+WEAK_P:1)*(cuX?1+WEAK_P:1)*(lbX?1+LIGHT_BURST:1)*(curseIs("brand")?1+BRAND_C:1);
  const LVR=lvRed(foe.lv,P.lv),dn=raw*(pa.n||0)*(1-DEF_MAX*Math.min(1,dd/(DEF_LV*P.lv)))*sb*(1-LVR),du=raw*(pa.u||0)*sb;let de=0;const rn=[];
  if(pa.e&&els.length)els.forEach(e=>{const rd=resRed(e);de+=raw*pa.e/els.length*(1-rd)*sb*(1-LVR);if(rd>0)rn.push(`${eIcon(e)}${pc(rd)}%`)});
  let d=r1(Math.max(.1,dn+de+du));const bd=(pa.n||pa.u)&&(pa.e||pa.u||pa.n)&&Object.keys(pa).length>1?` <small style="opacity:.85">(${[dn?`일반 ${f(dn)}`:"",de?`속성 ${f(de)}`:"",du?`고유 ${f(du)}`:""].filter(Boolean).join(" · ")})</small>`:"",rtx=(rn.length?` <small style="opacity:.85">(저항 -${rn.join(" ")})</small>`:"")+(LVR>0?` <small style="opacity:.85">(📉 레벨 차 -${f(LVR*100)}%)</small>`:"");
  if(BS.shield>0){const ab=Math.min(BS.shield,d);BS.shield=r1(BS.shield-ab);d=r1(d-ab);fxSay(`보호막이 피해 ${f(ab)} 흡수! (남은 보호막 ${f(BS.shield)})`)}
  P.hp=r1(P.hp-d);if(de>0&&els)els.forEach(e=>plateBurst("pbar",e));say(`${mcrit?"💥 치명타! ":""}${o.label} ${cR(`${f(d)} 피해`)}${bd}${rtx}를 입었다.${asleep?" 💤 수면 중 피격! 추가 피해를 입고 잠에서 깼다.":""}${burnX?` 🔥 화상${bn>1?` ${bn}중첩`:""} 상태에서 불 속성 피격! 피해 +${pc(BURN_STK[bn])}%`:""}${dzX?` 🔆 눈부심 상태에서 빛 속성 피격! 피해 +${pc(DAZZLE_LIGHT)}%`:""}${fzX?` 🧊 빙결 상태에서 물 속성 피격! 피해 +${pc(WEAK_P)}%`:""}`);
+if(mcrit&&ds.curse&&ds.curse.k==="brand"&&ds.curse.t<MC_T+3){ds.curse.t++;fxSay(`🕯 낙인의 저주! ${foe.n}의 치명타로 지속 +1턴 (남은 ${ds.curse.t}턴)`)}
  if(ds.curse&&ds.curse.k==="leech"&&d>0)trHealMon(d*LEECH_P,`🩸 ${foe.n}이(가) 흡혈의 저주로 입힌 피해의 ${f(LEECH_P*100)}%를 회복했다.`,"🩸 흡혈의 저주");
  if(asleep)delete ds.sleep;
  if(!sk&&!o.elem)quick(`${mcrit?"💥 치명타! ":"🗡 "}${foe.n}의 공격!`,"#ff8f8f",`내 HP <b>-${f(d)}</b>`,null,"d");
@@ -2778,8 +2784,9 @@ function dexMenu(tab,cat,idx){if(typeof tab!=="string")tab="el";
  root.append(secEl("⚠ 상태이상 <small style='opacity:.75'>(확률은 스킬마다 다를 수 있다)</small>",cardGrid(STS_ORDER.map(k=>{const S=STS[k];return {col:"#e0a040",html:`<div>${S.i} <b>${S.n}</b> <small style="opacity:.8">(기본 ${pc(S.p)}%)</small></div><div style="font-size:12.5px;margin-top:2px;opacity:.9">${S.d}</div>`}}))));
  root.append(secEl("🛡 영웅 네임드 물리 방어",`<div style="font-size:12.5px;line-height:1.6">영웅 난이도의 네임드(필드 희귀·영웅 / 던전 간부·보스)가 받는 물리 피해 감소는 최대 <b>${HPD_CAP*100}%</b>까지다. 방어력이 높거나 방어력 강화로 이 한도를 넘으면 몬스터가 <b>🛡 물리피해 확정 방어</b> 버프를 얻어, 내 <b>다음 물리 피해(속성 피해 제외)를 전부 막는다</b>. 버프는 몬스터 플레이트에 표시되고 한 번 막으면 사라지며, 이후 ${PG_CD}턴 동안은 다시 생기지 않는다. 주문 피해는 방어력을 무시하므로 영향이 없다.</div>`));
  root.append(secEl("📉 레벨 차 피해 감소",`<div style="font-size:12.5px;line-height:1.6">공격하는 쪽의 레벨이 맞는 쪽보다 <b>낮으면</b> 레벨 차 1당 피해가 <b>${pc(LVD_P)}%</b>씩 줄어든다(최대 ${pc(LVD_MAX)}%). 나와 몬스터에게 똑같이 적용된다.<br>· 적용 대상: <b>일반 피해</b>(방어력 쪽)와 <b>속성 피해</b>(저항력 쪽). <b>고유 피해</b>와 지속 피해는 줄지 않는다.<br>· 예) 만렙(Lv ${LV_CAP})인 내가 Lv 65 몬스터를 공격하면 ${pc(LVD_P*5)}% 감소. 반대로 Lv 55 몬스터가 Lv ${LV_CAP}인 나를 공격해도 같은 비율로 감소한다.</div>`));
- root.append(secEl("🕯 저주의 종류",cardGrid(Object.values(CURSE).map(c=>({col:"#b08cff",html:`<div>🕯 <b>${c.n}</b></div><div style="font-size:12.5px;opacity:.9">${c.d}</div><div style="font-size:12px;opacity:.85;color:#9be3a8">몬스터에게 걸리면(어둠 공격): ${MCURSE[Object.keys(CURSE).find(k=>CURSE[k]===c)]} · ${MC_T}턴 · 매 턴 저주 피해</div>`}))))); 
- {const p1=x=>f(x*100);root.append(secEl("📐 상태이상 공통 규칙",`<div style="font-size:12.5px;line-height:1.6">· 상태이상과 저주는 나와 몬스터가 같은 규칙을 쓴다. 나는 착용효과와 공격 속성 효과로, 몬스터는 스킬로 건다. 달라지는 건 발동 확률뿐이다.<br>· 지속 피해는 <b>대상 최대 HP의 비율</b>로 들어간다 (방어력 무시): 출혈 ${p1(DOT_F.bleed)}% · 중독 ${p1(DOT_F.poison)}% · 화상 ${p1(DOT_F.burn)}% · 저주 약 ${p1(CURSE.weak.f)}% (파멸 ${p1(CURSE.doom.f)}%) · 질병 즉시 ${p1(DOT_F.disease)}%. 중첩마다 따로 들어간다.<br>· 네임드(간부·필드 희귀·보스)가 거는 지속 피해는 ×${NDOT_M}, 네임드가 받는 지속 피해는 ×${NDOT_R}이다.<br>· <b>내가 몬스터에게 거는 상태이상</b>(착용효과, 타마다 따로 판정): 출혈·질병(지속 피해) · 수면(행동권 1회 상실, 먼저 때리면 깨어나며 첫 일격 +50%) · 현혹(공격 40% 빗나감 3회) · 공포(공격력 -25% 2턴) · 침식(받는 피해 +10% 3턴) · 상처(회복 -60%, 받는 지속 피해 +25% 3턴) · 한기(공격력 -15%, 스킬 확률 절반 3턴). 수면·공포는 네임드 면역, 질병은 독·침식은 땅·한기는 물 속성 몬스터 면역이다.<br>· 행동 불가 계열(기절·수면·공포)은 <b>네임드 몬스터에게 걸리지 않는다</b>. 감전은 걸리지만 마비 확률이 절반(${p1(SHOCK_FAIL/2)}%)이다. 땅 속성 몬스터는 기절에도 면역이다.<br>· 나와 일반 난이도 몬스터는 모든 속성에 <b>기본 저항 ${p1(BASE_RES)}%</b>가 있다. <b>영웅 난이도 몬스터</b>(필드·던전 전부)는 모든 속성 저항이 <b>${p1(HERO_RES)}%</b>이고, 유형이 <b>🛡탱커형</b>이면 +${p1(TYPE_RES.tank)}%p(${p1(HERO_RES+TYPE_RES.tank)}%), <b>💚회복형</b>이면 +${p1(TYPE_RES.sustain)}%p(${p1(HERO_RES+TYPE_RES.sustain)}%)다. 속성 피해와 속성 지속 피해(독·화상·질병)가 저항만큼 줄고, 속성 효과가 발동할 확률도 저항만큼 줄어든다. 속성이 없는 지속 피해(출혈·저주 등)는 줄지 않는다. (같은 속성 몬스터는 별개로 75% 면역 / 25% 피해 -75%)<br>· 약점 관계(상태이상 쪽): 화상↔불 · 감전↔번개 · 눈부심↔빛 · 저주↔어둠 · 수면 중 피격 +${pc(SLEEP_BONUS)}%. 나와 몬스터 모두에게 똑같이 적용된다. 빛 속성 공격은 보호막이 있는 대상에게 폭발해 +${pc(LIGHT_BURST)}%.</div>`))}
+ {const q1=x=>f(x*100);root.append(secEl("🕯 저주 공통 규칙",`<div style="font-size:12.5px;line-height:1.65">· 저주는 나와 몬스터가 <b>똑같은 효과</b>를 쓴다. (내가 몬스터에게 거는 저주 = 어둠 속성 공격이 15% 확률로 발동 · 몬스터가 나에게 거는 저주 = 몬스터의 스킬·평타)<br>· 모두 <b>${MC_T}턴</b> 지속되고 <b>중첩되지 않는다</b>. 걸려 있는 동안 다른 저주는 걸리지 않는다. 정화의 성수·정화 스킬로 해제할 수 있다.<br>· 매 턴 <b>어둠 속성 피해</b>를 입는다 (대상 최대 HP의 비율, 저주마다 다름). 방어력은 무시하고 <b>어둠 저항력</b>으로 줄어든다. 몬스터는 자신의 속성 저항(영웅 난이도 ${q1(HERO_RES)}% · 탱커형 ${q1(HERO_RES+TYPE_RES.tank)}% · 회복형 ${q1(HERO_RES+TYPE_RES.sustain)}%)으로 줄어든다.<br>· 네임드(간부·보스·필드 희귀)는 받는 지속 피해가 ×${NDOT_R}, 네임드가 거는 저주의 피해는 ×${NDOT_M}다 (파멸의 저주는 제외).<br>· <b>어둠 속성 몬스터는 저주에 면역</b>이다.</div>`));
+ root.append(secEl("🕯 저주의 종류",cardGrid(Object.entries(CURSE).map(([k,c])=>({col:"#b08cff",html:`<div>🕯 <b>${c.n}</b></div><div style="font-size:12.5px;opacity:.9;margin-top:2px">${c.d}</div><div style="font-size:12px;opacity:.85;color:#9be3a8;margin-top:3px">${k==="doom"?`최초 대상 최대 HP ${q1(DOOM_B)}%의 어둠 피해 → 이후 4턴 매 턴 최초 피해의 ${DOOM_TK.map(x=>q1(x)).join("% → ")}%`:`${MC_T}턴 · 매 턴 대상 최대 HP ${q1(c.f)}%의 어둠 속성 피해`}</div>`})))))};
+ {const p1=x=>f(x*100);root.append(secEl("📐 상태이상 공통 규칙",`<div style="font-size:12.5px;line-height:1.6">· 상태이상과 저주는 나와 몬스터가 같은 규칙을 쓴다. 나는 착용효과와 공격 속성 효과로, 몬스터는 스킬로 건다. 달라지는 건 발동 확률뿐이다.<br>· 지속 피해는 <b>대상 최대 HP의 비율</b>로 들어간다 (방어력 무시): 출혈 ${p1(DOT_F.bleed)}% · 중독 ${p1(DOT_F.poison)}% · 화상 ${p1(DOT_F.burn)}% · 저주는 종류별(저주의 종류 항목 참고) · 질병 즉시 ${p1(DOT_F.disease)}%. 중첩마다 따로 들어간다.<br>· 네임드(간부·필드 희귀·보스)가 거는 지속 피해는 ×${NDOT_M}, 네임드가 받는 지속 피해는 ×${NDOT_R}이다.<br>· <b>내가 몬스터에게 거는 상태이상</b>(착용효과, 타마다 따로 판정): 출혈·질병(지속 피해) · 수면(행동권 1회 상실, 먼저 때리면 깨어나며 첫 일격 +50%) · 현혹(공격 40% 빗나감 3회) · 공포(공격력 -25% 2턴) · 침식(받는 피해 +10% 3턴) · 상처(회복 -60%, 받는 지속 피해 +25% 3턴) · 한기(모든 스킬 시전 성공 확률 절반 3턴). 수면·공포는 네임드 면역, 질병은 독·침식은 땅·한기는 물 속성 몬스터 면역이다.<br>· 행동 불가 계열(기절·수면·공포)은 <b>네임드 몬스터에게 걸리지 않는다</b>. 감전은 걸리지만 마비 확률이 절반(${p1(SHOCK_FAIL/2)}%)이다. 땅 속성 몬스터는 기절에도 면역이다.<br>· 나와 일반 난이도 몬스터는 모든 속성에 <b>기본 저항 ${p1(BASE_RES)}%</b>가 있다. <b>영웅 난이도 몬스터</b>(필드·던전 전부)는 모든 속성 저항이 <b>${p1(HERO_RES)}%</b>이고, 유형이 <b>🛡탱커형</b>이면 +${p1(TYPE_RES.tank)}%p(${p1(HERO_RES+TYPE_RES.tank)}%), <b>💚회복형</b>이면 +${p1(TYPE_RES.sustain)}%p(${p1(HERO_RES+TYPE_RES.sustain)}%)다. 속성 피해와 속성 지속 피해(독·화상·질병)가 저항만큼 줄고, 속성 효과가 발동할 확률도 저항만큼 줄어든다. 속성이 없는 지속 피해(출혈·저주 등)는 줄지 않는다. (같은 속성 몬스터는 별개로 75% 면역 / 25% 피해 -75%)<br>· 약점 관계(상태이상 쪽): 화상↔불 · 감전↔번개 · 눈부심↔빛 · 저주↔어둠 · 수면 중 피격 +${pc(SLEEP_BONUS)}%. 나와 몬스터 모두에게 똑같이 적용된다. 빛 속성 공격은 보호막이 있는 대상에게 폭발해 +${pc(LIGHT_BURST)}%.</div>`))}
  root.append(btnRow([["상태 창으로",stMenu],["닫기",closeP]]))}
 const WDESC={"단검":"빠르고 가벼운 칼. 급소를 노리는 한손 무기.","장검":"균형 잡힌 기본 검. 베고 찌르는 한손 무기.","도끼":"묵직하게 내리찍는 한손 무기.","철퇴":"갑옷째 두들기는 쇠뭉치 한손 무기.","둔기P":"갑옷째 두들기는 묵직한 쇠뭉치 한손 무기.","창":"긴 자루 끝의 날로 멀리서 꿰뚫는 양손 무기.","대검":"사람 키만 한 거대한 칼날의 양손 무기.","대도끼":"두 손으로 휘둘러 모든 것을 쪼개는 양손 무기.","낫":"긴 자루에 휜 날이 달린 양손 주문 무기. 마력을 날에 실어 거둔다.","장궁":"사람 키만 한 큰 활. 멀리서 시위를 당겨 꿰뚫는 양손 무기.","단검S":"마력을 날에 실어 빠르게 찌르는 한손 주문 무기. 가볍게 휘둘러 마력을 흩뿌린다.","도검":"마력을 날에 실어 휘두르는 한손 주문 무기.","마법봉":"마력을 가볍게 뽑아내는 짧은 한손 주문 무기.","둔기":"마력이 깃든 묵직한 한손 주문 무기.","지팡이":"마력을 크게 증폭하는 긴 양손 주문 무기."},
  ODESC={"방패":"몸을 지키는 물리계열 보조장비. 방어력이 높다. (도적 착용 불가)","수정구":"마력을 비추는 구슬. 주문계열 보조장비로 공격력과 스탯을 준다.","고서":"오래된 마법서. 주문계열 보조장비로 공격력과 스탯을 준다."};
